@@ -1,0 +1,16 @@
+flowchart LR
+    SALES(["พนักงานขาย"])
+    WH(["พนักงานคลังสินค้า"])
+    MGR(["ผู้จัดการ"])
+    subgraph SYS["ระบบ SOML — กลุ่มยืนยันตัวตนและจัดการข้อมูลหลัก"]
+        UC1("UC-01<br/>เข้าสู่ระบบและควบคุมสิทธิ์<br/>ตามบทบาท")
+        UC2("UC-02<br/>จัดการข้อมูลสินค้า<br/>และจุดสั่งซื้อเพิ่ม")
+    end
+    SALES --- UC1
+    WH --- UC1
+    MGR --- UC1
+    MGR --- UC2
+    classDef actor fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef uc fill:#fdf6e3,stroke:#8a6d1a,stroke-width:1.5px,color:#111
+    class SALES,WH,MGR actor
+    class UC1,UC2 uc

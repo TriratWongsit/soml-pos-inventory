@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8"><title>SOML · หน้าจอขายหน้าร้าน</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'TH Sarabun New','Sarabun','Segoe UI',Tahoma,sans-serif;font-size:17px;
+     background:#eef1f5;color:#1b2430;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:100vh}
+/* ---- sidebar ---- */
+.side{width:216px;background:#1e2b3c;color:#c9d4e2;padding:18px 0;flex:0 0 216px}
+.brand{padding:0 18px 16px;border-bottom:1px solid #33445a;margin-bottom:14px}
+.brand b{display:block;color:#fff;font-size:21px;letter-spacing:.3px}
+.brand span{font-size:14px;color:#8fa3bc}
+.side a{display:block;padding:9px 18px;color:#c9d4e2;text-decoration:none;font-size:16px;border-left:3px solid transparent}
+.side a.on{background:#2a3purple;}
+.side a.on{background:#26374d;color:#fff;border-left-color:#4d90d9;font-weight:600}
+.side .grp{padding:14px 18px 5px;font-size:13px;color:#6f8299;letter-spacing:.5px}
+/* ---- main ---- */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{background:#fff;border-bottom:1px solid #d6dde6;padding:11px 22px;display:flex;
+     align-items:center;justify-content:space-between}
+.top h1{font-size:22px;font-weight:700}
+.top .right{display:flex;align-items:center;gap:16px;font-size:15px;color:#4a5b70}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#e6f4ea;color:#1d6b33;
+      padding:3px 11px;border-radius:11px;font-size:14px;font-weight:600}
+.pill.warn{background:#fdf1dc;color:#8a5a10}
+.pill.info{background:#e4eefb;color:#1a4f8a}
+.pill.gray{background:#eceff3;color:#55637a}
+.who{display:flex;align-items:center;gap:8px}
+.av{width:30px;height:30px;border-radius:50%;background:#4d90d9;color:#fff;display:flex;
+    align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.body{padding:20px 22px;flex:1}
+/* ---- cards / tables ---- */
+.card{background:#fff;border:1px solid #dde3ea;border-radius:8px;padding:15px 17px;margin-bottom:16px}
+.card h2{font-size:18px;margin-bottom:11px;color:#22364d;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th{text-align:left;background:#f5f7fa;color:#4a5b70;font-weight:600;padding:8px 10px;
+   border-bottom:1px solid #dde3ea;font-size:15px}
+td{padding:8px 10px;border-bottom:1px solid #eef1f5}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+.btn{display:inline-block;background:#1d6fc4;color:#fff;border:none;border-radius:6px;
+     padding:9px 18px;font-size:17px;font-family:inherit;font-weight:600;cursor:pointer}
+.btn.big{padding:13px 26px;font-size:19px;width:100%;text-align:center}
+.btn.green{background:#1d7a3d}
+.btn.ghost{background:#fff;color:#3a4a5e;border:1px solid #c8d2dd}
+.muted{color:#77869a;font-size:15px}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:16px}
+.kpi .card{margin:0;padding:13px 15px}
+.kpi .lab{font-size:15px;color:#6c7c92}
+.kpi .val{font-size:29px;font-weight:700;color:#16283d;line-height:1.25;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:14px;color:#8b98a9}
+.split{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+.total{display:flex;justify-content:space-between;align-items:baseline;
+       border-top:2px solid #22364d;margin-top:9px;padding-top:9px}
+.total b{font-size:27px;color:#16283d;font-variant-numeric:tabular-nums}
+.search{width:100%;padding:9px 12px;border:1px solid #c8d2dd;border-radius:6px;
+        font-size:16px;font-family:inherit;color:#8b98a9;background:#fff}
+.plist div{display:flex;justify-content:space-between;padding:8px 10px;border-bottom:1px solid #eef1f5;font-size:16px}
+.plist div:hover{background:#f5f9fe}
+.qrbox{text-align:center;padding:6px 0 12px}
+.qr{width:186px;height:186px;margin:10px auto;background:#fff;border:1px solid #c8d2dd;
+    display:grid;grid-template-columns:repeat(21,1fr);grid-template-rows:repeat(21,1fr);padding:8px}
+.qr i{background:#16283d}
+.bar{height:8px;background:#eceff3;border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:#1d7a3d}
+.bar i.low{background:#c9762a}
+.bar i.crit{background:#b3352f}
+.alert{display:flex;gap:10px;padding:10px 12px;border-radius:6px;margin-bottom:9px;font-size:16px}
+.alert.warn{background:#fdf6e8;border-left:4px solid #c9762a}
+.alert.crit{background:#fceceb;border-left:4px solid #b3352f}
+.alert .t{font-weight:600;color:#22364d}
+.wait{font-weight:700;font-variant-numeric:tabular-nums}
+.wait.ok{color:#1d7a3d} .wait.mid{color:#c9762a} .wait.bad{color:#b3352f}
+.chk{width:19px;height:19px;border:2px solid #1d7a3d;border-radius:4px;display:inline-block;
+     vertical-align:-4px;position:relative;background:#1d7a3d}
+.chk::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:10px;
+     border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.note{background:#e4eefb;border-left:4px solid #1d6fc4;padding:10px 13px;border-radius:5px;
+      font-size:16px;color:#204568;margin-bottom:14px}
+</style></head>
+<body><div class="app">
+  <nav class="side">
+    <div class="brand"><b>SOML</b><span>ร้านวัสดุก่อสร้างอำพรคอนกรีต</span></div>
+    <a href="#" class="on">ขายหน้าร้าน</a><div class="grp">รายการ</div><a href="#">ประวัติคำสั่งซื้อ</a><a href="#">ค้นหาสินค้า</a>
+  </nav>
+  <div class="main">
+    <div class="top"><h1>ขายหน้าร้าน (POS)</h1><div class="right"><span class="pill">เชื่อมต่อเครื่องพิมพ์แล้ว</span><div class="who"><div class="av">ตร</div>ตรัยรัตน์ · พนักงานขาย</div></div></div>
+    <div class="body">
+<div class="split">
+  <div>
+    <div class="card">
+      <h2>เลือกสินค้า</h2>
+      <input class="search" value="ค้นหาชื่อสินค้าหรือรหัสสินค้า...">
+      <div class="plist" style="margin-top:10px">
+        <div><span>ปูนซีเมนต์ปอร์ตแลนด์ 50 กก. <span class="muted">· CEM-001 · คงเหลือ 340 ถุง</span></span><b>165.00</b></div>
+        <div><span>อิฐมอญ ขนาดมาตรฐาน <span class="muted">· BRK-002 · คงเหลือ 12,400 ก้อน</span></span><b>2.50</b></div>
+        <div><span>ทรายหยาบ <span class="muted">· SND-004 · คงเหลือ 38 คิว</span></span><b>520.00</b></div>
+        <div><span>เหล็กเส้นกลม RB6 <span class="muted">· STL-003 · คงเหลือ 210 เส้น</span></span><b>78.00</b></div>
+        <div><span>ปูนฉาบสำเร็จรูป <span class="muted">· CEM-005 · คงเหลือ 96 ถุง</span></span><b>128.00</b></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>คำสั่งซื้อปัจจุบัน</h2>
+      <div class="muted" style="margin-bottom:8px">เลขที่ ORD-20690902-0007</div>
+      <table>
+        <tr><th>รายการ</th><th class="num">จำนวน</th><th class="num">รวม</th></tr>
+        <tr><td>ปูนซีเมนต์ปอร์ตแลนด์ 50 กก.<div class="muted">165.00 / ถุง</div></td><td class="num">50 ถุง</td><td class="num">8,250.00</td></tr>
+        <tr><td>อิฐมอญ ขนาดมาตรฐาน<div class="muted">2.50 / ก้อน</div></td><td class="num">500 ก้อน</td><td class="num">1,250.00</td></tr>
+        <tr><td>ทรายหยาบ<div class="muted">520.00 / คิว</div></td><td class="num">2 คิว</td><td class="num">1,040.00</td></tr>
+      </table>
+      <div class="total"><span>ยอดรวมทั้งสิ้น</span><b>10,540.00 บาท</b></div>
+      <div style="margin-top:14px"><button class="btn big">สร้าง QR พร้อมเพย์เพื่อรับชำระเงิน</button></div>
+      <div style="margin-top:8px"><button class="btn ghost" style="width:100%">ล้างรายการ</button></div>
+    </div>
+  </div>
+</div>
+</div>
+  </div>
+</div></body></html>

@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    actor W as พนักงานคลังสินค้า
+    participant UI as หน้าจอคิวคลังสินค้า
+    participant API as Backend API<br/>(Dispatch Controller)
+    participant SVC as Stock Deduction<br/>Service
+    participant DB as MySQL (InnoDB)
+    participant AL as Alert Engine
+    participant MUI as หน้าจอผู้จัดการ
+
+    W->>UI: เลือกคำสั่งซื้อจากคิว
+    UI->>API: GET /api/orders/:id
+    API->>DB: SELECT orders + order_items
+    DB-->>API: รายการสินค้าของคำสั่งซื้อ
+    API-->>UI: แสดงรายการให้ตรวจสอบ
+    W->>UI: ตรวจสอบสินค้าแล้วกดยืนยันจ่าย
+    UI->>API: POST /api/orders/:id/dispatch
+    API->>SVC: เรียกธุรกรรมตัดสต็อก
+    SVC->>DB: START TRANSACTION
+    SVC->>DB: UPDATE orders SET status='delivered'<br/>WHERE order_id=? AND status='awaiting_dispatch'
+
+    alt จำนวนแถวที่แก้ไข = 1 (ยังไม่เคยจ่าย)
+        SVC->>DB: SELECT order_items ... FOR UPDATE
+        SVC->>DB: UPDATE products SET stock_qty = stock_qty - qty
+        SVC->>DB: INSERT stock_movements (sale_dispatch)
+        SVC->>DB: INSERT audit_logs (CONFIRM_DISPATCH)
+        SVC->>DB: COMMIT
+        SVC-->>API: ส่งมอบสำเร็จ
+        API->>UI: ลบคำสั่งซื้อออกจากคิว
+        API->>AL: ตรวจสอบ stock_qty เทียบ reorder_point
+        AL->>DB: INSERT notifications (low_stock)
+        AL->>MUI: แจ้งเตือนภายในแอปพลิเคชัน
+    else จำนวนแถวที่แก้ไข = 0 (ถูกจ่ายไปแล้ว)
+        SVC->>DB: ROLLBACK
+        SVC-->>API: ปฏิเสธการจ่ายซ้ำ
+        API-->>UI: แจ้ง "คำสั่งซื้อนี้ถูกจ่ายสินค้าไปแล้ว"
+    end
+
+    UI-->>W: แสดงผลลัพธ์

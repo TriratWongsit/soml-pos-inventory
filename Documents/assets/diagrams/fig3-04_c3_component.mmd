@@ -1,0 +1,46 @@
+flowchart TD
+    FE["Web Application (Frontend)<br/>[React.js]"]
+    subgraph BE["Backend API — [Node.js + Express.js]"]
+        AUTH["Auth Controller<br/>Login · JWT · ตรวจสอบบทบาท"]
+        PROD["Product Controller<br/>จัดการสินค้าและจุดสั่งซื้อเพิ่ม"]
+        ORD["Order Controller<br/>สร้างเลขคำสั่งซื้อ · คำนวณยอด · เรียก QR"]
+        QUEUE["Queue Manager<br/>ผลัก Push Event ไปหน้าจอคิวคลัง"]
+        DISP["Dispatch Controller<br/>รับคำสั่งยืนยันจ่ายสินค้า"]
+        STOCK["Stock Deduction Service<br/>ธุรกรรมอะตอมมิก · กันจ่ายซ้ำ"]
+        ALERT["Alert Engine<br/>ตรวจ Reorder Point และคิวค้าง"]
+        DASH["Dashboard Aggregator<br/>รวบรวมสถิติยอดขาย สต็อก คิว"]
+        AUDIT["Audit Log Service<br/>บันทึกทุกเหตุการณ์สำคัญ"]
+        PRTC["Print Service Client<br/>ส่งคำสั่ง ESC/POS"]
+    end
+    DB[("MySQL 8.0")]
+    QR["PromptPay QR Module"]
+    PSVC["Receipt Print Service"]
+    FE --> AUTH
+    FE --> PROD
+    FE --> ORD
+    FE --> DISP
+    FE --> DASH
+    QUEUE -->|"WebSocket"| FE
+    ORD --> QR
+    ORD --> PRTC
+    ORD --> QUEUE
+    DISP --> STOCK
+    STOCK --> ALERT
+    PRTC --> PSVC
+    AUTH --> DB
+    PROD --> DB
+    ORD --> DB
+    STOCK --> DB
+    ALERT --> DB
+    DASH --> DB
+    AUDIT --> DB
+    AUTH -.-> AUDIT
+    ORD -.-> AUDIT
+    STOCK -.-> AUDIT
+    ALERT -.-> AUDIT
+    classDef comp fill:#e8e2f5,stroke:#5a3a8a,color:#111
+    classDef other fill:#dbe6f7,stroke:#1a4a8a,color:#111
+    classDef db fill:#d8ece8,stroke:#136055,color:#111
+    class AUTH,PROD,ORD,QUEUE,DISP,STOCK,ALERT,DASH,AUDIT,PRTC comp
+    class FE,QR,PSVC other
+    class DB db

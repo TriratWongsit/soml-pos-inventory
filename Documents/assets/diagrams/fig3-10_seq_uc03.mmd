@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    actor S as พนักงานขาย
+    participant UI as หน้าจอ POS<br/>(React.js)
+    participant API as Backend API<br/>(Order Controller)
+    participant QR as PromptPay<br/>QR Module
+    participant DB as MySQL
+    participant P as Receipt<br/>Print Service
+    participant WUI as หน้าจอคิวคลังสินค้า
+
+    S->>UI: เลือกสินค้าและระบุจำนวน
+    UI->>UI: คำนวณยอดรวมอัตโนมัติ
+    S->>UI: กดสร้างคำสั่งซื้อ
+    UI->>API: POST /api/orders
+    API->>API: สร้างเลขที่คำสั่งซื้อไม่ซ้ำ (UC-04)
+    API->>DB: INSERT orders + order_items
+    API->>QR: ขอสร้าง QR ตามยอดชำระ
+    QR-->>API: ข้อมูล QR มาตรฐาน EMVCo
+    API-->>UI: เลขที่คำสั่งซื้อ + QR Code
+    UI-->>S: แสดง QR พร้อมเพย์
+    Note over S: ลูกค้าสแกนและโอนเงิน<br/>ผ่านแอปพลิเคชันธนาคาร
+    S->>UI: กดยืนยันรับชำระเงิน
+    UI->>API: PATCH /api/orders/:id/confirm-payment
+    API->>DB: UPDATE orders SET status='awaiting_dispatch', paid_at=NOW()
+    API->>P: สั่งพิมพ์ใบเสร็จ (ESC/POS)
+    P-->>API: พิมพ์สำเร็จ (ภายใน 5 วินาที ตาม NFR-05)
+    API->>WUI: WebSocket push เหตุการณ์ order.created
+    WUI-->>WUI: แสดงคำสั่งซื้อใหม่ในคิว (ภายใน 3 วินาที ตาม NFR-02)
+    API->>DB: INSERT audit_logs (CREATE_ORDER)
+    API-->>UI: ผลลัพธ์สำเร็จ
+    UI-->>S: แจ้งผลและพร้อมรับคำสั่งซื้อถัดไป

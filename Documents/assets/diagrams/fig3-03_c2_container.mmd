@@ -1,0 +1,29 @@
+flowchart TD
+    SALES["พนักงานขาย"]
+    WH["พนักงานคลังสินค้า"]
+    MGR["ผู้จัดการ"]
+    subgraph SOML["ขอบเขตระบบ SOML"]
+        FE["Web Application (Frontend)<br/>[React.js]<br/>หน้าจอ POS · คิวคลังสินค้า · Dashboard<br/>Responsive Design"]
+        BE["Backend API<br/>[Node.js + Express.js]<br/>ตรรกะธุรกิจ · RBAC · Real-time Push<br/>ตัดสต็อกอะตอมมิก · แจ้งเตือน"]
+        DB[("Database<br/>[MySQL 8.0 / InnoDB]<br/>users · products · orders<br/>stock_movements · audit_logs")]
+        PSVC["Receipt Print Service<br/>[Node.js + ESC/POS]<br/>รับคำสั่งพิมพ์จาก Backend"]
+    end
+    QR["PromptPay QR Module<br/>[External Library]"]
+    PRN["เครื่องพิมพ์ใบเสร็จความร้อน<br/>[External Hardware]"]
+    SALES -->|"HTTPS"| FE
+    WH -->|"HTTPS"| FE
+    MGR -->|"HTTPS"| FE
+    FE -->|"REST API (JSON/HTTPS)"| BE
+    BE -->|"WebSocket · ผลักคิวงานเรียลไทม์"| FE
+    BE -->|"SQL Query แบบ ACID Transaction"| DB
+    BE -->|"เรียกสร้าง QR ตามยอด"| QR
+    BE -->|"ส่งคำสั่งพิมพ์"| PSVC
+    PSVC -->|"ESC/POS ผ่าน USB"| PRN
+    classDef person fill:#e6f0e6,stroke:#2f6b2f,color:#111
+    classDef cont fill:#dbe6f7,stroke:#1a4a8a,stroke-width:2px,color:#111
+    classDef db fill:#d8ece8,stroke:#136055,stroke-width:2px,color:#111
+    classDef ext fill:#f7e9d8,stroke:#9a5a12,color:#111
+    class SALES,WH,MGR person
+    class FE,BE,PSVC cont
+    class DB db
+    class QR,PRN ext

@@ -1,0 +1,16 @@
+flowchart LR
+    SALES(["พนักงานขาย"])
+    SYSA(["ระบบอัตโนมัติ"])
+    PRN(["เครื่องพิมพ์ใบเสร็จ"])
+    subgraph SYS["ระบบ SOML — กลุ่มการขายหน้าร้าน"]
+        UC3("UC-03<br/>สร้างคำสั่งซื้อ แสดง QR พร้อมเพย์<br/>ยืนยันรับชำระและพิมพ์ใบเสร็จ")
+        UC4("UC-04<br/>สร้างเลขที่คำสั่งซื้อ<br/>ไม่ซ้ำอัตโนมัติ")
+    end
+    SALES --- UC3
+    SYSA --- UC4
+    UC3 -.->|"&lt;&lt;include&gt;&gt;"| UC4
+    UC3 --- PRN
+    classDef actor fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef uc fill:#fdf6e3,stroke:#8a6d1a,stroke-width:1.5px,color:#111
+    class SALES,SYSA,PRN actor
+    class UC3,UC4 uc

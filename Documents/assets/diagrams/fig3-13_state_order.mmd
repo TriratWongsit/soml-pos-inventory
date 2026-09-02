@@ -1,0 +1,20 @@
+stateDiagram-v2
+    direction TB
+    [*] --> awaiting_dispatch : พนักงานขายยืนยันรับชำระเงิน<br/>(พิมพ์ใบเสร็จ + ผลักเข้าคิว)
+    awaiting_dispatch --> picking : พนักงานคลังเริ่มจัดเตรียมสินค้า
+    picking --> awaiting_dispatch : ยกเลิกการจัดของ
+    awaiting_dispatch --> delivered : ยืนยันจ่ายสินค้า + ตัดสต็อกอะตอมมิก
+    picking --> delivered : ยืนยันจ่ายสินค้า + ตัดสต็อกอะตอมมิก
+    awaiting_dispatch --> cancelled : ผู้จัดการยกเลิกคำสั่งซื้อ
+    delivered --> [*]
+    cancelled --> [*]
+
+    note right of awaiting_dispatch
+        รอจ่ายสินค้า — แสดงในคิวคลังสินค้า
+    end note
+    note right of delivered
+        ส่งมอบสำเร็จ — สถานะสุดท้าย
+        เงื่อนไข WHERE status='awaiting_dispatch'
+        ในคำสั่ง UPDATE ทำหน้าที่ล็อก
+        ไม่ให้ยืนยันจ่ายซ้ำได้อีก
+    end note

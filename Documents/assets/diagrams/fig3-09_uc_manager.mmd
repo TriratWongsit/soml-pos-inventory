@@ -1,0 +1,20 @@
+flowchart LR
+    MGR(["ผู้จัดการ"])
+    WH(["พนักงานคลังสินค้า"])
+    SYSA(["ระบบอัตโนมัติ"])
+    subgraph SYS["ระบบ SOML — กลุ่มผู้จัดการและการติดตาม"]
+        UC8("UC-08<br/>แสดงแดชบอร์ดปฏิบัติการ")
+        UC9("UC-09<br/>แสดงแดชบอร์ด<br/>ระดับบริหาร")
+        UC10("UC-10<br/>ค้นหาและดู<br/>ประวัติการทำรายการ")
+        UC11("UC-11<br/>รับการแจ้งเตือน<br/>ภายในแอปพลิเคชัน")
+    end
+    MGR --- UC8
+    WH --- UC8
+    MGR --- UC9
+    MGR --- UC10
+    MGR --- UC11
+    SYSA --- UC11
+    classDef actor fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef uc fill:#fdf6e3,stroke:#8a6d1a,stroke-width:1.5px,color:#111
+    class MGR,WH,SYSA actor
+    class UC8,UC9,UC10,UC11 uc

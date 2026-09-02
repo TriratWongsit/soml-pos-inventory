@@ -1,0 +1,18 @@
+flowchart TD
+    SALES["พนักงานขาย<br/>[Person]<br/>บันทึกคำสั่งซื้อ รับชำระ QR พิมพ์ใบเสร็จ"]
+    WH["พนักงานคลังสินค้า<br/>[Person]<br/>ดูคิวงาน ยืนยันจ่ายสินค้า"]
+    MGR["ผู้จัดการ<br/>[Person]<br/>ดู Dashboard ตรวจ Audit Log รับแจ้งเตือน"]
+    SOML["<b>ระบบ SOML</b><br/>[Software System]<br/>ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า<br/>เว็บแอปพลิเคชันแบบ 3 ชั้น"]
+    QR["PromptPay QR Library<br/>[External System]<br/>สร้าง QR Code มาตรฐาน EMVCo"]
+    PRN["เครื่องพิมพ์ใบเสร็จความร้อน<br/>[External Hardware]<br/>พิมพ์ใบเสร็จกระดาษ"]
+    SALES -->|"ใช้งานผ่านเบราว์เซอร์ (HTTPS)"| SOML
+    WH -->|"ใช้งานผ่านเบราว์เซอร์ (HTTPS)"| SOML
+    MGR -->|"ใช้งานผ่านเบราว์เซอร์ (HTTPS)"| SOML
+    SOML -->|"ขอสร้าง QR ตามยอดชำระ"| QR
+    SOML -->|"ส่งคำสั่งพิมพ์ ESC/POS"| PRN
+    classDef person fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef system fill:#dbe6f7,stroke:#1a4a8a,stroke-width:2.5px,color:#111
+    classDef ext fill:#f7e9d8,stroke:#9a5a12,stroke-width:1.5px,color:#111
+    class SALES,WH,MGR person
+    class SOML system
+    class QR,PRN ext

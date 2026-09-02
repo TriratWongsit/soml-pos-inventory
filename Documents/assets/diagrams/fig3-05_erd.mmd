@@ -1,0 +1,79 @@
+erDiagram
+    users {
+        int user_id PK "รหัสผู้ใช้งาน"
+        varchar username UK "ชื่อผู้ใช้"
+        varchar password_hash "รหัสผ่านเข้ารหัส"
+        varchar full_name "ชื่อ-นามสกุล"
+        enum role "sales / warehouse / manager"
+        boolean is_active "สถานะบัญชี"
+        datetime created_at "วันเวลาที่สร้าง"
+    }
+    products {
+        int product_id PK "รหัสสินค้า"
+        varchar sku UK "รหัสอ้างอิงสินค้า"
+        varchar name "ชื่อสินค้า"
+        varchar unit "หน่วยนับ"
+        decimal price "ราคาต่อหน่วย"
+        int stock_qty "จำนวนคงเหลือ"
+        int reorder_point "จุดสั่งซื้อเพิ่ม"
+        boolean is_active "สถานะเปิดขาย"
+        datetime updated_at "แก้ไขล่าสุด"
+    }
+    orders {
+        int order_id PK "รหัสคำสั่งซื้อ"
+        varchar order_no UK "เลขที่คำสั่งซื้อไม่ซ้ำ"
+        decimal total_amount "ยอดรวม"
+        enum status "awaiting_dispatch / picking / delivered / cancelled"
+        int created_by FK "พนักงานขายผู้สร้าง"
+        datetime paid_at "เวลายืนยันรับชำระ"
+        int dispatched_by FK "พนักงานคลังผู้จ่ายสินค้า"
+        datetime dispatched_at "เวลายืนยันจ่าย"
+        datetime created_at "เวลาบันทึก"
+    }
+    order_items {
+        int order_item_id PK "รหัสรายการ"
+        int order_id FK "คำสั่งซื้อ"
+        int product_id FK "สินค้า"
+        int qty "จำนวน"
+        decimal unit_price "ราคาต่อหน่วยขณะขาย"
+        decimal line_total "ยอดรวมรายการ"
+    }
+    stock_movements {
+        int movement_id PK "รหัสการเคลื่อนไหว"
+        int product_id FK "สินค้า"
+        int order_id FK "คำสั่งซื้อที่เกี่ยวข้อง"
+        int change_qty "จำนวนที่เปลี่ยนแปลง"
+        int balance_after "ยอดคงเหลือหลังรายการ"
+        enum reason "sale_dispatch / manual_adjust / receive"
+        varchar note "หมายเหตุ"
+        int created_by FK "ผู้ทำรายการ"
+        datetime created_at "เวลาที่เกิดรายการ"
+    }
+    notifications {
+        int notification_id PK "รหัสแจ้งเตือน"
+        enum type "low_stock / queue_delay"
+        int ref_product_id FK "สินค้าที่เกี่ยวข้อง"
+        int ref_order_id FK "คำสั่งซื้อที่เกี่ยวข้อง"
+        varchar message "ข้อความแจ้งเตือน"
+        boolean is_read "สถานะการอ่าน"
+        datetime created_at "เวลาแจ้งเตือน"
+    }
+    audit_logs {
+        bigint log_id PK "รหัสบันทึก"
+        int user_id FK "ผู้กระทำ"
+        varchar action "การกระทำ"
+        varchar entity_type "ชนิดข้อมูล"
+        int entity_id "รหัสข้อมูล"
+        json detail "รายละเอียด"
+        varchar ip_address "หมายเลขไอพี"
+        datetime created_at "เวลาที่เกิดเหตุการณ์"
+    }
+    users            ||--o{ orders          : "สร้างคำสั่งซื้อ"
+    users            ||--o{ stock_movements : "ทำรายการสต็อก"
+    users            ||--o{ audit_logs      : "ถูกบันทึกประวัติ"
+    orders           ||--|{ order_items     : "ประกอบด้วย"
+    products         ||--o{ order_items     : "ถูกสั่งซื้อใน"
+    products         ||--o{ stock_movements : "มีการเคลื่อนไหว"
+    products         ||--o{ notifications   : "แจ้งเตือนสต็อกต่ำ"
+    orders           ||--o{ stock_movements : "ทำให้เกิดการตัดสต็อก"
+    orders           ||--o{ notifications   : "แจ้งเตือนคิวค้าง"

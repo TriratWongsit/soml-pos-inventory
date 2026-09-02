@@ -1,0 +1,15 @@
+flowchart LR
+    WH(["พนักงานคลังสินค้า"])
+    subgraph SYS["ระบบ SOML — กลุ่มคลังสินค้า"]
+        UC5("UC-05<br/>ดูคิวรอจ่ายสินค้า<br/>แบบเรียลไทม์")
+        UC6("UC-06<br/>ปรับสถานะการจัดของ<br/>ในคิวงาน")
+        UC7("UC-07<br/>ยืนยันจ่ายสินค้า<br/>และตัดสต็อกแบบอะตอมมิก")
+    end
+    WH --- UC5
+    WH --- UC6
+    WH --- UC7
+    UC7 -.->|"&lt;&lt;extend&gt;&gt;<br/>ป้องกันการจ่ายซ้ำ"| UC5
+    classDef actor fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef uc fill:#fdf6e3,stroke:#8a6d1a,stroke-width:1.5px,color:#111
+    class WH actor
+    class UC5,UC6,UC7 uc

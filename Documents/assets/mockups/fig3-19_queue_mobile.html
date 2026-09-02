@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOML · คิวรอจ่ายสินค้า (อุปกรณ์เคลื่อนที่)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#c8cfd8;font-family:'TH Sarabun New','Sarabun','Segoe UI',Tahoma,sans-serif;font-size:17px;
+     background:#eef1f5;color:#1b2430;-webkit-font-smoothing:antialiased}
+.top{background:#1e2b3c;color:#fff;padding:11px 14px}
+.top .row{display:flex;align-items:center;justify-content:space-between}
+.top b{font-size:19px}
+.top .sub{font-size:13px;color:#93a5bc;margin-top:1px}
+.av{width:28px;height:28px;border-radius:50%;background:#4d90d9;color:#fff;display:flex;
+    align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:0 0 28px}
+.live{display:inline-flex;align-items:center;gap:5px;background:#25547f;color:#cfe4fb;
+      padding:2px 9px;border-radius:10px;font-size:12px;margin-top:7px}
+.live i{width:7px;height:7px;border-radius:50%;background:#5ed17a;display:block}
+.kpi{display:flex;gap:8px;padding:12px 12px 4px}
+.kpi div{flex:1;background:#fff;border:1px solid #dde3ea;border-radius:8px;padding:9px 10px;text-align:center}
+.kpi .lab{font-size:13px;color:#6c7c92}
+.kpi .val{font-size:24px;font-weight:700;color:#16283d;line-height:1.2}
+h2{font-size:17px;padding:14px 14px 7px;color:#22364d}
+.list{padding:0 12px 14px}
+.item{background:#fff;border:1px solid #dde3ea;border-left:4px solid #c9762a;border-radius:8px;
+      padding:11px 13px;margin-bottom:9px}
+.item.picking{border-left-color:#8b98a9}
+.item.urgent{border-left-color:#b3352f}
+.hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.no{font-size:17px;font-weight:700;color:#16283d}
+.wait{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.ok{color:#1d7a3d}.mid{color:#c9762a}.bad{color:#b3352f}
+.goods{font-size:15px;color:#44546b;margin:5px 0 9px;line-height:1.45}
+.ft{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pill{background:#fdf1dc;color:#8a5a10;padding:3px 10px;border-radius:11px;font-size:13px;font-weight:600}
+.pill.gray{background:#eceff3;color:#55637a}
+.btn{background:#1d6fc4;color:#fff;border:none;border-radius:6px;padding:8px 15px;
+     font-size:15px;font-family:inherit;font-weight:600}
+.phone{width:390px;background:#eef1f5;overflow:hidden}
+</style></head>
+<body><div class="phone">
+  <div class="top">
+    <div class="row">
+      <div><b>คิวรอจ่ายสินค้า</b><div class="sub">พนาวุฒน์ · พนักงานคลังสินค้า</div></div>
+      <div class="av">พว</div>
+    </div>
+    <span class="live"><i></i>เชื่อมต่อเรียลไทม์</span>
+  </div>
+
+  <div class="kpi">
+    <div><div class="lab">รอจ่าย</div><div class="val">4</div></div>
+    <div><div class="lab">จัดของ</div><div class="val">1</div></div>
+    <div><div class="lab">ส่งแล้ว</div><div class="val">23</div></div>
+  </div>
+
+  <h2>รายการรอจ่ายสินค้า</h2>
+  <div class="list">
+    <div class="item urgent">
+      <div class="hd"><span class="no">ORD-20690902-0004</span><span class="wait bad">32 นาที</span></div>
+      <div class="goods">เหล็กเส้นกลม RB6 × 40 เส้น และอีก 1 รายการ · 10:12 น.</div>
+      <div class="ft"><span class="pill gray">กำลังจัดของ</span><button class="btn">เปิดรายการ</button></div>
+    </div>
+    <div class="item">
+      <div class="hd"><span class="no">ORD-20690902-0005</span><span class="wait mid">18 นาที</span></div>
+      <div class="goods">ปูนฉาบสำเร็จรูป × 20 ถุง · 10:26 น.</div>
+      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
+    </div>
+    <div class="item">
+      <div class="hd"><span class="no">ORD-20690902-0006</span><span class="wait ok">9 นาที</span></div>
+      <div class="goods">กระเบื้องมุงหลังคา × 120 แผ่น · 10:35 น.</div>
+      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
+    </div>
+    <div class="item">
+      <div class="hd"><span class="no">ORD-20690902-0007</span><span class="wait ok">2 นาที</span></div>
+      <div class="goods">ปูนซีเมนต์ปอร์ตแลนด์ × 50 ถุง และอีก 2 รายการ · 10:42 น.</div>
+      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
+    </div>
+  </div>
+</div></body></html>
