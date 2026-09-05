@@ -1,1 +1,17 @@
 .DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+.npm/
+
+# Build output
+dist/
+build/
+
+# Test output
+coverage/
+
+# Environment
+.env
+.env.local
