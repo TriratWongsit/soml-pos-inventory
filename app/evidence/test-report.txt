@@ -1,0 +1,46 @@
+
+> soml@1.0.0 test
+> jest --coverage --runInBand --detectOpenHandles
+
+PASS integration backend/__tests__/integration/auth.test.js
+PASS integration backend/__tests__/integration/dashboard.test.js
+PASS integration backend/__tests__/integration/orders.test.js
+PASS integration backend/__tests__/integration/dispatch.test.js
+PASS integration backend/__tests__/integration/products.test.js
+PASS unit backend/__tests__/unit/transport.test.js
+PASS unit backend/__tests__/unit/promptpay.test.js
+PASS unit backend/__tests__/unit/escpos.test.js
+---------------------------|---------|----------|---------|---------|-------------------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s             
+---------------------------|---------|----------|---------|---------|-------------------------------
+All files                  |   82.88 |    73.88 |   74.22 |   85.71 |                               
+ backend                   |   84.31 |    42.85 |      50 |   89.58 |                               
+  app.js                   |   84.31 |    42.85 |      50 |   89.58 | 73-79                         
+ backend/components        |   80.69 |    74.64 |   77.19 |    83.2 |                               
+  alertEngine.js           |   68.75 |    53.84 |   66.66 |   75.86 | 77-101,117,131                
+  auditLogService.js       |   95.83 |       80 |     100 |   93.75 | 62                            
+  authController.js        |   91.66 |     87.5 |      50 |   91.66 | 77-83                         
+  dashboardAggregator.js   |   88.88 |      100 |     100 |   88.88 | 70,131                        
+  dispatchController.js    |   93.33 |       75 |     100 |   92.85 | 17                            
+  orderController.js       |   79.79 |    72.09 |   85.71 |   81.31 | 35,73,108,117,169-172,243-282 
+  printServiceClient.js    |   78.94 |       50 |      60 |   86.66 | 30-31                         
+  productController.js     |   85.43 |    77.41 |     100 |   89.13 | 37,66,96,146-149,167,176-178  
+  queueManager.js          |   59.09 |    66.66 |   45.45 |   62.06 | 25,28,41-72,110,150,166       
+  stockDeductionService.js |   96.66 |    83.33 |     100 |   96.66 | 89                            
+ backend/config            |     100 |       50 |     100 |     100 |                               
+  db.js                    |     100 |       50 |     100 |     100 | 12-19                         
+ backend/lib               |   96.42 |    89.47 |     100 |   96.15 |                               
+  promptpay.js             |   96.42 |    89.47 |     100 |   96.15 | 55                            
+ backend/middleware        |   81.81 |    68.42 |      80 |   81.81 |                               
+  auth.js                  |   81.81 |    68.42 |      80 |   81.81 | 41-44,56                      
+ print-service/lib         |   84.47 |    79.01 |   65.38 |   88.48 |                               
+  escpos.js                |   98.16 |    87.09 |     100 |   97.95 | 136-137                       
+  transport.js             |   55.76 |    52.63 |   35.71 |   65.85 | 34-48,78-79,82                
+---------------------------|---------|----------|---------|---------|-------------------------------
+
+Test Suites: 8 passed, 8 total
+Tests:       87 passed, 87 total
+Snapshots:   0 total
+Time:        2.667 s, estimated 3 s
+Ran all test suites in 2 projects.
+EXIT=0

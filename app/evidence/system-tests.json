@@ -1,0 +1,135 @@
+{
+  "executedAt": "2026-09-06T14:02:11.556Z",
+  "nfr01": {
+    "testCase": "NFR-01",
+    "requirement": "NFR-01",
+    "description": "บังคับใช้ HTTPS และควบคุมสิทธิ์ตามบทบาทอย่างเข้มงวด",
+    "checks": [
+      {
+        "name": "เรียกผ่าน http แล้วถูกส่งต่อ",
+        "expected": "301",
+        "actual": "301",
+        "pass": true
+      },
+      {
+        "name": "ปลายทางที่ส่งต่อเป็น https",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "เรียก API โดยไม่มีโทเคน",
+        "expected": "401",
+        "actual": "401",
+        "pass": true
+      },
+      {
+        "name": "โทเคนปลอมแปลง",
+        "expected": "401",
+        "actual": "401",
+        "pass": true
+      },
+      {
+        "name": "พนักงานขายเข้าถึงแดชบอร์ดบริหาร",
+        "expected": "403",
+        "actual": "403",
+        "pass": true
+      },
+      {
+        "name": "พนักงานคลังเข้าถึงหน้าจอขาย",
+        "expected": "403",
+        "actual": "403",
+        "pass": true
+      },
+      {
+        "name": "ข้อความเมื่อเข้าระบบไม่สำเร็จเหมือนกันทุกกรณี",
+        "expected": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+        "actual": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+        "pass": true
+      }
+    ],
+    "passed": 7,
+    "total": 7,
+    "verdict": "ผ่าน"
+  },
+  "tc05": {
+    "testCase": "TC-05",
+    "requirement": "FR-04 · NFR-02",
+    "description": "เวลาตั้งแต่ยืนยันรับชำระจนคำสั่งซื้อปรากฏบนหน้าจอคิว",
+    "thresholdMs": 3000,
+    "samples": 30,
+    "minMs": 5,
+    "medianMs": 7,
+    "p95Ms": 8,
+    "maxMs": 9,
+    "averageMs": 6.5,
+    "withinThreshold": 30,
+    "verdict": "ผ่าน",
+    "latenciesMs": [
+      6,
+      8,
+      7,
+      5,
+      7,
+      7,
+      6,
+      6,
+      6,
+      6,
+      7,
+      9,
+      7,
+      8,
+      5,
+      5,
+      5,
+      5,
+      7,
+      7,
+      6,
+      6,
+      5,
+      7,
+      8,
+      6,
+      7,
+      7,
+      7,
+      6
+    ]
+  },
+  "tc13": {
+    "testCase": "TC-13",
+    "requirement": "FR-03 · NFR-05",
+    "description": "เวลาตั้งแต่ยืนยันรับชำระจนพิมพ์ใบเสร็จเสร็จ",
+    "note": "วัดในโหมดจำลองของบริการพิมพ์ ต้องวัดซ้ำกับเครื่องพิมพ์ความร้อนจริงที่สถานประกอบการ",
+    "thresholdMs": 5000,
+    "samples": 30,
+    "minMs": 1,
+    "medianMs": 2,
+    "p95Ms": 2,
+    "maxMs": 3,
+    "averageMs": 2,
+    "printFailures": 0,
+    "verdict": "ผ่าน"
+  },
+  "tc14": {
+    "testCase": "TC-14",
+    "requirement": "NFR-06",
+    "description": "ใช้งานพร้อมกันหลายเซสชันในช่วงเวลาเดียวกัน",
+    "sessions": 10,
+    "requestsPerSession": 20,
+    "totalRequests": 200,
+    "failedRequests": 0,
+    "wallClockMs": 245,
+    "responseTime": {
+      "samples": 200,
+      "minMs": 1,
+      "medianMs": 5,
+      "p95Ms": 28,
+      "maxMs": 59,
+      "averageMs": 7.2
+    },
+    "verdict": "ผ่าน"
+  }
+}

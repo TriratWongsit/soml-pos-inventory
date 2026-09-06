@@ -1,0 +1,229 @@
+{
+  "testCase": "NFR-07",
+  "requirement": "NFR-07",
+  "description": "ระบบแสดงผลและทำงานถูกต้องบนเว็บเบราว์เซอร์ที่กำหนด",
+  "executedAt": "2026-09-06T14:00:52.200Z",
+  "screensPerEngine": 7,
+  "engines": [
+    {
+      "engine": "Chromium",
+      "covers": "Google Chrome, Microsoft Edge",
+      "version": "153.0.8010.12",
+      "screens": [
+        {
+          "screen": "ขายหน้าร้าน",
+          "path": "/pos",
+          "role": "sales01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "คิวรอจ่ายสินค้า",
+          "path": "/queue",
+          "role": "wh01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดปฏิบัติการ",
+          "path": "/dashboard",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดบริหาร",
+          "path": "/executive",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "จัดการข้อมูลสินค้า",
+          "path": "/products",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "การแจ้งเตือน",
+          "path": "/notifications",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "ประวัติการทำรายการ",
+          "path": "/audit-logs",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        }
+      ],
+      "passed": 7,
+      "total": 7,
+      "verdict": "ผ่าน"
+    },
+    {
+      "engine": "Firefox",
+      "covers": "Mozilla Firefox",
+      "version": "155.0",
+      "screens": [
+        {
+          "screen": "ขายหน้าร้าน",
+          "path": "/pos",
+          "role": "sales01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "คิวรอจ่ายสินค้า",
+          "path": "/queue",
+          "role": "wh01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดปฏิบัติการ",
+          "path": "/dashboard",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดบริหาร",
+          "path": "/executive",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "จัดการข้อมูลสินค้า",
+          "path": "/products",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "การแจ้งเตือน",
+          "path": "/notifications",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "ประวัติการทำรายการ",
+          "path": "/audit-logs",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        }
+      ],
+      "passed": 7,
+      "total": 7,
+      "verdict": "ผ่าน"
+    },
+    {
+      "engine": "WebKit",
+      "covers": "Safari (ทดสอบเพิ่มเติมนอกข้อกำหนด)",
+      "version": "26.6",
+      "screens": [
+        {
+          "screen": "ขายหน้าร้าน",
+          "path": "/pos",
+          "role": "sales01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "คิวรอจ่ายสินค้า",
+          "path": "/queue",
+          "role": "wh01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดปฏิบัติการ",
+          "path": "/dashboard",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "แดชบอร์ดบริหาร",
+          "path": "/executive",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "จัดการข้อมูลสินค้า",
+          "path": "/products",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "การแจ้งเตือน",
+          "path": "/notifications",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": "websocket",
+          "consoleErrors": [],
+          "pass": true
+        },
+        {
+          "screen": "ประวัติการทำรายการ",
+          "path": "/audit-logs",
+          "role": "mgr01",
+          "rendered": true,
+          "realtimeChannel": null,
+          "consoleErrors": [],
+          "pass": true
+        }
+      ],
+      "passed": 7,
+      "total": 7,
+      "verdict": "ผ่าน"
+    }
+  ],
+  "verdict": "ผ่าน"
+}
