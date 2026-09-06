@@ -33,6 +33,34 @@ export default function Queue() {
 
   const goods = (o) => o.items.map((i) => `${i.name} ${int(i.qty)} ${i.unit}`).join(' · ');
 
+  /**
+   * ปรับสถานะการจัดของ   [UC-06]
+   *
+   * พนักงานกดเมื่อเริ่มหยิบของ เพื่อให้เพื่อนร่วมงานที่เปิดหน้าจอเดียวกันเห็นว่า
+   * รายการนี้มีคนดูแลอยู่แล้ว ไม่ต้องหยิบซ้ำ  รายการจะกลับเป็นรอจ่ายสินค้าได้
+   * ถ้ากดยกเลิก ตามเส้นทางที่แผนภาพสถานะในรูปที่ 3.13 อนุญาต
+   */
+  const setStatus = async (orderId, status) => {
+    setError(null);
+    try {
+      await api.patch(`/orders/${orderId}/status`, { status });
+      reload();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const PickingButton = ({ order }) =>
+    order.status === 'picking' ? (
+      <button className="btn ghost small" onClick={() => setStatus(order.order_id, 'awaiting_dispatch')}>
+        ยกเลิกการจัดของ
+      </button>
+    ) : (
+      <button className="btn ghost small" onClick={() => setStatus(order.order_id, 'picking')}>
+        เริ่มจัดของ
+      </button>
+    );
+
   return (
     <Layout
       title="คิวรอจ่ายสินค้า"
@@ -75,7 +103,8 @@ export default function Queue() {
                           {o.status === 'picking' ? 'กำลังจัดของ' : 'รอจ่ายสินค้า'}
                         </span>
                       </td>
-                      <td className="num">
+                      <td className="num" style={{ whiteSpace: 'nowrap' }}>
+                        <PickingButton order={o} />{' '}
                         <button className="btn small" onClick={() => navigate(`/queue/${o.order_id}`)}>เปิดรายการ</button>
                       </td>
                     </tr>
@@ -99,7 +128,10 @@ export default function Queue() {
                       <span className={`pill ${o.status === 'picking' ? 'info' : 'warn'}`}>
                         {o.status === 'picking' ? 'กำลังจัดของ' : 'รอจ่ายสินค้า'}
                       </span>
-                      <button className="btn small" onClick={() => navigate(`/queue/${o.order_id}`)}>เปิดรายการ</button>
+                      <span style={{ display: 'flex', gap: 8 }}>
+                        <PickingButton order={o} />
+                        <button className="btn small" onClick={() => navigate(`/queue/${o.order_id}`)}>เปิดรายการ</button>
+                      </span>
                     </div>
                   </div>
                 );

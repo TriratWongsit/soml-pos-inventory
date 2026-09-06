@@ -11,6 +11,8 @@ export default function Products() {
   const [editing, setEditing] = useState(null);   // product_id ที่กำลังแก้ไข
   const [draft, setDraft] = useState(EMPTY);
   const [creating, setCreating] = useState(false);
+  const [adjusting, setAdjusting] = useState(null);   // สินค้าที่กำลังปรับสต็อก
+  const [adjust, setAdjust] = useState({ changeQty: '', reason: 'receive', note: '' });
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
@@ -22,8 +24,36 @@ export default function Products() {
     return products.filter((p) => !q || p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
   }, [products, search]);
 
+  const startAdjust = (p) => {
+    setError(null); setMessage(null); setCreating(false); setEditing(null);
+    setAdjusting(p);
+    setAdjust({ changeQty: '', reason: 'receive', note: '' });
+  };
+
+  /**
+   * ปรับปรุงจำนวนคงเหลือด้วยมือ เช่น รับสินค้าเข้าคลังหรือแก้ยอดหลังตรวจนับ
+   *
+   * ทุกครั้งที่ปรับ ระบบเขียนลงประวัติการเคลื่อนไหวสต็อกเช่นเดียวกับการตัดสต็อก
+   * จากการขาย จึงตรวจสอบย้อนหลังได้ว่ายอดเปลี่ยนเพราะอะไร
+   */
+  const saveAdjust = async () => {
+    setError(null);
+    try {
+      const res = await api.patch(`/products/${adjusting.product_id}/stock`, {
+        changeQty: Number(adjust.changeQty),
+        reason: adjust.reason,
+        note: adjust.note || null,
+      });
+      setMessage(`ปรับสต็อก ${res.name} จาก ${int(res.stockBefore)} เป็น ${int(res.stockAfter)} เรียบร้อย`);
+      setAdjusting(null);
+      reload();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const startEdit = (p) => {
-    setError(null); setMessage(null); setCreating(false); setEditing(p.product_id);
+    setError(null); setMessage(null); setCreating(false); setAdjusting(null); setEditing(p.product_id);
     setDraft({ sku: p.sku, name: p.name, unit: p.unit, price: p.price, stock_qty: p.stock_qty, reorder_point: p.reorder_point });
   };
 
@@ -65,6 +95,36 @@ export default function Products() {
       {message && <div className="alert ok"><span>{message}</span></div>}
       {error && <div className="alert crit"><span>{error}</span></div>}
 
+      {adjusting && (
+        <div className="card" style={{ maxWidth: 560 }}>
+          <h2>ปรับสต็อก · {adjusting.name}</h2>
+          <div className="note">
+            คงเหลือปัจจุบัน {int(adjusting.stock_qty)} {adjusting.unit} ·
+            ใส่จำนวนเป็นบวกเมื่อรับสินค้าเข้า และเป็นลบเมื่อต้องหักออก
+          </div>
+          <div className="field">
+            <label htmlFor="a-qty">จำนวนที่ปรับ</label>
+            <input id="a-qty" type="number" value={adjust.changeQty}
+                   onChange={(e) => setAdjust((a) => ({ ...a, changeQty: e.target.value }))} />
+          </div>
+          <div className="field">
+            <label htmlFor="a-reason">สาเหตุ</label>
+            <select id="a-reason" value={adjust.reason}
+                    onChange={(e) => setAdjust((a) => ({ ...a, reason: e.target.value }))}>
+              <option value="receive">รับสินค้าเข้าคลัง</option>
+              <option value="manual_adjust">ปรับปรุงยอดหลังตรวจนับ</option>
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="a-note">หมายเหตุ</label>
+            <input id="a-note" type="text" value={adjust.note}
+                   onChange={(e) => setAdjust((a) => ({ ...a, note: e.target.value }))} />
+          </div>
+          <button className="btn" onClick={saveAdjust} disabled={!adjust.changeQty}>บันทึกการปรับสต็อก</button>
+          <button className="btn ghost" style={{ marginLeft: 10 }} onClick={() => setAdjusting(null)}>ยกเลิก</button>
+        </div>
+      )}
+
       {(creating || editing) && (
         <div className="card" style={{ maxWidth: 560 }}>
           <h2>{creating ? 'เพิ่มสินค้าใหม่' : 'แก้ไขข้อมูลสินค้า'}</h2>
@@ -102,7 +162,10 @@ export default function Products() {
                   {int(p.reorder_point)}
                   {Number(p.below_reorder_point) === 1 && <span className="pill warn" style={{ marginLeft: 8 }}>ต่ำกว่าเกณฑ์</span>}
                 </td>
-                <td className="num"><button className="btn ghost small" onClick={() => startEdit(p)}>แก้ไข</button></td>
+                <td className="num" style={{ whiteSpace: 'nowrap' }}>
+                  <button className="btn ghost small" onClick={() => startAdjust(p)}>ปรับสต็อก</button>{' '}
+                  <button className="btn ghost small" onClick={() => startEdit(p)}>แก้ไข</button>
+                </td>
               </tr>
             ))}
           </tbody>
