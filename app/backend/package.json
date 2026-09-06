@@ -1,0 +1,19 @@
+{
+  "name": "@soml/backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API — ชั้นตรรกะทางธุรกิจของระบบ SOML (Node.js + Express.js)",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.5",
+    "ws": "^8.18.0"
+  }
+}

@@ -15,3 +15,6 @@ coverage/
 # Environment
 .env
 .env.local
+
+# ใบรับรอง HTTPS ที่สร้างเฉพาะเครื่อง (NFR-01)
+app/certs/

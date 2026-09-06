@@ -1,0 +1,44 @@
+{
+  "name": "soml",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า (SOML) — โครงงาน SE02",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "print-service"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "gen-cert": "bash scripts/gen-cert.sh",
+    "db:users": "node db/seed-users.js",
+    "dev": "concurrently -n backend,print,frontend -c blue,magenta,green \"npm:dev:backend\" \"npm:dev:print\" \"npm:dev:frontend\"",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:print": "npm run dev --workspace print-service",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "test:unit": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration --runInBand --detectOpenHandles",
+    "render-diagrams": "bash scripts/render-diagrams.sh",
+    "db:reset": "bash scripts/reset-db.sh",
+    "db:reset:test": "bash scripts/reset-db.sh test",
+    "capture-evidence": "node scripts/capture-evidence.js",
+    "build": "npm run build --workspace frontend",
+    "start": "node backend/server.js",
+    "start:print": "node print-service/server.js",
+    "serve": "concurrently -n api,print -c blue,magenta \"npm:start\" \"npm:start:print\"",
+    "test:system": "node scripts/run-system-tests.js",
+    "test:browsers": "node scripts/browser-matrix.js",
+    "test:tc06": "node scripts/tc06-concurrent-dispatch.js",
+    "demo": "node scripts/demo.js"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.17.0",
+    "@playwright/test": "^1.63.0",
+    "concurrently": "^9.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
