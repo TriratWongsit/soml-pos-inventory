@@ -10,13 +10,28 @@
 // ---------------------------------------------------------------------
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 const { chromium } = require('@playwright/test');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-const API = `https://localhost:${process.env.PORT || 4000}`;
+// ---------------------------------------------------------------------
+// สคริปต์นี้เปิดเซิร์ฟเวอร์ของตัวเองแยกจากเซิร์ฟเวอร์ที่ใช้งานอยู่
+//
+// เหตุผลคือรหัส QR ถูกสร้างจากฝั่งเซิร์ฟเวอร์โดยใช้หมายเลขพร้อมเพย์ที่อ่าน
+// ตอนเริ่มทำงาน ถ้าเก็บภาพจากเซิร์ฟเวอร์ที่ตั้งหมายเลขจริงของร้านไว้
+// ภาพ QR ที่ได้จะฝังหมายเลขบัญชีจริงลงไป แล้วถูก commit ขึ้นที่เก็บโค้ด
+// ซึ่งใครก็ตามที่เปิดที่เก็บโค้ดได้จะสแกนอ่านหมายเลขนั้นออกมาได้
+//
+// จึงบังคับใช้หมายเลขสำหรับทดสอบเสมอ ภาพในรูปเล่มยังสื่อความหมายครบถ้วน
+// เพราะผู้อ่านสนใจว่าระบบสร้าง QR ตามยอดได้ ไม่ได้สนใจว่าเป็นบัญชีใด
+// ---------------------------------------------------------------------
+const EVIDENCE_PROMPTPAY_ID = '0812345678';
+const EVIDENCE_PORT = Number(process.env.EVIDENCE_PORT || 4443);
+
+const API = `https://localhost:${EVIDENCE_PORT}`;
 // เก็บภาพจากเซิร์ฟเวอร์เดียวกับที่ใช้งานจริง เพื่อให้ภาพในบทที่ 4 ตรงกับ
 // ระบบที่ส่งมอบ ไม่ใช่เซิร์ฟเวอร์พัฒนาของ Vite
-const WEB = process.env.WEB_BASE || `https://localhost:${process.env.PORT || 4000}`;
+const WEB = API;
 const OUT = path.join(__dirname, '..', 'evidence', 'screenshots');
 const PASSWORD = process.env.SEED_PASSWORD || 'Soml@2569';
 
@@ -95,7 +110,34 @@ async function signIn(page, username) {
   await page.waitForSelector('.side', { timeout: 15000 });
 }
 
+/** เปิดเซิร์ฟเวอร์เฉพาะสำหรับเก็บภาพ แล้วรอจนกว่าจะพร้อมรับคำขอ */
+async function startIsolatedServer() {
+  const server = spawn('node', [path.join(__dirname, '..', 'backend', 'server.js')], {
+    env: {
+      ...process.env,
+      PORT: String(EVIDENCE_PORT),
+      HTTP_REDIRECT_PORT: String(EVIDENCE_PORT + 1),
+      PROMPTPAY_ID: EVIDENCE_PROMPTPAY_ID,
+    },
+    stdio: 'ignore',
+  });
+
+  for (let attempt = 0; attempt < 40; attempt++) {
+    try {
+      if ((await fetch(`${API}/api/health`)).ok) return server;
+    } catch (err) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  }
+  server.kill();
+  throw new Error(`เปิดเซิร์ฟเวอร์สำหรับเก็บภาพที่พอร์ต ${EVIDENCE_PORT} ไม่สำเร็จ`);
+}
+
 (async () => {
+  console.log(`เปิดเซิร์ฟเวอร์สำหรับเก็บภาพที่พอร์ต ${EVIDENCE_PORT} (หมายเลขพร้อมเพย์สำหรับทดสอบ ${EVIDENCE_PROMPTPAY_ID})`);
+  const server = await startIsolatedServer();
+  process.on('exit', () => server.kill());
+
   console.log('เตรียมข้อมูลตัวอย่าง…');
   const queued = await prepareData();
   console.log(`  สร้างคำสั่งซื้อ ${queued.length + 3} รายการ · ส่งมอบแล้ว 2 · อยู่ในคิว ${queued.length}\n`);
@@ -173,5 +215,6 @@ async function signIn(page, username) {
   await shot(mpage, 'fig4-12_dispatch_mobile', 'หน้าจอยืนยันจ่ายสินค้าบนสมาร์ตโฟน');
 
   await browser.close();
+  server.kill();
   console.log(`\nเก็บภาพครบแล้วที่ ${path.relative(process.cwd(), OUT)}`);
 })().catch((e) => { console.error(e); process.exit(1); });
