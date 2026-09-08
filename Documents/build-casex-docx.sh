@@ -57,7 +57,14 @@ add.append(
  '<w:tblStylePr w:type="firstRow"><w:rPr><w:b/><w:bCs/><w:color w:val="FFFFFF"/></w:rPr>'
  '<w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="183B63"/></w:tcPr></w:tblStylePr>'
  '</w:style>')
-io.open(tplp, 'w', encoding='utf-8').write(tpl.replace('</w:styles>', ''.join(add) + '</w:styles>'))
+tpl = tpl.replace('</w:styles>', ''.join(add) + '</w:styles>')
+
+# อักษรไทยนับเป็น complex script ถ้ากำหนดแต่ w:sz โดยไม่กำหนด w:szCs ข้อความไทย
+# จะเล็กกว่าข้อความอังกฤษในย่อหน้าเดียวกัน จึงกำหนด szCs ให้เท่ากับ sz ทุกแห่ง
+tpl = re.sub(r'<w:szCs w:val="\d+"\s*/>', '', tpl)
+tpl = re.sub(r'<w:sz w:val="(\d+)"\s*/>',
+             lambda m: '<w:sz w:val="%s"/><w:szCs w:val="%s"/>' % (m.group(1), m.group(1)), tpl)
+io.open(tplp, 'w', encoding='utf-8').write(tpl)
 
 # หัวกระดาษและท้ายกระดาษคงรูปแบบเดิม เปลี่ยนเฉพาะชื่อเอกสารและสถานะ
 for name, old, new in (('header1.xml', 'Case X SRS', 'SOML Use Case SRS'),
