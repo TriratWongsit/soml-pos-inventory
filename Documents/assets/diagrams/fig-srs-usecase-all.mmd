@@ -1,0 +1,35 @@
+flowchart LR
+    SALES(["พนักงานขาย"])
+    WH(["พนักงานคลังสินค้า"])
+    MGR(["ผู้จัดการ"])
+    subgraph SYS["ระบบ SOML — ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า"]
+        UC1("UC-01<br/>เข้าสู่ระบบและควบคุมสิทธิ์")
+        UC2("UC-02<br/>จัดการข้อมูลสินค้าและจุดสั่งซื้อเพิ่ม")
+        UC3("UC-03<br/>สร้างคำสั่งซื้อและรับชำระเงิน")
+        UC4("UC-04<br/>ออกเลขที่คำสั่งซื้อและใบเสร็จ")
+        UC5("UC-05<br/>แสดงคิวรอจ่ายสินค้าแบบเรียลไทม์")
+        UC6("UC-06<br/>ปรับสถานะการจัดของ")
+        UC7("UC-07<br/>ยืนยันจ่ายสินค้าและตัดสต็อก")
+        UC8("UC-08<br/>แดชบอร์ดปฏิบัติการ")
+        UC9("UC-09<br/>แดชบอร์ดระดับบริหาร")
+        UC10("UC-10<br/>ค้นหาประวัติการทำรายการ")
+        UC11("UC-11<br/>รับการแจ้งเตือนในแอปพลิเคชัน")
+    end
+    SALES --- UC1
+    WH --- UC1
+    MGR --- UC1
+    MGR --- UC2
+    SALES --- UC3
+    UC3 -. include .-> UC4
+    WH --- UC5
+    WH --- UC6
+    WH --- UC7
+    WH --- UC8
+    MGR --- UC8
+    MGR --- UC9
+    MGR --- UC10
+    MGR --- UC11
+    classDef actor fill:#e6f0e6,stroke:#2f6b2f,stroke-width:1.5px,color:#111
+    classDef uc fill:#fdf6e3,stroke:#8a6d1a,stroke-width:1.5px,color:#111
+    class SALES,WH,MGR actor
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11 uc
