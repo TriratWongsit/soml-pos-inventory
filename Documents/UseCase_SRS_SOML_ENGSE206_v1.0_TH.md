@@ -1,8 +1,10 @@
-# Use Case SRS
+![](assets/branding/logo_se_rmutl.jpg){width=1.25in height=1.25in} ![](assets/branding/logo_rmutl.png){width=1.0919542869641294in height=1.25in}
 
-## SOML — ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า
+# Software Requirements Specification
 
-### เอกสารข้อกำหนดความต้องการเชิงกรณีการใช้งาน ตามแบบฟอร์ม IEEE SRS ของรายวิชา ENGSE206
+## SOML — ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า (Use Case SRS)
+
+### เอกสารข้อกำหนดความต้องการซอฟต์แวร์ตามโครงสร้าง IEEE SRS Template
 
 | รายการ | รายละเอียด |
 |---|---|
