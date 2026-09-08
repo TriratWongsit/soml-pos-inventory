@@ -63,7 +63,7 @@ def make_reference(work):
                 'Heading3', 'Heading4', 'Heading5', 'Table', 'ImageCaption', 'TableCaption']:
         s = re.sub(r'<w:style [^>]*w:styleId="%s".*?</w:style>' % sid, '', s, flags=re.S)
 
-    body_ppr = '<w:jc w:val="thaiDistribute"/><w:ind w:firstLine="%d"/>' % INDENT
+    body_ppr = '<w:jc w:val="both"/><w:ind w:firstLine="%d"/>' % INDENT
     add = [
         # เนื้อความปกติ ย่อหน้าแรกเข้า 0.5 นิ้ว จัดแบบกระจายแบบไทย
         '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/>'
