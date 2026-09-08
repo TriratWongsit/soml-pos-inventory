@@ -1,0 +1,32 @@
+{
+  "jest": {
+    "command": "npm test",
+    "figure": "fig4-13_test_run.png",
+    "exitCode": 0,
+    "executedAt": "2026-09-08T03:45:57.544Z"
+  },
+  "dispatch": {
+    "command": "npx jest backend/__tests__/integration/dispatch.test.js --verbose",
+    "figure": "fig4-14_test_dispatch_verbose.png",
+    "exitCode": 0,
+    "executedAt": "2026-09-08T03:45:59.111Z"
+  },
+  "system": {
+    "command": "npm run test:system",
+    "figure": "fig4-17_test_system.png",
+    "exitCode": 0,
+    "executedAt": "2026-09-08T03:46:01.202Z"
+  },
+  "tc06": {
+    "command": "npm run test:tc06",
+    "figure": "fig4-16_test_tc06.png",
+    "exitCode": 0,
+    "executedAt": "2026-09-08T03:46:02.148Z"
+  },
+  "browsers": {
+    "command": "npm run test:browsers",
+    "figure": "fig4-18_test_browsers.png",
+    "exitCode": 0,
+    "executedAt": "2026-09-08T03:46:25.512Z"
+  }
+}

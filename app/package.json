@@ -25,6 +25,7 @@
     "db:reset": "bash scripts/reset-db.sh",
     "db:reset:test": "bash scripts/reset-db.sh test",
     "capture-evidence": "node scripts/capture-evidence.js",
+    "capture-test-evidence": "node scripts/capture-test-evidence.js",
     "build": "npm run build --workspace frontend",
     "start": "node backend/server.js",
     "start:print": "node print-service/server.js",

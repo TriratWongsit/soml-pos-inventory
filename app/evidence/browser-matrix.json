@@ -2,7 +2,7 @@
   "testCase": "NFR-07",
   "requirement": "NFR-07",
   "description": "ระบบแสดงผลและทำงานถูกต้องบนเว็บเบราว์เซอร์ที่กำหนด",
-  "executedAt": "2026-09-06T14:00:52.200Z",
+  "executedAt": "2026-09-08T03:46:25.498Z",
   "screensPerEngine": 7,
   "engines": [
     {
