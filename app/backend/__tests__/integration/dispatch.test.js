@@ -2,6 +2,7 @@
 //              [FR-05, FR-06, FR-08 · UC-07, UC-11 · TC-06, TC-08, TC-10]
 const { app, request, pool, allTokens, createOrder, stockOf } = require('./helpers');
 const stockDeductionService = require('../../components/stockDeductionService');
+const alertEngine = require('../../components/alertEngine');
 
 let tokens;
 beforeAll(async () => { tokens = await allTokens(); });
@@ -153,5 +154,78 @@ describe('การแจ้งเตือนสต็อกต่ำ   [FR-08 
 
     const [[row]] = await pool.query('SELECT is_read FROM notifications WHERE notification_id = ?', [id]);
     expect(Boolean(row.is_read)).toBe(true);
+  });
+});
+
+describe('การแจ้งเตือนคิวงานค้างนานผิดปกติ   [FR-08 · TC-11]', () => {
+  const THRESHOLD = Number(process.env.QUEUE_DELAY_THRESHOLD_MINUTES || 30);
+
+  /** ย้อนเวลารับชำระของคำสั่งซื้อให้ดูเหมือนค้างอยู่ในคิวมานานแล้ว */
+  const ageOrder = (orderId, minutes) =>
+    pool.query('UPDATE orders SET paid_at = DATE_SUB(NOW(), INTERVAL ? MINUTE) WHERE order_id = ?', [minutes, orderId]);
+
+  beforeEach(() => pool.query("DELETE FROM notifications WHERE type = 'queue_delay'"));
+
+  test('สร้างการแจ้งเตือนเมื่อคำสั่งซื้อค้างในคิวเกินเกณฑ์ที่กำหนด', async () => {
+    const order = await createOrder(tokens.sales, [{ productId: 10, qty: 1 }]);
+    await ageOrder(order.orderId, THRESHOLD + 5);
+
+    const raised = await alertEngine.checkQueueDelay();
+
+    const mine = raised.filter((n) => n.orderId === order.orderId);
+    expect(mine).toHaveLength(1);
+    expect(mine[0].type).toBe('queue_delay');
+    // ข้อความต้องระบุเลขที่คำสั่งซื้อและระยะเวลาที่รอ เพื่อให้ผู้จัดการรู้ว่าต้องไปตามรายการใด
+    expect(mine[0].message).toContain(order.orderNo);
+    expect(mine[0].message).toMatch(/\d+ นาที/);
+
+    const [rows] = await pool.query(
+      "SELECT type, ref_order_id FROM notifications WHERE type = 'queue_delay' AND ref_order_id = ?",
+      [order.orderId]
+    );
+    expect(rows).toHaveLength(1);
+  });
+
+  test('คำสั่งซื้อที่รอยังไม่ถึงเกณฑ์ต้องไม่ถูกแจ้งเตือน', async () => {
+    // ค่าขอบเขต ตั้งเวลารอให้น้อยกว่าเกณฑ์อยู่หนึ่งนาที
+    const order = await createOrder(tokens.sales, [{ productId: 11, qty: 1 }]);
+    await ageOrder(order.orderId, THRESHOLD - 1);
+
+    const raised = await alertEngine.checkQueueDelay();
+    expect(raised.filter((n) => n.orderId === order.orderId)).toHaveLength(0);
+  });
+
+  test('เรียกตรวจซ้ำแล้วไม่สร้างการแจ้งเตือนซ้ำสำหรับคำสั่งซื้อเดิม', async () => {
+    const order = await createOrder(tokens.sales, [{ productId: 12, qty: 1 }]);
+    await ageOrder(order.orderId, THRESHOLD + 5);
+
+    await alertEngine.checkQueueDelay();
+    const second = await alertEngine.checkQueueDelay();
+
+    expect(second.filter((n) => n.orderId === order.orderId)).toHaveLength(0);
+    const [[count]] = await pool.query(
+      "SELECT COUNT(*) AS n FROM notifications WHERE type = 'queue_delay' AND ref_order_id = ?",
+      [order.orderId]
+    );
+    expect(count.n).toBe(1);
+  });
+
+  test('คำสั่งซื้อที่จ่ายสินค้าไปแล้วต้องไม่ถูกนับว่าค้างในคิว', async () => {
+    const order = await createOrder(tokens.sales, [{ productId: 13, qty: 1 }]);
+    await ageOrder(order.orderId, THRESHOLD + 60);
+    await dispatch(order.orderId, tokens.warehouse);
+
+    const raised = await alertEngine.checkQueueDelay();
+    expect(raised.filter((n) => n.orderId === order.orderId)).toHaveLength(0);
+  });
+
+  test('ผู้จัดการเห็นการแจ้งเตือนคิวค้างในรายการแจ้งเตือน   [UC-11]', async () => {
+    const order = await createOrder(tokens.sales, [{ productId: 14, qty: 1 }]);
+    await ageOrder(order.orderId, THRESHOLD + 5);
+    await alertEngine.checkQueueDelay();
+
+    const list = await request(app).get('/api/notifications')
+      .set('Authorization', `Bearer ${tokens.manager}`);
+    expect(list.body.notifications.some((n) => n.type === 'queue_delay' && n.ref_order_id === order.orderId)).toBe(true);
   });
 });

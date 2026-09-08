@@ -3,21 +3,21 @@
 > jest --coverage --runInBand --detectOpenHandles
 
 PASS integration backend/__tests__/integration/auth.test.js
-PASS integration backend/__tests__/integration/dashboard.test.js
 PASS integration backend/__tests__/integration/orders.test.js
 PASS integration backend/__tests__/integration/dispatch.test.js
+PASS integration backend/__tests__/integration/dashboard.test.js
 PASS integration backend/__tests__/integration/products.test.js
 PASS unit backend/__tests__/unit/transport.test.js
-PASS unit backend/__tests__/unit/promptpay.test.js
 PASS unit backend/__tests__/unit/escpos.test.js
+PASS unit backend/__tests__/unit/promptpay.test.js
 ---------------------------|---------|----------|---------|---------|-------------------------------
 File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s             
 ---------------------------|---------|----------|---------|---------|-------------------------------
-All files                  |   82.88 |    73.88 |   74.22 |   85.71 |                               
+All files                  |   83.73 |    74.44 |   76.28 |   86.49 |                               
  backend                   |   84.31 |    42.85 |      50 |   89.58 |                               
   app.js                   |   84.31 |    42.85 |      50 |   89.58 | 73-79                         
- backend/components        |   80.69 |    74.64 |   77.19 |    83.2 |                               
-  alertEngine.js           |   68.75 |    53.84 |   66.66 |   75.86 | 77-101,117,131                
+ backend/components        |   82.09 |    75.58 |    80.7 |   84.49 |                               
+  alertEngine.js           |    87.5 |    69.23 |     100 |    93.1 | 117,131                       
   auditLogService.js       |   95.83 |       80 |     100 |   93.75 | 62                            
   authController.js        |   91.66 |     87.5 |      50 |   91.66 | 77-83                         
   dashboardAggregator.js   |   88.88 |      100 |     100 |   88.88 | 70,131                        
@@ -39,8 +39,8 @@ All files                  |   82.88 |    73.88 |   74.22 |   85.71 |
 ---------------------------|---------|----------|---------|---------|-------------------------------
 
 Test Suites: 8 passed, 8 total
-Tests:       87 passed, 87 total
+Tests:       92 passed, 92 total
 Snapshots:   0 total
-Time:        2.667 s, estimated 3 s
+Time:        3.417 s
 Ran all test suites in 2 projects.
 EXIT=0
