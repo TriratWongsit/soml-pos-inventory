@@ -226,6 +226,33 @@ def postprocess(docx):
     shutil.move(tmp, docx)
 
 
+def prepare(src, work):
+    """
+    หัวข้อย่อยที่มีแต่หมายเลข เช่น 1.4.6.2 ต้องพิมพ์นำหน้าข้อความในย่อหน้าเดียวกัน
+    ไม่ใช่ลอยอยู่บรรทัดบนตามลำพัง จึงรวมเข้ากับย่อหน้าถัดไปก่อนส่งให้ pandoc
+    ส่วนหัวข้อย่อยที่มีชื่อกำกับ เช่น 1.4.1 สถาปัตยกรรมระบบแบบ 3 ชั้น ยังคงเป็นหัวข้อตามเดิม
+    """
+    lines = io.open(src, encoding='utf-8').read().split('\n')
+    out, pending = [], None
+    for line in lines:
+        m = re.match(r'^#{3,6}\s+(\d+(?:\.\d+)+)\s*$', line)
+        if m:
+            pending = m.group(1)
+            continue
+        if pending:
+            if not line.strip():
+                continue
+            line = '%s %s' % (pending, line)
+            pending = None
+        # ข้อย่อยแบบ (1) (2) ต้องเป็นย่อหน้าธรรมดาที่ย่อหน้าแรกเข้าไป ไม่ใช่รายการอัตโนมัติ
+        # ซึ่งจะดันบรรทัดถัดไปให้ตรงกับข้อความแทนที่จะกลับมาชิดขอบซ้าย
+        line = re.sub(r'^\((\d+)\) ', r'\\(\1\\) ', line)
+        out.append(line)
+    tmp = os.path.join(work, os.path.basename(src))
+    io.open(tmp, 'w', encoding='utf-8').write('\n'.join(out))
+    return tmp
+
+
 def main(sources):
     here = os.path.dirname(os.path.abspath(__file__))
     work = tempfile.mkdtemp()
@@ -234,7 +261,7 @@ def main(sources):
         for src in sources:
             src = src if os.path.isabs(src) else os.path.join(here, src)
             out = os.path.splitext(src)[0] + '.docx'
-            subprocess.run(['pandoc', src, '-f', 'markdown+pipe_tables',
+            subprocess.run(['pandoc', prepare(src, work), '-f', 'markdown+pipe_tables',
                             '--reference-doc', ref, '--resource-path', os.path.dirname(src),
                             '-o', out], check=True)
             postprocess(out)
