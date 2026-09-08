@@ -68,7 +68,7 @@ io.open(tplp, 'w', encoding='utf-8').write(tpl)
 
 # หัวกระดาษและท้ายกระดาษคงรูปแบบเดิม เปลี่ยนเฉพาะชื่อเอกสารและสถานะ
 for name, old, new in (('header1.xml', 'Case X SRS', 'SOML Use Case SRS'),
-                       ('footer1.xml', 'Review Candidate', 'Implemented and Verified')):
+                       ('footer1.xml', 'Review Candidate', 'Review Candidate')):
     p = os.path.join(work, 'tpl', 'word', name)
     io.open(p, 'w', encoding='utf-8').write(io.open(p, encoding='utf-8').read().replace(old, new))
 

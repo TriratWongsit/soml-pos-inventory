@@ -110,7 +110,7 @@ parts = {}
 if template:
     ztpl = zipfile.ZipFile(template)
     for name, replacements in (('word/header1.xml', [('Case X SRS', 'SOML Use Case SRS')]),
-                               ('word/footer1.xml', [('Review Candidate', 'Implemented and Verified')])):
+                               ('word/footer1.xml', [])):
         if name in ztpl.namelist():
             text = ztpl.read(name).decode('utf-8')
             for old, new in replacements:
