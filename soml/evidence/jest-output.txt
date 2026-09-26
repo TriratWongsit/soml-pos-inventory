@@ -1,0 +1,79 @@
+
+> soml@1.0.0 test
+> jest --coverage --runInBand --detectOpenHandles
+
+PASS integration backend/tests/integration/auth.test.js
+PASS integration backend/tests/integration/order.test.js
+PASS integration backend/tests/integration/dispatch.test.js
+PASS integration backend/tests/integration/alert-dashboard.test.js
+PASS integration backend/tests/integration/product.test.js
+PASS integration backend/tests/integration/queue.test.js
+PASS integration backend/tests/integration/audit-log.test.js
+PASS unit backend/tests/unit/print-client.test.js
+PASS unit backend/tests/unit/print-service.test.js
+  ● Console
+
+    console.log
+      พิมพ์ ORD-T-0001 สำเร็จใน 6 ms → file:///var/folders/hw/hspvy93927v_m1rnz33ryw4h0000gn/T/soml-print-8Nt2iD
+
+      at log (print-service/server.js:35:13)
+
+    console.error
+      พิมพ์ ORD-T-0001 ไม่สำเร็จ: PRINTER_INTERFACE ไม่ถูกต้อง: "bogus" — ต้องขึ้นต้นด้วย printer: tcp:// หรือ file://
+
+      36 |     return res.json({ ok: true, orderNo: receipt.orderNo, bytes: payload.length, elapsedMs, ...result });
+      37 |   } catch (err) {
+    > 38 |     console.error(`พิมพ์ ${receipt.orderNo} ไม่สำเร็จ: ${err.message}`);
+         |             ^
+      39 |     return res.status(503).json({ ok: false, error: err.message }); // ความขัดข้องของอุปกรณ์ ไม่ใช่ความผิดของผู้เรียก
+      40 |   }
+      41 | });
+
+      at error (print-service/server.js:38:13)
+
+PASS integration backend/tests/integration/auth-middleware.test.js
+PASS integration backend/tests/integration/db.test.js
+PASS unit backend/tests/unit/escpos.test.js
+PASS unit backend/tests/unit/promptpay.test.js
+---------------------------------|---------|----------|---------|---------|---------------------------
+File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s         
+---------------------------------|---------|----------|---------|---------|---------------------------
+All files                        |   88.54 |    80.81 |   85.04 |    92.3 |                           
+ backend                         |   97.61 |     62.5 |     100 |     100 |                           
+  app.js                         |   97.61 |     62.5 |     100 |     100 | 68-69                     
+ backend/config                  |     100 |       50 |     100 |     100 |                           
+  db.js                          |     100 |       50 |     100 |     100 | 15-20                     
+ backend/lib                     |   96.29 |     87.5 |     100 |     100 |                           
+  promptpay.js                   |   96.29 |     87.5 |     100 |     100 | 44,47                     
+ backend/middleware              |    91.3 |       80 |     100 |   95.23 |                           
+  auth.js                        |    91.3 |       80 |     100 |   95.23 | 15                        
+ backend/modules/alert           |      75 |    61.11 |    87.5 |   81.25 |                           
+  index.js                       |      75 |    61.11 |    87.5 |   81.25 | 57-58,77-78,85-87,101,112 
+ backend/modules/audit-log       |   91.22 |    88.88 |     100 |   97.56 |                           
+  index.js                       |   91.22 |    88.88 |     100 |   97.56 | 78                        
+ backend/modules/auth            |   95.83 |    94.11 |     100 |   95.45 |                           
+  index.js                       |   95.83 |    94.11 |     100 |   95.45 | 47                        
+ backend/modules/dashboard       |   90.47 |       50 |     100 |      90 |                           
+  index.js                       |   90.47 |       50 |     100 |      90 | 46,75                     
+ backend/modules/dispatch        |   94.44 |       75 |     100 |   94.11 |                           
+  index.js                       |   94.44 |       75 |     100 |   94.11 | 28                        
+ backend/modules/order           |   95.87 |    85.71 |     100 |    97.4 |                           
+  index.js                       |   95.87 |    85.71 |     100 |    97.4 | 102,175                   
+ backend/modules/print-client    |   94.44 |       80 |      80 |     100 |                           
+  index.js                       |   94.44 |       80 |      80 |     100 | 14,33                     
+ backend/modules/product         |   86.06 |    84.52 |    92.3 |   89.58 |                           
+  index.js                       |   86.06 |    84.52 |    92.3 |   89.58 | 71-80,101,128-129,173     
+ backend/modules/queue           |   94.36 |     90.9 |    90.9 |   96.66 |                           
+  index.js                       |   94.36 |     90.9 |    90.9 |   96.66 | 103,132                   
+ backend/modules/stock-deduction |     100 |      100 |     100 |     100 |                           
+  index.js                       |     100 |      100 |     100 |     100 |                           
+ print-service/lib               |   75.38 |    75.36 |      52 |   82.17 |                           
+  escpos.js                      |     100 |    89.58 |     100 |     100 | 47,91-101,107,110         
+  transport.js                   |   37.25 |    42.85 |   14.28 |      50 | 17-39                     
+---------------------------------|---------|----------|---------|---------|---------------------------
+
+Test Suites: 13 passed, 13 total
+Tests:       131 passed, 131 total
+Snapshots:   0 total
+Time:        4.135 s, estimated 5 s
+Ran all test suites in 2 projects.

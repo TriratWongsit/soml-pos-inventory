@@ -1,0 +1,8 @@
+node_modules/
+.env
+printer-output/
+dist/
+
+# ผลการรันชั่วคราวของการทดสอบระดับระบบ (ร่องรอย ภาพตอนล้มเหลว)
+test-results/
+playwright-report/

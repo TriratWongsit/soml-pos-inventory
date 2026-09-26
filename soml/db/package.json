@@ -1,0 +1,14 @@
+{
+  "name": "@soml/db",
+  "version": "1.0.0",
+  "private": true,
+  "description": "หน่วยติดตั้งที่ 4 — สคริปต์สร้างและเตรียมข้อมูลฐานข้อมูล (ตารางที่ 3.17)",
+  "scripts": {
+    "seed:users": "node seed/seed-users.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.5"
+  }
+}

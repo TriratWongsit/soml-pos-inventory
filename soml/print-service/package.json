@@ -1,0 +1,15 @@
+{
+  "name": "@soml/print-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "หน่วยติดตั้งที่ 3 — บริการพิมพ์ใบเสร็จ ต้องรันบนเครื่องที่ต่อกับเครื่องพิมพ์ (ตารางที่ 3.17)",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1"
+  }
+}

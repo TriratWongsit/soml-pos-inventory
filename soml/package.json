@@ -1,0 +1,35 @@
+{
+  "name": "soml",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ระบบจัดการคำสั่งซื้อและตรวจสอบคลังสินค้า (SOML) — สร้างใหม่ตามบทที่ 3",
+  "workspaces": [
+    "db",
+    "backend",
+    "print-service",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "db:reset": "bash db/reset-db.sh",
+    "db:reset:test": "bash db/reset-db.sh test",
+    "db:users": "npm run seed:users --workspace db",
+    "dev": "concurrently -n backend,print,frontend -c blue,magenta,green \"npm:dev:backend\" \"npm:dev:print\" \"npm:dev:frontend\"",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:print": "npm run dev --workspace print-service",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "test:unit": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration --runInBand --detectOpenHandles",
+    "test:system": "playwright test",
+    "evidence": "node evidence/measure-tc05.js && node evidence/measure-tc14.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "concurrently": "^9.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
