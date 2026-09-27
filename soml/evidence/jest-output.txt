@@ -5,16 +5,18 @@
 PASS integration backend/tests/integration/auth.test.js
 PASS integration backend/tests/integration/order.test.js
 PASS integration backend/tests/integration/dispatch.test.js
-PASS integration backend/tests/integration/alert-dashboard.test.js
 PASS integration backend/tests/integration/product.test.js
+PASS integration backend/tests/integration/alert-dashboard.test.js
 PASS integration backend/tests/integration/queue.test.js
+PASS unit backend/tests/unit/transport.test.js
 PASS integration backend/tests/integration/audit-log.test.js
 PASS unit backend/tests/unit/print-client.test.js
+PASS integration backend/tests/integration/auth-middleware.test.js
 PASS unit backend/tests/unit/print-service.test.js
   ● Console
 
     console.log
-      พิมพ์ ORD-T-0001 สำเร็จใน 6 ms → file:///var/folders/hw/hspvy93927v_m1rnz33ryw4h0000gn/T/soml-print-8Nt2iD
+      พิมพ์ ORD-T-0001 สำเร็จใน 4 ms → file:///var/folders/hw/hspvy93927v_m1rnz33ryw4h0000gn/T/soml-print-KWjsEv
 
       at log (print-service/server.js:35:13)
 
@@ -31,14 +33,13 @@ PASS unit backend/tests/unit/print-service.test.js
 
       at error (print-service/server.js:38:13)
 
-PASS integration backend/tests/integration/auth-middleware.test.js
 PASS integration backend/tests/integration/db.test.js
 PASS unit backend/tests/unit/escpos.test.js
 PASS unit backend/tests/unit/promptpay.test.js
 ---------------------------------|---------|----------|---------|---------|---------------------------
 File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s         
 ---------------------------------|---------|----------|---------|---------|---------------------------
-All files                        |   88.54 |    80.81 |   85.04 |    92.3 |                           
+All files                        |   89.93 |    81.28 |   88.18 |   94.19 |                           
  backend                         |   97.61 |     62.5 |     100 |     100 |                           
   app.js                         |   97.61 |     62.5 |     100 |     100 | 68-69                     
  backend/config                  |     100 |       50 |     100 |     100 |                           
@@ -67,13 +68,13 @@ All files                        |   88.54 |    80.81 |   85.04 |    92.3 |
   index.js                       |   94.36 |     90.9 |    90.9 |   96.66 | 103,132                   
  backend/modules/stock-deduction |     100 |      100 |     100 |     100 |                           
   index.js                       |     100 |      100 |     100 |     100 |                           
- print-service/lib               |   75.38 |    75.36 |      52 |   82.17 |                           
+ print-service/lib               |   83.91 |    78.08 |   67.85 |   93.63 |                           
   escpos.js                      |     100 |    89.58 |     100 |     100 | 47,91-101,107,110         
-  transport.js                   |   37.25 |    42.85 |   14.28 |      50 | 17-39                     
+  transport.js                   |   64.06 |       56 |   47.05 |   84.44 | 53-59                     
 ---------------------------------|---------|----------|---------|---------|---------------------------
 
-Test Suites: 13 passed, 13 total
-Tests:       131 passed, 131 total
+Test Suites: 14 passed, 14 total
+Tests:       134 passed, 134 total
 Snapshots:   0 total
-Time:        4.135 s, estimated 5 s
+Time:        4.235 s, estimated 5 s
 Ran all test suites in 2 projects.
