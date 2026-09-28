@@ -16,7 +16,8 @@ cd "$ROOT"
 TARGET="${DB_NAME:-soml_new}"
 [[ "${1:-}" == "test" ]] && TARGET="${DB_NAME_TEST:-soml_new_test}"
 
-run() { mysql -h "${DB_HOST:-localhost}" -P "${DB_PORT:-3306}" -u "${DB_USER:-root}" ${DB_PASSWORD:+-p"$DB_PASSWORD"} "$@"; }
+# ระบุชุดอักขระเสมอ ไม่พึ่ง locale ของเครื่อง — ถ้า locale เป็น C ไคลเอนต์จะอ่านภาษาไทยเป็น latin1 แล้วชื่อหน่วยยาวเกินคอลัมน์
+run() { mysql --default-character-set=utf8mb4 -h "${DB_HOST:-localhost}" -P "${DB_PORT:-3306}" -u "${DB_USER:-root}" ${DB_PASSWORD:+-p"$DB_PASSWORD"} "$@"; }
 strip_db() { grep -viE '^\s*(CREATE DATABASE|DEFAULT CHARACTER SET|DEFAULT COLLATE|USE )' "$1"; }
 
 echo "รีเซ็ตฐานข้อมูล $TARGET"
