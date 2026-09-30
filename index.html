@@ -1,0 +1,374 @@
+<title>อำพร OMS Screen Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#F2F1EE; --surface:#FFFFFF; --ink:#1E2430; --muted:#646B78; --line:#D9D6CF;
+  --brand:#D9962B; --brand-soft:#FBEFD9;
+  --sales:#2F6FB3; --sales-soft:#E3EDF8;
+  --wh:#2E8A5E; --wh-soft:#DFF1E8;
+  --mgr:#7A4DA8; --mgr-soft:#EEE6F7;
+  --node:#FFFFFF; --node-line:#B9B4AA; --edge:#7E8594; --rt:#C2410C;
+  --sel:#D9962B;
+  --sans:'IBM Plex Sans Thai','Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --sales:#7DB0E8; --sales-soft:#1C2C40; --wh:#6CCB9C; --wh-soft:#15332A; --mgr:#BE9BE6; --mgr-soft:#2E2340;
+  --node:#232833; --node-line:#4A5160; --edge:#8D95A5; --rt:#F08A4B; --sel:#E9B04F;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --sales:#7DB0E8; --sales-soft:#1C2C40; --wh:#6CCB9C; --wh-soft:#15332A; --mgr:#BE9BE6; --mgr-soft:#2E2340;
+  --node:#232833; --node-line:#4A5160; --edge:#8D95A5; --rt:#F08A4B; --sel:#E9B04F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:44px;height:44px;border-radius:12px;background:var(--brand);color:#231A08;display:grid;place-items:center;font-weight:700;font-size:17px}
+h1{margin:0;font-size:24px;line-height:1.2;text-wrap:balance}
+.sub{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.roles{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:13.5px;font-weight:500;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.chip:focus-visible,.go:focus-visible,g.node:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.chip .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.menu-line{font-size:13px;color:var(--muted);min-height:1.6em}
+.menu-line b{color:var(--ink);font-weight:600}
+main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.scroll{overflow-x:auto}
+svg.flow{display:block;width:100%;min-width:640px;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);padding:8px 4px 2px;border-top:1px solid var(--line);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{flex:none}
+g.node{cursor:pointer}
+g.node rect.box{fill:var(--node);stroke:var(--node-line);stroke-width:1.5}
+g.node:hover rect.box{stroke:var(--ink)}
+g.node.sel rect.box{stroke:var(--sel);stroke-width:3.5}
+g.node text{fill:var(--ink);font-family:var(--sans)}
+g.node .t1{font-size:14px;font-weight:600}
+g.node .t2{font-size:11px;fill:var(--muted);font-family:var(--mono)}
+g.node .bar{stroke:none}
+g.node.dim,.edge.dim{opacity:.18}
+.edge path{fill:none;stroke:var(--edge);stroke-width:1.8}
+.edge.menu path{stroke-dasharray:6 5}
+.edge.rt path{stroke:var(--rt);stroke-dasharray:2 5;stroke-linecap:round;stroke-width:2.2}
+.edge text{font-family:var(--sans);font-size:11.5px;fill:var(--muted);paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.edge.rt text{fill:var(--rt)}
+.edge.hot path{stroke:var(--sel);stroke-width:2.6}
+.edge.hot text{fill:var(--ink);font-weight:600}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:900px){.detail{position:static}}
+.detail h2{margin:0;font-size:20px;line-height:1.3;text-wrap:balance}
+.route{font-family:var(--mono);font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:12px;font-weight:600;border-radius:999px;padding:1px 10px}
+.pill.sales{background:var(--sales-soft);color:var(--sales)}
+.pill.warehouse{background:var(--wh-soft);color:var(--wh)}
+.pill.manager{background:var(--mgr-soft);color:var(--mgr)}
+.pill.any{background:var(--brand-soft);color:var(--ink)}
+.shot{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+.shot img{display:block;width:100%;height:auto}
+.shot figcaption{font-size:12px;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line)}
+.tabs{display:flex;gap:6px}
+.tabs button{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:2px 10px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.desc{margin:0}
+h3{margin:0;font-size:12.5px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.gos{display:flex;flex-direction:column;gap:6px}
+.go{font:inherit;text-align:left;display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:7px 10px;cursor:pointer}
+.go:hover{border-color:var(--ink)}
+.go .act{font-size:13.5px}
+.go .to{font-size:13px;font-weight:600;white-space:nowrap}
+.go.menuonly .act::after{content:" · ผ่านเมนู";color:var(--muted)}
+.go.rt .act{color:var(--rt)}
+.src{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.src code{font-family:var(--mono);font-size:11.5px;color:var(--ink)}
+.none{font-size:13.5px;color:var(--muted)}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+.trace{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper)}
+.tr{display:flex;flex-direction:column;gap:4px}
+.tr2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:480px){.tr2{grid-template-columns:1fr}}
+.ucs{display:flex;flex-direction:column;gap:3px;font-size:13.5px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:500;border-radius:5px;padding:0 6px;margin-right:2px;white-space:nowrap}
+.tag.uc{background:var(--sales-soft);color:var(--sales)}
+.tag.br{background:var(--brand-soft);color:var(--ink)}
+.tag.fr{background:var(--wh-soft);color:var(--wh)}
+.tag.nfr{background:var(--mgr-soft);color:var(--mgr)}
+.tag.ac{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.apis{display:flex;flex-direction:column;gap:3px}
+.apis code{font-family:var(--mono);font-size:11.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;overflow-wrap:anywhere}
+.lbl-toggle{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:2px 10px;cursor:pointer;margin-left:auto}
+.nolabels .edge text{display:none}
+@media (prefers-reduced-motion:no-preference){g.node rect.box,.edge path{transition:stroke .15s,opacity .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true">อพ</div>
+      <div>
+        <h1>Screen Flow อำพร OMS</h1>
+        <p class="sub">แตะหน้าจอในแผนภาพเพื่อดูภาพจริงและทางที่ไปต่อได้ · สร้างย้อนหลังจากซอร์สโค้ด 30/09/2569</p>
+      </div>
+    </div>
+    <div class="roles" role="group" aria-label="แสดงเฉพาะบทบาท">
+      <button class="chip" id="r-all" data-role="all" aria-pressed="true">ทุกบทบาท</button>
+      <button class="chip" id="r-sales" data-role="sales" aria-pressed="false"><span class="dot" style="background:var(--sales)"></span>พนักงานขาย</button>
+      <button class="chip" id="r-warehouse" data-role="warehouse" aria-pressed="false"><span class="dot" style="background:var(--wh)"></span>พนักงานคลังสินค้า</button>
+      <button class="chip" id="r-manager" data-role="manager" aria-pressed="false"><span class="dot" style="background:var(--mgr)"></span>ผู้จัดการ</button>
+    </div>
+  </header>
+  <div class="menu-line" id="menuLine"></div>
+
+  <main>
+    <section class="board" aria-label="แผนภาพการเปลี่ยนหน้าจอ">
+      <div class="scroll">
+        <svg class="flow" id="flow" viewBox="0 0 940 640" role="img" aria-label="แผนภาพการเปลี่ยนหน้าจอของระบบอำพร OMS">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--edge)"/></marker>
+            <marker id="ah-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--sel)"/></marker>
+            <marker id="ah-rt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--rt)"/></marker>
+          </defs>
+          <g id="edges"></g>
+          <g id="nodes"></g>
+        </svg>
+      </div>
+      <div class="legend">
+        <button type="button" class="lbl-toggle" id="lblToggle" aria-pressed="true">ป้ายบนเส้น: แสดง</button>
+        <span><svg width="30" height="8"><path d="M0 4 H30" stroke="var(--edge)" stroke-width="2"/></svg>ปุ่มหรือลิงก์ในหน้า</span>
+        <span><svg width="30" height="8"><path d="M0 4 H30" stroke="var(--edge)" stroke-width="2" stroke-dasharray="6 5"/></svg>ผ่านเมนูด้านข้าง</span>
+        <span><svg width="30" height="8"><path d="M0 4 H30" stroke="var(--rt)" stroke-width="2.2" stroke-dasharray="2 5" stroke-linecap="round"/></svg>ข้อมูลไปถึงอีกเครื่องเอง (เรียลไทม์)</span>
+        <span><svg width="14" height="14"><rect x="1" y="1" width="12" height="12" rx="2" fill="none" stroke="var(--muted)"/><rect x="1" y="1" width="4" height="12" fill="var(--sales)"/></svg>แถบสีซ้าย = บทบาทที่เข้าได้</span>
+      </div>
+    </section>
+
+    <aside class="detail" id="detail" aria-live="polite"></aside>
+  </main>
+  <p class="note">ที่มาของภาพ: สร้างย้อนหลังจากไฟล์ <code>soml/frontend/src/App.jsx</code> <code>components/Layout.jsx</code> <code>services/session.jsx</code> และหน้าจอใน <code>pages/</code> · ภาพหน้าจอเป็นชุดเดียวกับรูปที่ 4.1 ถึง 4.13 ในบทที่ 4 ถ่ายจากระบบจริงบนฐานข้อมูลทดสอบ</p>
+</div>
+
+<script>
+const ROLE_NAME = {sales:'พนักงานขาย', warehouse:'พนักงานคลังสินค้า', manager:'ผู้จัดการ'};
+const ROLE_COLOR = {sales:'var(--sales)', warehouse:'var(--wh)', manager:'var(--mgr)'};
+// เมนูด้านข้างตาม components/Layout.jsx บรรทัด 14–21
+const MENU = [
+  {to:'pos', label:'ขายหน้าร้าน', roles:['sales','manager']},
+  {to:'queue', label:'คิวรอจ่ายสินค้า', roles:['warehouse','manager']},
+  {to:'dash', label:'แดชบอร์ด', roles:['warehouse','manager']},
+  {to:'exec', label:'ระดับบริหาร', roles:['manager']},
+  {to:'products', label:'สินค้า', roles:['manager']},
+  {to:'notif', label:'แจ้งเตือน', roles:['warehouse','manager']},
+  {to:'audit', label:'ประวัติ', roles:['manager']},
+];
+
+const W = 170;
+const N = {
+  login:{x:10,y:240,h:60,title:'เข้าสู่ระบบ',route:'/login',roles:['any'],uc:'UC-01',fig:'รูปที่ 4.1',
+    shots:[{src:'screens/01-login.png',cap:'หน้าจอเข้าสู่ระบบ (รูปที่ 4.1)'}],
+    desc:'ทุกคนเริ่มที่หน้านี้ เมื่อเข้าสู่ระบบสำเร็จ ระบบพาไปหน้าแรกของบทบาทเอง ตาม HOME_BY_ROLE: พนักงานขายไปหน้าขาย พนักงานคลังไปหน้าคิว ผู้จัดการไปแดชบอร์ด ถ้าเปิดหน้าอื่นโดยยังไม่เข้าสู่ระบบ ระบบส่งกลับมาหน้านี้',
+    src:['services/session.jsx:13 HOME_BY_ROLE','pages/login/index.jsx:36','components/RequireRole.jsx:9']},
+  pos:{x:250,y:70,h:60,title:'ขายหน้าร้าน',route:'/pos',sub:'ขั้นเลือกสินค้า',roles:['sales','manager'],uc:'UC-03',fig:'รูปที่ 4.2',
+    shots:[{src:'screens/02-pos.png',cap:'ขั้นเลือกสินค้าลงตะกร้า (รูปที่ 4.2)'}],
+    desc:'พนักงานเลือกหมวดหรือค้นหาสินค้า ใส่ตะกร้า ระบบคำนวณยอดรวมจากราคาในฐานข้อมูล ปุ่มแสดงรหัส QR กดได้เมื่อมีสินค้าในตะกร้าแล้ว',
+    src:['pages/pos/index.jsx:176 ปุ่ม “แสดงรหัส QR”']},
+  qr:{x:500,y:70,h:60,title:'แสดงรหัส QR',route:'/pos',sub:'ขั้นรับชำระ',roles:['sales','manager'],uc:'UC-03',fig:'รูปที่ 4.3',
+    shots:[{src:'screens/03-pos-qr.png',cap:'รหัส QR พร้อมเพย์ตามยอด (รูปที่ 4.3)'}],
+    desc:'หน้าเดียวกับหน้าขาย แต่อยู่ขั้นรับชำระ แสดงรหัส QR พร้อมเพย์ที่มียอดเงินกำกับ พนักงานดูการแจ้งเตือนเงินเข้าจากแอปธนาคาร แล้วกดยืนยันรับชำระเงิน ซึ่งเป็นจุดเดียวที่คำสั่งซื้อถูกบันทึกลงฐานข้อมูล',
+    src:['pages/pos/index.jsx:120 ปุ่ม “ยืนยันรับชำระเงิน”','pages/pos/index.jsx:122 ปุ่มย้อนกลับ']},
+  done:{x:750,y:70,h:60,title:'บันทึกคำสั่งซื้อแล้ว',route:'/pos',sub:'ขั้นเสร็จสิ้น',roles:['sales','manager'],uc:'UC-04',fig:'รูปที่ 4.13',
+    shots:[{src:'screens/13-receipt.jpg',cap:'ผลที่ได้: ใบเสร็จจากเครื่องพิมพ์จริง (รูปที่ 4.13)'}],
+    desc:'หน้าจอแสดงเลขที่คำสั่งซื้อ ORD-… และผลการพิมพ์ใบเสร็จ ถ้าพิมพ์ไม่สำเร็จ คำสั่งซื้อยังถูกบันทึกและขึ้นคำเตือนแทน ในเวลาเดียวกัน คำสั่งซื้อใบนี้ไปโผล่ที่หน้าคิวของพนักงานคลังเองโดยไม่ต้องรีเฟรช',
+    src:['pages/pos/index.jsx:80 คำเตือนเมื่อพิมพ์ไม่สำเร็จ','pages/pos/index.jsx:91 ปุ่ม “รับคำสั่งซื้อถัดไป”']},
+  queue:{x:250,y:240,h:60,title:'คิวรอจ่ายสินค้า',route:'/queue',roles:['warehouse','manager'],uc:'UC-05, UC-06',fig:'รูปที่ 4.4, 4.12',
+    shots:[{src:'screens/04-queue.png',cap:'บนคอมพิวเตอร์ (รูปที่ 4.4)',tab:'จอคอม'},{src:'screens/12-queue-mobile.png',cap:'บนสมาร์ตโฟน (รูปที่ 4.12)',tab:'มือถือ'}],
+    desc:'รายการคำสั่งซื้อที่รอจ่าย อัปเดตเองผ่านช่องทางเรียลไทม์ ใบที่รอนานเกินเกณฑ์ถูกเน้นสี แตะที่รายการหรือปุ่มจ่ายสินค้าเพื่อเปิดหน้ายืนยันจ่าย',
+    src:['pages/queue/index.jsx:64 แตะการ์ด','pages/queue/index.jsx:79 ปุ่ม “จ่ายสินค้า”']},
+  dispatch:{x:500,y:240,h:60,title:'ยืนยันจ่ายสินค้า',route:'/dispatch/:id',roles:['warehouse','manager'],uc:'UC-07',fig:'รูปที่ 4.5',
+    shots:[{src:'screens/05-dispatch.png',cap:'รายการที่ต้องจัดและยอดคงเหลือ (รูปที่ 4.5)'}],
+    desc:'แสดงรายการสินค้าในใบนั้นเทียบกับยอดคงเหลือ กดยืนยันจ่ายสินค้าครั้งแรกแล้วระบบยังไม่ตัดสต็อก ต้องยืนยันอีกครั้ง เพราะสถานะส่งมอบแล้วย้อนกลับไม่ได้ ถ้าใบนี้ถูกจ่ายไปแล้ว หน้าจอบอกและให้กลับไปหน้าคิว',
+    src:['pages/dispatch/index.jsx:80 ปุ่มยืนยันครั้งแรก','pages/dispatch/index.jsx:90 ปุ่ม “กลับหน้าคิว”']},
+  confirm:{x:750,y:240,h:60,title:'ยืนยันอีกครั้ง',route:'/dispatch/:id',sub:'ขั้นยืนยันซ้ำ',roles:['warehouse','manager'],uc:'UC-07',fig:'รูปที่ 4.6',
+    shots:[{src:'screens/06-dispatch-confirm.png',cap:'ขั้นยืนยันซ้ำก่อนตัดสต็อก (รูปที่ 4.6)'}],
+    desc:'กดยืนยันครั้งที่สองแล้วระบบทำธุรกรรมตัดสต็อก (หัวข้อ 3.7.3) ถ้าสำเร็จ ขึ้นว่าส่งมอบสำเร็จพร้อมปุ่มกลับไปหน้าคิว ถ้าสต็อกไม่พอหรือมีคนจ่ายไปก่อน ระบบปฏิเสธ (รหัส 409) และไม่มีอะไรถูกตัด',
+    src:['pages/dispatch/index.jsx:84 ปุ่มยืนยันครั้งที่สอง','pages/dispatch/index.jsx:45 ปุ่ม “กลับไปหน้าคิว”']},
+  dash:{x:250,y:400,h:60,title:'แดชบอร์ดปฏิบัติการ',route:'/dashboard',roles:['warehouse','manager'],uc:'UC-08',fig:'รูปที่ 4.7',
+    shots:[{src:'screens/07-dashboard-ops.png',cap:'แดชบอร์ดปฏิบัติการ (รูปที่ 4.7)'}],
+    desc:'หน้าแรกของผู้จัดการ สรุปยอดขาย คิวงาน และสินค้าใกล้หมด กล่องที่ต้องสนใจเป็นลิงก์พาไปหน้าที่เกี่ยวข้อง ลิงก์ไปหน้าสินค้าแสดงเฉพาะผู้จัดการ',
+    src:['pages/dashboard-ops/index.jsx:41 ลิงก์ไปคิว','pages/dashboard-ops/index.jsx:47 ลิงก์ไปสินค้า (ผู้จัดการ)','pages/dashboard-ops/index.jsx:52 ลิงก์ไปแจ้งเตือน']},
+  notif:{x:500,y:360,h:50,title:'การแจ้งเตือน',route:'/notifications',roles:['warehouse','manager'],uc:'UC-11',fig:'รูปที่ 4.10',
+    shots:[{src:'screens/10-notifications.png',cap:'การแจ้งเตือน (รูปที่ 4.10)'}],
+    desc:'รายการแจ้งเตือนสินค้าใกล้หมดและคิวค้างนานผิดปกติ ที่ระบบสร้างเอง พนักงานคลังอ่านได้ ผู้จัดการทำเครื่องหมายว่าอ่านแล้วได้',
+    src:['pages/notifications/index.jsx']},
+  products:{x:500,y:425,h:50,title:'จัดการข้อมูลสินค้า',route:'/products',roles:['manager'],uc:'UC-02',fig:'รูปที่ 4.9',
+    shots:[{src:'screens/09-products.png',cap:'จัดการข้อมูลสินค้า (รูปที่ 4.9)'}],
+    desc:'ผู้จัดการดูและแก้ข้อมูลสินค้า ตั้งจุดสั่งซื้อเพิ่ม และปรับสต็อกด้วยมือ ทุกการแก้ไขถูกบันทึกในประวัติ',
+    src:['pages/products/index.jsx']},
+  exec:{x:500,y:490,h:50,title:'แดชบอร์ดระดับบริหาร',route:'/executive',roles:['manager'],uc:'UC-09',fig:'รูปที่ 4.8',
+    shots:[{src:'screens/08-dashboard-exec.png',cap:'แดชบอร์ดระดับบริหาร (รูปที่ 4.8)'}],
+    desc:'แนวโน้มยอดขายรายวันและสินค้าขายดี สำหรับผู้จัดการเท่านั้น เข้าจากเมนูด้านข้าง',
+    src:['App.jsx route /executive','components/Layout.jsx:18 เมนู']},
+  audit:{x:500,y:555,h:50,title:'ประวัติการทำรายการ',route:'/audit-logs',roles:['manager'],uc:'UC-10',fig:'รูปที่ 4.11',
+    shots:[{src:'screens/11-audit-logs.png',cap:'ประวัติการทำรายการ (รูปที่ 4.11)'}],
+    desc:'ค้นประวัติตามช่วงวันที่และประเภทการกระทำ ทุกแถวมีผู้กระทำ เวลา และหมายเลขไอพี สำหรับผู้จัดการเท่านั้น เข้าจากเมนูด้านข้าง',
+    src:['App.jsx route /audit-logs','components/Layout.jsx:21 เมนู']},
+};
+
+// เส้นทางการเปลี่ยนหน้าจอ: kind = link (ปุ่มหรือลิงก์ในหน้า) · menu (เมนูด้านข้าง) · rt (เรียลไทม์)
+const E = [
+  {f:'login',t:'pos',label:'',act:'เข้าสู่ระบบในฐานะพนักงานขาย',roles:['sales'],d:'M180 270 H215 V100 H250',color:'sales'},
+  {f:'login',t:'queue',label:'',act:'เข้าสู่ระบบในฐานะพนักงานคลังสินค้า',roles:['warehouse'],d:'M180 270 H250',color:'warehouse'},
+  {f:'login',t:'dash',label:'',act:'เข้าสู่ระบบในฐานะผู้จัดการ',roles:['manager'],d:'M180 270 H215 V430 H250',color:'manager'},
+  {f:'pos',t:'qr',label:'แสดงรหัส QR',act:'กด “แสดงรหัส QR”',roles:['sales','manager'],d:'M420 100 H500',lx:460,ly:91},
+  {f:'qr',t:'pos',label:'ย้อนกลับแก้รายการ',act:'กด “ย้อนกลับไปแก้รายการ”',roles:['sales','manager'],d:'M560 70 C560 40 380 40 380 70',lx:470,ly:45},
+  {f:'qr',t:'done',label:'ยืนยันรับชำระ',act:'กด “ยืนยันรับชำระเงิน”',roles:['sales','manager'],d:'M670 100 H750',lx:710,ly:91},
+  {f:'done',t:'pos',label:'รับคำสั่งซื้อถัดไป',act:'กด “รับคำสั่งซื้อถัดไป”',roles:['sales','manager'],d:'M835 70 C835 14 300 14 300 70',lx:568,ly:22},
+  {f:'done',t:'queue',label:'คำสั่งซื้อโผล่ที่คิวของคลังเอง',act:'คำสั่งซื้อไปถึงหน้าคิวเอง (WebSocket)',roles:['sales','warehouse','manager'],d:'M790 130 V172 H330 V240',lx:560,ly:167,kind:'rt'},
+  {f:'queue',t:'dispatch',label:'แตะรายการ',act:'แตะรายการ หรือกด “จ่ายสินค้า”',roles:['warehouse','manager'],d:'M420 270 H500',lx:460,ly:261},
+  {f:'dispatch',t:'confirm',label:'ยืนยันจ่ายสินค้า',act:'กด “ยืนยันจ่ายสินค้า”',roles:['warehouse','manager'],d:'M670 270 H750',lx:710,ly:261},
+  {f:'dispatch',t:'queue',label:'',act:'กด “กลับหน้าคิว”',roles:['warehouse','manager'],d:'M520 300 C520 322 400 322 400 300',hideLine:false},
+  {f:'confirm',t:'queue',label:'จ่ายสำเร็จ กลับไปหน้าคิว',act:'จ่ายสำเร็จ แล้วกด “กลับไปหน้าคิว”',roles:['warehouse','manager'],d:'M835 300 C835 352 370 352 370 300',lx:610,ly:352},
+  {f:'dash',t:'queue',label:'ไปที่คิว',act:'แตะกล่อง “ไปที่คิวรอจ่ายสินค้า”',roles:['warehouse','manager'],d:'M300 400 V300',lx:306,ly:372,anchor:'start'},
+  {f:'dash',t:'notif',label:'',act:'แตะกล่อง “ไปที่การแจ้งเตือน”',roles:['warehouse','manager'],d:'M420 430 C460 430 460 385 500 385'},
+  {f:'dash',t:'products',label:'',act:'แตะกล่อง “ไปที่สินค้า”',roles:['manager'],d:'M420 430 C460 430 460 450 500 450'},
+  {f:'dash',t:'exec',label:'',act:'เลือกเมนู “ระดับบริหาร”',roles:['manager'],d:'M420 430 C460 430 460 515 500 515',kind:'menu'},
+  {f:'dash',t:'audit',label:'',act:'เลือกเมนู “ประวัติ”',roles:['manager'],d:'M420 430 C460 430 460 580 500 580',kind:'menu'},
+];
+
+
+// ข้อมูลสอบกลับ ใช้รหัสชุดเดียวกับบทที่ 3: หน้าจอตามตารางที่ 3.15 · UC ตารางที่ 3.8 · FR ตารางที่ 3.3
+// NFR ตารางที่ 3.4 · BR ตารางที่ 3.5 · AC ตารางที่ 3.11 · API ตารางที่ 3.18
+const UC_NAME = {'UC-01':'เข้าสู่ระบบและควบคุมสิทธิ์ตามบทบาท','UC-02':'จัดการข้อมูลสินค้าและจุดสั่งซื้อเพิ่ม',
+  'UC-03':'สร้างคำสั่งซื้อและออกใบเสร็จ','UC-04':'สร้างเลขที่คำสั่งซื้อไม่ซ้ำอัตโนมัติ','UC-05':'ดูคิวรอจ่ายสินค้าแบบเรียลไทม์',
+  'UC-06':'ปรับสถานะการจัดของในคิวงาน','UC-07':'ยืนยันจ่ายสินค้าและตัดสต็อก','UC-08':'แสดงแดชบอร์ดปฏิบัติการ',
+  'UC-09':'แสดงแดชบอร์ดระดับบริหาร','UC-10':'ค้นหาและดูประวัติการทำรายการ','UC-11':'รับการแจ้งเตือนภายในแอปพลิเคชัน'};
+const BR_TEXT = {'BR-01':'ใบเสร็จกระดาษกับการส่งเข้าคิวคลังต้องเกิดจากการกระทำเดียวกัน',
+  'BR-02':'สินค้าคงเหลือในระบบต้องตรงกับของจริงในคลัง','BR-03':'ต้องลดเวลารอคอยของลูกค้า',
+  'BR-04':'ผู้บริหารติดตามยอดขายและคิวงานได้ตลอดเวลา','BR-05':'แจ้งเตือนเชิงรุกเพื่อลดความเสี่ยงสินค้าขาดมือ'};
+const T = {
+  login:{sc:1,uc:['UC-01'],fr:['FR-01'],nfr:['NFR-01'],br:[],ac:['AC-12','AC-01'],api:['POST /api/auth/login','GET /api/auth/me']},
+  pos:{sc:2,uc:['UC-03'],fr:['FR-03'],nfr:[],br:[],ac:['AC-03'],api:['GET /api/products','POST /api/orders/quote']},
+  qr:{sc:2,uc:['UC-03','UC-04'],fr:['FR-03'],nfr:['NFR-05'],br:['BR-01'],ac:['AC-03','AC-04','AC-05','AC-14'],api:['POST /api/orders']},
+  done:{sc:2,uc:['UC-03','UC-04'],fr:['FR-03','FR-04'],nfr:['NFR-02','NFR-05'],br:['BR-01','BR-03'],ac:['AC-05','AC-06','AC-14'],api:['POST /api/orders (ผลที่ตอบกลับ)']},
+  queue:{sc:3,uc:['UC-05','UC-06'],fr:['FR-04'],nfr:['NFR-02','NFR-03'],br:['BR-03'],ac:['AC-06','AC-13'],api:['GET /api/queue','GET /api/events (ช่องทางสำรอง)','PATCH /api/orders/:id/status']},
+  dispatch:{sc:4,uc:['UC-07'],fr:['FR-05'],nfr:['NFR-03'],br:['BR-02'],ac:['AC-07','AC-08'],api:['GET /api/orders/:id']},
+  confirm:{sc:4,uc:['UC-07'],fr:['FR-05','FR-06'],nfr:['NFR-04'],br:['BR-02','BR-05'],ac:['AC-07','AC-08','AC-10'],api:['POST /api/orders/:id/dispatch']},
+  dash:{sc:5,uc:['UC-08'],fr:['FR-07'],nfr:[],br:['BR-04'],ac:['AC-09'],api:['GET /api/dashboard/ops']},
+  exec:{sc:6,uc:['UC-09'],fr:['FR-07'],nfr:[],br:['BR-04'],ac:['AC-09'],api:['GET /api/dashboard/exec']},
+  products:{sc:7,uc:['UC-02'],fr:['FR-02'],nfr:[],br:['BR-05'],ac:['AC-02'],api:['GET /api/products','POST, PUT, PATCH /api/products']},
+  notif:{sc:8,uc:['UC-11'],fr:['FR-08'],nfr:[],br:['BR-05'],ac:['AC-10','AC-13'],api:['GET /api/notifications','PATCH /api/notifications (ผู้จัดการ)']},
+  audit:{sc:9,uc:['UC-10'],fr:['FR-09'],nfr:[],br:[],ac:['AC-11'],api:['GET /api/audit-logs']},
+};
+
+const svgNS = 'http://www.w3.org/2000/svg';
+const $ = (id) => document.getElementById(id);
+let role = 'all', sel = 'login', shotIx = 0;
+
+function el(tag, attrs, parent){const e=document.createElementNS(svgNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const canSee = (roles) => role === 'all' || roles.includes('any') || roles.includes(role);
+
+function drawEdges(){
+  const g = $('edges'); g.textContent = '';
+  E.forEach((e,i) => {
+    const hot = e.f === sel || e.t === sel;
+    const grp = el('g',{class:'edge'+(e.kind?' '+e.kind:'')+(hot?' hot':'')+(canSee(e.roles)?'':' dim'),'data-i':i},g);
+    const mk = e.kind === 'rt' ? 'url(#ah-rt)' : hot ? 'url(#ah-hot)' : 'url(#ah)';
+    const p = el('path',{d:e.d,'marker-end':mk},grp);
+    if (e.color && !hot) p.style.stroke = ROLE_COLOR[e.color];
+    if (e.label){const t=el('text',{x:e.lx,y:e.ly,'text-anchor':e.anchor||'middle'},grp);t.textContent=e.label;}
+  });
+}
+
+function drawNodes(){
+  const g = $('nodes'); g.textContent = '';
+  for (const [id,n] of Object.entries(N)){
+    const grp = el('g',{class:'node'+(id===sel?' sel':'')+(canSee(n.roles)?'':' dim'),tabindex:'0',role:'button','aria-label':n.title+' '+n.route,'data-id':id},g);
+    el('rect',{class:'box',x:n.x,y:n.y,width:W,height:n.h,rx:10},grp);
+    const bars = n.roles.includes('any') ? ['any'] : n.roles;
+    const bh = (n.h - 12) / bars.length;
+    bars.forEach((r,i) => {
+      const b = el('rect',{class:'bar',x:n.x+6,y:n.y+6+i*bh,width:5,height:bh-(bars.length>1?2:0),rx:2},grp);
+      b.style.fill = r === 'any' ? 'var(--brand)' : ROLE_COLOR[r];
+    });
+    const t1 = el('text',{class:'t1',x:n.x+20,y:n.y+(n.h>55?26:22)},grp); t1.textContent = n.title;
+    const t2 = el('text',{class:'t2',x:n.x+20,y:n.y+(n.h>55?46:39)},grp);
+    t2.textContent = 'หน้าจอ ' + T[id].sc + ' · ' + T[id].uc.join(', ');
+    grp.addEventListener('click',()=>select(id));
+    grp.addEventListener('keydown',(ev)=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();select(id);}});
+  }
+}
+
+function pills(roles){
+  return roles.map(r => r==='any' ? '<span class="pill any">ทุกคน</span>' : `<span class="pill ${r}">${ROLE_NAME[r]}</span>`).join('');
+}
+
+function traceBlock(id){
+  const t = T[id];
+  const tags = (xs, cls) => xs.length ? xs.map(x => `<span class="tag ${cls}">${x}</span>`).join('') : '<span class="none">ไม่มี</span>';
+  return `<div class="trace">
+    <div class="tr"><h3>Use Case</h3><div class="ucs">${t.uc.map(u => `<div><span class="tag uc">${u}</span> ${UC_NAME[u]}</div>`).join('')}</div></div>
+    <div class="tr"><h3>กฎทางธุรกิจ (BR)</h3><div class="ucs">${t.br.length ? t.br.map(b => `<div><span class="tag br">${b}</span> ${BR_TEXT[b]}</div>`).join('') : '<span class="none">ไม่มีกฎทางธุรกิจที่หน้าจอนี้บังคับโดยตรง</span>'}</div></div>
+    <div class="tr2">
+      <div><h3>FR</h3><div class="row">${tags(t.fr,'fr')}</div></div>
+      <div><h3>NFR</h3><div class="row">${tags(t.nfr,'nfr')}</div></div>
+      <div><h3>เกณฑ์การยอมรับ</h3><div class="row">${tags(t.ac,'ac')}</div></div>
+    </div>
+    <div class="tr"><h3>API ที่หน้าจอนี้เรียก</h3><div class="apis">${t.api.map(a => `<code>${a}</code>`).join('')}</div></div>
+  </div>`;
+}
+
+function renderDetail(){
+  const n = N[sel];
+  const outs = E.map((e,i)=>({...e,i})).filter(e => e.f === sel);
+  const shot = n.shots[Math.min(shotIx, n.shots.length-1)];
+  const tabs = n.shots.length > 1 ? `<div class="tabs" role="group" aria-label="มุมมอง">${n.shots.map((s,i)=>`<button type="button" data-shot="${i}" aria-pressed="${i===shotIx}">${s.tab}</button>`).join('')}</div>` : '';
+  $('detail').innerHTML = `
+    <div class="row"><span class="route">${n.route}</span>${n.sub?`<span class="note">${n.sub}</span>`:''}</div>
+    <h2>${n.title}</h2>
+    <div class="row">${pills(n.roles)}<span class="note">· หน้าจอที่ ${T[sel].sc} ในตารางที่ 3.15 · ${n.fig}</span></div>
+    ${tabs}
+    <figure class="shot" style="margin:0"><img src="${shot.src}" alt="${shot.cap}" loading="lazy"><figcaption>${shot.cap}</figcaption></figure>
+    <p class="desc">${n.desc}</p>
+    ${traceBlock(sel)}
+    <h3>ไปต่อได้</h3>
+    <div class="gos">${outs.length ? outs.map(e => `<button type="button" class="go${e.kind==='menu'?' menuonly':''}${e.kind==='rt'?' rt':''}${canSee(e.roles)?'':' dimgo'}" data-to="${e.t}"><span class="act">${e.act}</span><span class="to">${N[e.t].title} ›</span></button>`).join('') : '<div class="none">หน้านี้ไม่มีปุ่มพาไปหน้าอื่น ใช้เมนูด้านข้าง</div>'}</div>
+    <div class="src">อ้างอิงในโค้ด (soml/frontend/src/): ${n.src.map(s=>`<code>${s}</code>`).join(' · ')}</div>`;
+  $('detail').querySelectorAll('.go').forEach(b => b.addEventListener('click', () => select(b.dataset.to)));
+  $('detail').querySelectorAll('[data-shot]').forEach(b => b.addEventListener('click', () => { shotIx = +b.dataset.shot; renderDetail(); }));
+}
+
+function renderMenu(){
+  if (role === 'all'){ $('menuLine').innerHTML = 'เลือกบทบาทเพื่อดูว่าเข้าหน้าไหนได้บ้าง · ถ้าพิมพ์ที่อยู่ของหน้าที่บทบาทตนเข้าไม่ได้ ระบบพากลับหน้าแรกของบทบาทเอง (RequireRole)'; return; }
+  const items = MENU.filter(m => m.roles.includes(role)).map(m => m.label);
+  $('menuLine').innerHTML = `<b>เมนูด้านข้างของ${ROLE_NAME[role]}:</b> ${items.join(' · ')}`;
+}
+
+function select(id){ if (sel !== id) shotIx = 0; sel = id; drawEdges(); drawNodes(); renderDetail();
+  const g = document.querySelector(`g.node[data-id="${id}"]`); if (g && document.activeElement && document.activeElement.closest && document.activeElement.closest('.detail')) g.focus(); }
+
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+  role = c.dataset.role;
+  document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c));
+  try { localStorage.setItem('sf-role', role); } catch(e) {}
+  drawEdges(); drawNodes(); renderMenu();
+}));
+
+try { const r = localStorage.getItem('sf-role'); if (r && document.querySelector(`.chip[data-role="${r}"]`)) { role = r; document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x.dataset.role === r)); } } catch(e) {}
+$('lblToggle').addEventListener('click', (ev) => {
+  const b = ev.currentTarget, on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on); b.textContent = 'ป้ายบนเส้น: ' + (on ? 'แสดง' : 'ซ่อน');
+  $('flow').classList.toggle('nolabels', !on);
+});
+drawEdges(); drawNodes(); renderDetail(); renderMenu();
+</script>
