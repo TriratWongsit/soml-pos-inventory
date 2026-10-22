@@ -1,0 +1,58 @@
+# ---------------------------------------------------------------------
+# อำพร OMS บน Docker: ฐานข้อมูล ระบบหลังบ้าน บริการพิมพ์ และหน้าเว็บ ในคำสั่งเดียว   [คอมเมนต์กรรมการ K-8]
+#   docker compose up -d --build      แล้วเปิด http://localhost:8080
+# ค่าที่ตั้งได้ (ใส่ใน .env ข้างไฟล์นี้ หรือ export ก่อนรัน): ดู DOCKER.md
+# ---------------------------------------------------------------------
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${AMPORN_DB_PASSWORD:-amporn-docker}
+      TZ: Asia/Bangkok
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+07:00
+    volumes:
+      - db-data:/var/lib/mysql                                   # ข้อมูลร้านอยู่ที่นี่ ปิดเครื่องไม่หาย
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro              # สร้างฐาน + สินค้า ครั้งแรกเท่านั้น
+      - ./db/schema/schema.sql:/seed/schema.sql:ro
+      - ./db/seed/products.sql:/seed/products.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${AMPORN_DB_PASSWORD:-amporn-docker}"]
+      interval: 5s
+      retries: 30
+    restart: unless-stopped
+
+  backend:
+    build: { context: ., target: app }
+    command: node docker/start-backend.js
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: ${AMPORN_DB_PASSWORD:-amporn-docker}
+      DB_NAME: soml_new
+      JWT_SECRET: ${JWT_SECRET:-amporn-docker-secret-please-change}
+      PROMPTPAY_ID: ${PROMPTPAY_ID:-0812345678}
+      SEED_PASSWORD: ${SEED_PASSWORD:-Soml@2569}
+      PRINT_SERVICE_URL: http://print:4100
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+
+  print:
+    build: { context: ., target: app }
+    command: node print-service/server.js
+    environment:
+      # ในคอนเทนเนอร์ใช้คิวพิมพ์ USB ของเครื่องไม่ได้ ใช้ file:// (จำลอง) หรือเครื่องพิมพ์เครือข่าย tcp://IP:9100
+      PRINTER_INTERFACE: ${AMPORN_PRINTER_INTERFACE:-file:///app/printer-output}
+      PRINTER_CODEPAGE: ${PRINTER_CODEPAGE:-21}
+    volumes:
+      - ./printer-output:/app/printer-output
+    restart: unless-stopped
+
+  web:
+    build: { context: ., target: web }
+    ports:
+      - "${AMPORN_WEB_PORT:-8080}:80"
+    depends_on: [backend]
+    restart: unless-stopped
+
+volumes:
+  db-data:

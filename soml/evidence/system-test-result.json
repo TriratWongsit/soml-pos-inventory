@@ -4,7 +4,7 @@
       "/Users/triratwongsit/.local/node/bin/node",
       "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/node_modules/.bin/playwright",
       "test",
-      "tests/system/screenshots.spec.js"
+      "tests/system/acceptance.spec.js"
     ],
     "configFile": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/playwright.config.js",
     "rootDir": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/tests/system",
@@ -66,20 +66,20 @@
   },
   "suites": [
     {
-      "title": "screenshots.spec.js",
-      "file": "screenshots.spec.js",
+      "title": "acceptance.spec.js",
+      "file": "acceptance.spec.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "ภาพหน้าจอประกอบบทที่ 4",
-          "file": "screenshots.spec.js",
-          "line": 15,
+          "title": "AC-01 และ AC-12 การเข้าสู่ระบบและการควบคุมสิทธิ์",
+          "file": "acceptance.spec.js",
+          "line": 10,
           "column": 6,
           "specs": [
             {
-              "title": "เตรียมข้อมูล: ขายหลายรายการค้างไว้ในคิว",
+              "title": "AC-12 เข้าสู่ระบบสำเร็จแล้วไปหน้าแรกของบทบาทและเห็นเฉพาะเมนูของตน",
               "ok": true,
               "tags": [],
               "tests": [
@@ -94,12 +94,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2860,
+                      "duration": 873,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:36.311Z",
+                      "startTime": "2026-09-29T16:47:51.476Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -107,13 +107,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-ff643c4e6691f90018a9",
-              "file": "screenshots.spec.js",
-              "line": 16,
+              "id": "25b1ef59a3a31104e3a0-5d0e79d04586468d646c",
+              "file": "acceptance.spec.js",
+              "line": 11,
               "column": 3
             },
             {
-              "title": "หน้าจอ 1 เข้าสู่ระบบ",
+              "title": "AC-12 เข้าสู่ระบบไม่สำเร็จได้ข้อความเดียวกันทุกกรณี",
               "ok": true,
               "tags": [],
               "tests": [
@@ -128,12 +128,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 444,
+                      "duration": 562,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:39.556Z",
+                      "startTime": "2026-09-29T16:47:52.805Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -141,13 +141,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-053a5bfb2ba5d2e1f91c",
-              "file": "screenshots.spec.js",
-              "line": 25,
+              "id": "25b1ef59a3a31104e3a0-643e5d91b5ae3955d9de",
+              "file": "acceptance.spec.js",
+              "line": 21,
               "column": 3
             },
             {
-              "title": "หน้าจอ 2 ขายหน้าร้าน และหน้าจอรับชำระด้วยรหัส QR",
+              "title": "AC-01 พนักงานขายเรียกเส้นทางของผู้จัดการถูกปฏิเสธที่ฝั่งเซิร์ฟเวอร์",
               "ok": true,
               "tags": [],
               "tests": [
@@ -162,12 +162,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1323,
+                      "duration": 473,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:40.006Z",
+                      "startTime": "2026-09-29T16:47:53.372Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -175,13 +175,55 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-624c451b6396edd9830c",
-              "file": "screenshots.spec.js",
-              "line": 31,
+              "id": "25b1ef59a3a31104e3a0-663258019e056229cf58",
+              "file": "acceptance.spec.js",
+              "line": 36,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-03 AC-04 AC-05 การขายและการออกใบเสร็จ",
+          "file": "acceptance.spec.js",
+          "line": 61,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-03 ยอดรวมและรหัส QR ตรงกัน และได้คำสั่งซื้อที่มีเลขที่ไม่ซ้ำ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 907,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:53.848Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-2ae09a1e10738cbec149",
+              "file": "acceptance.spec.js",
+              "line": 62,
               "column": 3
             },
             {
-              "title": "หน้าจอ 3 คิวรอจ่ายสินค้า (รับข้อมูลสดขณะถ่าย)",
+              "title": "AC-04 ขายต่อเนื่องหลายรายการแล้วเลขที่ไม่ซ้ำกัน",
               "ok": true,
               "tags": [],
               "tests": [
@@ -196,12 +238,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1368,
+                      "duration": 1821,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:41.333Z",
+                      "startTime": "2026-09-29T16:47:54.759Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -209,13 +251,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-fe01d36718df86526897",
-              "file": "screenshots.spec.js",
-              "line": 45,
+              "id": "25b1ef59a3a31104e3a0-64100c55d79df62f95ef",
+              "file": "acceptance.spec.js",
+              "line": 84,
               "column": 3
             },
             {
-              "title": "หน้าจอ 4 ยืนยันจ่ายสินค้า",
+              "title": "AC-05 บริการพิมพ์ใช้ไม่ได้ การขายยังสำเร็จและมีคำเตือน",
               "ok": true,
               "tags": [],
               "tests": [
@@ -230,12 +272,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1430,
+                      "duration": 960,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:42.706Z",
+                      "startTime": "2026-09-29T16:47:56.584Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -243,13 +285,101 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-70079a966e23e5c1f09f",
-              "file": "screenshots.spec.js",
-              "line": 66,
+              "id": "25b1ef59a3a31104e3a0-246c7b0e2f6a0daab535",
+              "file": "acceptance.spec.js",
+              "line": 91,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-06 คิวเรียลไทม์",
+          "file": "acceptance.spec.js",
+          "line": 106,
+          "column": 6,
+          "specs": [
+            {
+              "title": "คำสั่งซื้อใหม่ปรากฏบนหน้าจอคิวเองภายใน 3 วินาที โดยไม่กดรีเฟรช",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1494,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "AC-06 คำสั่งซื้อ ORD-20260929-0006 ปรากฏบนหน้าจอคิวใน 491 มิลลิวินาที (รวมเวลาสร้างคำสั่งซื้อ)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:57.549Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-370402c3c7d3a6124e09",
+              "file": "acceptance.spec.js",
+              "line": 107,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-07 และ AC-08 การจ่ายสินค้าและการตัดสต็อก",
+          "file": "acceptance.spec.js",
+          "line": 131,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-07 จ่ายสำเร็จหนึ่งครั้ง และจ่ายซ้ำใบเดิมไม่ได้",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1427,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:59.046Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-6c9f21834224f9f74e8c",
+              "file": "acceptance.spec.js",
+              "line": 132,
               "column": 3
             },
             {
-              "title": "หน้าจอ 5 และ 6 แดชบอร์ดปฏิบัติการและระดับบริหาร",
+              "title": "AC-08 สต็อกไม่พอ ระบบไม่ให้จ่ายและสถานะไม่เปลี่ยน",
               "ok": true,
               "tags": [],
               "tests": [
@@ -264,12 +394,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1793,
+                      "duration": 1814,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:44.142Z",
+                      "startTime": "2026-09-29T16:48:00.477Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -277,13 +407,55 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-ffc66bbc5c7dbc75b592",
-              "file": "screenshots.spec.js",
-              "line": 82,
+              "id": "25b1ef59a3a31104e3a0-44018b8ced7655bdbd54",
+              "file": "acceptance.spec.js",
+              "line": 150,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-02 AC-09 AC-10 AC-11 งานของผู้จัดการ",
+          "file": "acceptance.spec.js",
+          "line": 186,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-02 แก้จุดสั่งซื้อเพิ่มแล้วค่าตรงและมีบันทึกในประวัติ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 878,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:48:02.297Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-c6279c9306635107c871",
+              "file": "acceptance.spec.js",
+              "line": 187,
               "column": 3
             },
             {
-              "title": "หน้าจอ 7 จัดการข้อมูลสินค้า",
+              "title": "AC-09 ตัวเลขบนแดชบอร์ดตรงกับผลรวมที่คำนวณจากฐานข้อมูล",
               "ok": true,
               "tags": [],
               "tests": [
@@ -298,12 +470,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 859,
+                      "duration": 612,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:45.941Z",
+                      "startTime": "2026-09-29T16:48:03.181Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -311,13 +483,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-0eb4df7f562e2b73cc7d",
-              "file": "screenshots.spec.js",
-              "line": 108,
+              "id": "25b1ef59a3a31104e3a0-e235e517b1428b3c7dcf",
+              "file": "acceptance.spec.js",
+              "line": 213,
               "column": 3
             },
             {
-              "title": "หน้าจอ 8 การแจ้งเตือน",
+              "title": "AC-10 จ่ายสินค้าจนต่ำกว่าจุดสั่งซื้อเพิ่มแล้วมีการแจ้งเตือนเอง",
               "ok": true,
               "tags": [],
               "tests": [
@@ -332,12 +504,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 897,
+                      "duration": 1827,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:46.805Z",
+                      "startTime": "2026-09-29T16:48:03.797Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -345,13 +517,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-160c073938f1e97c6a68",
-              "file": "screenshots.spec.js",
-              "line": 115,
+              "id": "25b1ef59a3a31104e3a0-4e4043b3cba327251e7a",
+              "file": "acceptance.spec.js",
+              "line": 223,
               "column": 3
             },
             {
-              "title": "หน้าจอ 9 ประวัติการทำรายการ",
+              "title": "AC-11 ค้นประวัติตามช่วงเวลาและประเภทการกระทำได้ครบ",
               "ok": true,
               "tags": [],
               "tests": [
@@ -366,12 +538,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 652,
+                      "duration": 598,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-09-26T19:00:47.708Z",
+                      "startTime": "2026-09-29T16:48:05.629Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -379,43 +551,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "53bacfe0c91763a7148e-d0bf640da4fc6a7adff6",
-              "file": "screenshots.spec.js",
-              "line": 123,
-              "column": 3
-            },
-            {
-              "title": "หน้าจอคิวบนอุปกรณ์เคลื่อนที่ (กว้าง 390 พิกเซล)",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 1093,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-09-26T19:00:48.364Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "53bacfe0c91763a7148e-0511e78acc6e8964db1e",
-              "file": "screenshots.spec.js",
-              "line": 130,
+              "id": "25b1ef59a3a31104e3a0-3e6483816a14fb1aa7f7",
+              "file": "acceptance.spec.js",
+              "line": 259,
               "column": 3
             }
           ]
@@ -425,9 +563,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-26T19:00:36.083Z",
-    "duration": 13430.289999999999,
-    "expected": 10,
+    "startTime": "2026-09-29T16:47:51.286Z",
+    "duration": 14994.767,
+    "expected": 13,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

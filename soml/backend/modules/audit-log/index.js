@@ -1,13 +1,13 @@
 // ---------------------------------------------------------------------
-// บริการบันทึกประวัติ (Audit Log Service)          [ตารางที่ 3.13 โมดูล 9 · FR-09 · UC-10]
+// บริการบันทึกประวัติ (Audit Log Service)          [ตารางที่ 3.16 โมดูล BE-09 · FR-09 · UC-10]
 //
 // รับผิดชอบเรื่องเดียว: ตาราง audit_logs — เขียนเหตุการณ์ และให้ค้นย้อนหลัง
 //
-// ฝั่งเขียน  record(conn, event)   ทุกโมดูลเรียก (เส้นประในรูปที่ 3.8)
-// ฝั่งอ่าน   list(req, res)        GET /api/audit-logs เฉพาะผู้จัดการ (ตาราง 3.18)
+// ฝั่งเขียน  record(conn, event)   ทุกโมดูลเรียก (เส้นประในรูปที่ 3.5)
+// ฝั่งอ่าน   list(req, res)        GET /api/audit-logs เฉพาะผู้จัดการ (ตาราง 3.25)
 //
 // ทำไม record รับ conn จากผู้เรียก ไม่เปิดเอง:
-//   ให้ประวัติอยู่ในธุรกรรมเดียวกับงานที่เกิด (3.7.3 ขั้น 5) ถ้างาน rollback
+//   ให้ประวัติอยู่ในธุรกรรมเดียวกับงานที่เกิด (3.4.2.2 ขั้น 5) ถ้างาน rollback
 //   ประวัติหายตามไปด้วย จึงไม่มีทางมี "ประวัติของสิ่งที่ไม่ได้เกิดขึ้นจริง"
 // ตารางนี้เพิ่มอย่างเดียว (2.1.5) ไม่มีฟังก์ชันแก้หรือลบโดยตั้งใจ
 // ---------------------------------------------------------------------
@@ -25,6 +25,8 @@ const ACTIONS = Object.freeze([
   'CANCEL_ORDER',
   'CREATE_NOTIFICATION', // modules/alert (ระบบเป็นผู้กระทำ user_id NULL)
   'READ_NOTIFICATION',
+  'CREATE_CUSTOMER',  // modules/credit (ขายเชื่อ)
+  'RECEIVE_PAYMENT',  // modules/credit รับชำระหนี้ใบขายเชื่อ
 ]);
 
 /**
@@ -33,7 +35,7 @@ const ACTIONS = Object.freeze([
  * @param event  { userId, action, entityType, entityId, ip }
  *               userId เป็น null ได้เมื่อระบบทำเอง เช่น สร้างการแจ้งเตือน
  */
-async function record(conn, { userId = null, action, entityType = null, entityId = null, ip = null }) {
+async function record(conn, { userId = null, action, entityType = null, entityId = null, ip = null }) {  // ◀ [D-8] เดโม: record() ทุกโมดูลบันทึกประวัติใน transaction เดียวกัน
   if (!ACTIONS.includes(action)) throw new Error(`ชื่อเหตุการณ์ไม่รู้จัก: ${action}`);
   await conn.query(
     `INSERT INTO audit_logs (user_id, action, entity_type, entity_id, ip_address)
@@ -47,7 +49,7 @@ async function record(conn, { userId = null, action, entityType = null, entityId
  * แสดงผู้กระทำ เวลา และข้อมูลที่ถูกกระทำ กรองตามช่วงเวลาและประเภทการกระทำ
  * เรียงจากใหม่ไปเก่า จำกัดจำนวนแถวเพื่อไม่ให้ดึงทั้งตาราง
  */
-async function list(req, res, next) {
+async function list(req, res, next) {  // ◀ [D-8] เดโม: list() ค้นประวัติตามตัวกรอง
   try {
     const { from, to, action, userId } = req.query;
     const limit = Math.min(Math.max(Number(req.query.limit) || 100, 1), 500);
@@ -114,6 +116,11 @@ async function attachLabels(rows) {
   if (notifIds.length) {
     const [notifs] = await pool.query('SELECT notification_id, message FROM notifications WHERE notification_id IN (?)', [notifIds]);
     for (const n of notifs) labels.set(`notification:${n.notification_id}`, n.message);
+  }
+  const customerIds = ids('customer');
+  if (customerIds.length) {
+    const [cs] = await pool.query('SELECT customer_id, name FROM customers WHERE customer_id IN (?)', [customerIds]);
+    for (const c of cs) labels.set(`customer:${c.customer_id}`, c.name);
   }
   for (const r of rows) r.entity_label = labels.get(`${r.entity_type}:${r.entity_id}`) || null;
 }

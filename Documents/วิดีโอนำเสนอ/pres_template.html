@@ -1,0 +1,226 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0d0a1a}
+body{font-family:'Noto Sans Thai',sans-serif;color:#f3f0ff}
+#bg{position:absolute;inset:0;background:#120e22;overflow:hidden}
+.blob{position:absolute;width:1100px;height:1100px;border-radius:50%;filter:blur(140px);opacity:.33}
+#g1{background:#6D3FC6}#g2{background:#1e40af}
+#grid{position:absolute;inset:0;background-image:linear-gradient(rgba(196,181,253,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(196,181,253,.05) 1px,transparent 1px);background-size:64px 64px}
+#pb{position:absolute;left:0;right:0;top:0;height:6px;background:rgba(255,255,255,.08);z-index:30}
+#pb i{display:block;height:100%;background:linear-gradient(90deg,#FACC15,#FB923C);width:0}
+.sc{position:absolute;inset:0;display:none}
+.vis{position:absolute;inset:0;overflow:hidden}
+.tag{position:absolute;right:34px;top:24px;background:rgba(15,10,35,.78);border:1px solid rgba(196,181,253,.45);color:#ddd6fe;font-size:24px;font-weight:600;padding:6px 18px;border-radius:20px;z-index:12}
+.subs{position:absolute;left:40px;right:40px;bottom:30px;height:170px;z-index:15}
+.st{position:absolute;left:0;right:0;bottom:0;min-height:130px;background:rgba(12,8,30,.86);border:2px solid rgba(250,204,21,.55);border-radius:22px;
+ padding:20px 34px 20px 170px;font-size:36px;line-height:1.45;font-weight:600;opacity:0;display:flex;align-items:center;backdrop-filter:blur(8px);
+ box-shadow:0 14px 40px rgba(0,0,0,.45)}
+#mascot{position:absolute;left:62px;bottom:46px;width:110px;height:128px;z-index:20}
+/* slide camera */
+.cam{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.cam img{width:1920px;height:1080px;display:block}
+.spot{position:absolute;border:5px solid #FACC15;border-radius:16px;opacity:0;box-shadow:0 0 0 4000px rgba(10,6,25,.42),0 0 36px 6px rgba(250,204,21,.55);pointer-events:none}
+/* title */
+.ttl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 120px 160px}
+.tk{font-size:34px;color:#FB923C;font-weight:800;letter-spacing:6px;background:rgba(251,146,60,.12);border:2px solid #FB923C;padding:8px 30px;border-radius:30px}
+.tt{font-size:96px;font-weight:800;color:#FACC15;margin-top:30px;text-shadow:0 10px 50px rgba(250,204,21,.35)}
+.ts{font-size:38px;color:#ddd6fe;margin-top:30px;line-height:1.5}
+/* code */
+.cw{position:absolute;inset:0;padding:40px 60px 0}
+.ch{font-size:50px;font-weight:800;color:#fff;margin-bottom:22px}
+.code{background:rgba(8,6,20,.93);border:2px solid #3b2f63;border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.fn{color:#c4b5fd;font-size:25px;padding:14px 26px;border-bottom:1px solid #2b2347;font-weight:700;background:rgba(109,63,198,.15)}
+.fn em{font-style:normal;color:#8b80b0;font-weight:500;margin-left:10px}
+.vp{height:560px;overflow:hidden;position:relative}
+.inner{position:absolute;left:0;right:0;top:0;padding:14px 0}
+.ln{display:flex;padding:2px 26px 2px 0;font:28px/1.55 'Menlo','Noto Sans Thai',monospace;position:relative}
+.ln .no,.ln .tx{position:relative;z-index:1}
+.ln .no{flex:0 0 90px;text-align:right;padding-right:22px;color:#5f5685}
+.ln .tx{white-space:pre-wrap;word-break:break-all;flex:1;color:#e8e3ff}
+.ln .hlbg{position:absolute;inset:0;background:linear-gradient(90deg,rgba(250,204,21,.32),rgba(250,204,21,.08));border-left:10px solid #FACC15;opacity:0}
+/* race */
+.race{position:relative;height:600px}
+.dev{position:absolute;top:0;width:460px;height:160px;border:3px solid #60A5FA;border-radius:24px;background:rgba(96,165,250,.08);padding:22px 28px}
+.dev.a{left:0}.dev.b{right:0;border-color:#FB923C;background:rgba(251,146,60,.08)}
+.dn{font-size:44px;font-weight:800}.dd{font-size:28px;color:#ddd6fe}
+.res{position:absolute;left:0;right:0;top:172px;text-align:center;font-size:30px;font-weight:800;opacity:0}
+.gate{position:absolute;left:700px;width:400px;top:250px;text-align:center;font-size:32px;font-weight:700;color:#FACC15;border:2px dashed #FACC15;border-radius:16px;padding:10px;opacity:0}
+.db{position:absolute;left:650px;width:500px;top:380px;height:170px;border:3px solid #34D399;border-radius:24px;background:rgba(52,211,153,.08);text-align:center;padding-top:34px}
+.dbt{font-size:48px;font-weight:800;color:#34D399}.dbs{font-size:30px;margin-top:8px}
+.stock{position:absolute;left:0;width:560px;top:420px;text-align:center;font-size:36px;font-weight:700}
+.stock b{color:#FACC15;font-size:56px}
+.rl{position:absolute;left:1240px;width:560px;top:400px;text-align:center;font:32px/1.45 'Menlo','Noto Sans Thai',monospace;opacity:0}
+.pk{position:absolute;width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;color:#120e22;left:0;top:0}
+.pa{background:#60A5FA;box-shadow:0 0 34px rgba(96,165,250,.8)}.pb{background:#FB923C;box-shadow:0 0 34px rgba(251,146,60,.8)}
+</style></head>
+<body>
+<div id="bg"><div class="blob" id="g1"></div><div class="blob" id="g2"></div><div id="grid"></div></div>
+<div id="pb"><i id="pbi"></i></div>
+/*SCENES*/
+<svg id="mascot" viewBox="0 0 130 150">
+ <ellipse cx="65" cy="142" rx="44" ry="7" fill="rgba(0,0,0,.35)"/>
+ <g id="mbody">
+  <rect x="18" y="20" width="94" height="104" rx="44" fill="#6D3FC6" stroke="#c4b5fd" stroke-width="4"/>
+  <rect x="30" y="38" width="70" height="46" rx="20" fill="#1b1433"/>
+  <ellipse id="e1" cx="50" cy="60" rx="7" ry="9" fill="#FACC15"/><ellipse id="e2" cx="80" cy="60" rx="7" ry="9" fill="#FACC15"/>
+  <ellipse id="mouth" cx="65" cy="102" rx="14" ry="3" fill="#1b1433"/>
+  <line x1="65" y1="20" x2="65" y2="6" stroke="#c4b5fd" stroke-width="4"/><circle id="ant" cx="65" cy="6" r="6" fill="#FACC15"/>
+ </g>
+</svg>
+<script>
+const D = /*DATA*/;
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const lerp = (a, b, x) => a + (b - a) * x;
+const S = D.scenes;
+const VW = 1920, VH = 1080, FOCUS_H = 860;
+
+function camFor(r) {
+  if (!r) return [1, 0, 0];
+  const [x, y, w, h] = r;
+  let s = Math.min(1.6, 1640 / (w + 60), 700 / (h + 60)); s = Math.max(1, s);
+  const cx = x + w / 2, cy = y + h / 2;
+  let tx = VW / 2 - s * cx, ty = FOCUS_H / 2 - s * cy;
+  tx = clamp(tx, VW - VW * s, 0); ty = clamp(ty, VH - VH * s - 210, 0);
+  return [s, tx, ty];
+}
+
+function measure() {
+  S.forEach((sc, i) => {
+    const el = $('s' + i); el.style.display = 'block'; el.style.visibility = 'hidden';
+    if (sc.kind === 'slide') sc.beats.forEach((b) => { b.cam = camFor(b.rect); });
+    if (sc.kind === 'code') {
+      const vp = $('vp' + i), inner = $('in' + i);
+      sc.lineTop = []; sc.lineH = [];
+      inner.querySelectorAll('.ln').forEach((ln) => { sc.lineTop.push(ln.offsetTop); sc.lineH.push(ln.offsetHeight); ln.insertAdjacentHTML('afterbegin', '<div class="hlbg"></div>'); });
+      const maxOff = Math.max(0, inner.offsetHeight - vp.clientHeight);
+      sc.beats.forEach((b) => {
+        if (!b.lines || !b.lines.length) { b.off = null; return; }
+        const top = sc.lineTop[b.lines[0]], last = b.lines[b.lines.length - 1], bot = sc.lineTop[last] + sc.lineH[last];
+        b.off = clamp((top + bot) / 2 - vp.clientHeight / 2, 0, maxOff);
+      });
+      let last = 0; sc.beats.forEach((b) => { if (b.off === null) b.off = last; last = b.off; });
+    }
+    if (sc.kind === 'race') {
+      const da = $('da' + i), dbv = $('db' + i), gt = $('gt' + i), dx = $('dbx' + i);
+      sc.pos = { A: [da.offsetLeft + da.offsetWidth - 120, da.offsetTop + 24], B: [dbv.offsetLeft + dbv.offsetWidth - 120, dbv.offsetTop + 24],
+                 gate: [gt.offsetLeft + gt.offsetWidth / 2 - 48, gt.offsetTop - 104], db: [dx.offsetLeft + dx.offsetWidth / 2 - 48, dx.offsetTop - 48] };
+    }
+    el.style.display = 'none'; el.style.visibility = 'visible';
+  });
+}
+
+const beatAt = (sc, local) => { let j = -1; sc.beats.forEach((b, k) => { if (local >= b.start) j = k; }); return j; };
+
+function drawSlide(i, sc, local, j) {
+  const cur = j >= 0 ? sc.beats[j] : null, prev = j > 0 ? sc.beats[j - 1] : null;
+  const from = prev ? prev.cam : [1, 0, 0], to = cur ? cur.cam : [1, 0, 0];
+  const u = cur ? ease((local - cur.start + .15) / 1.1) : 0;
+  const s = lerp(from[0], to[0], u), tx = lerp(from[1], to[1], u), ty = lerp(from[2], to[2], u);
+  const drift = 1 + .006 * Math.sin(local * .7);
+  $('cam' + i).style.transform = `translate(${tx}px,${ty}px) scale(${s * drift})`;
+  const sp = $('sp' + i);
+  if (cur && cur.rect) {
+    const [x, y, w, h] = cur.rect, pad = 12;
+    sp.style.left = (x - pad) + 'px'; sp.style.top = (y - pad) + 'px'; sp.style.width = (w + 2 * pad) + 'px'; sp.style.height = (h + 2 * pad) + 'px';
+    sp.style.opacity = ease((local - cur.start - .55) / .45);
+    sp.style.borderWidth = (5 / s) + 'px';
+  } else sp.style.opacity = 0;
+}
+
+function drawCode(i, sc, local, j) {
+  const cur = j >= 0 ? sc.beats[j] : null, prev = j > 0 ? sc.beats[j - 1] : null;
+  const u = cur ? ease((local - cur.start) / .45) : 0;
+  const curSet = new Set(cur ? cur.lines : []), prevSet = new Set(prev ? prev.lines : []);
+  const any = cur && cur.lines.length;
+  sc.lineTop.forEach((_, k) => {
+    const ln = $('ln' + i + '_' + k);
+    const appear = clamp((local - .2 - k * .02) / .35);
+    const h = lerp(prevSet.has(k) ? 1 : 0, curSet.has(k) ? 1 : 0, u);
+    ln.firstChild.style.opacity = h;
+    ln.style.opacity = appear * (any ? lerp(.4, 1, h) : .9);
+    ln.style.transform = `translateX(${(1 - ease(appear)) * 50}px)`;
+  });
+  const o0 = sc.beats[0].off, oPrev = prev ? prev.off : o0, oCur = cur ? cur.off : o0;
+  $('in' + i).style.transform = `translateY(${-lerp(oPrev, oCur, cur ? ease((local - cur.start) / .8) : 1)}px)`;
+}
+
+function drawRace(i, sc, local, j) {
+  const P = sc.pos, ph = j >= 0 ? sc.beats[j].phase : 0, u = j >= 0 ? local - sc.beats[j].start : 0;
+  const put = (el, p, s = 1) => { el.style.left = p[0] + 'px'; el.style.top = p[1] + 'px'; el.style.transform = `scale(${s})`; };
+  const mix = (a, b, x) => [lerp(a[0], b[0], x), lerp(a[1], b[1], x)];
+  const gA = [P.gate[0] - 120, P.gate[1]], gB = [P.gate[0] + 120, P.gate[1]];
+  let a = P.A, b = P.B;
+  if (ph >= 1) { const x = ph === 1 ? ease(u / 1.4) : 1; a = mix(P.A, gA, x); b = mix(P.B, gB, x); }
+  if (ph >= 2) { const x = ph === 2 ? ease(u / 1.1) : 1; a = mix(gA, P.db, x); }
+  if (ph >= 3) { a = ph === 3 ? mix(P.db, P.A, ease(u / 1.4)) : P.A; b = mix(gB, P.db, ph === 3 ? ease(u / 1.1) : 1); }
+  if (ph >= 4) { a = P.A; b = mix(P.db, P.B, ease(u / 1.4)); }
+  const wob = ph === 2 ? Math.sin(local * 12) * 6 : 0;
+  put($('pa' + i), a, ph >= 1 ? 1 : ease(local / .6)); put($('pb' + i), [b[0] + wob, b[1]], ph >= 1 ? 1 : ease(local / .6));
+  $('gt' + i).style.opacity = ph >= 1 ? ease((ph === 1 ? u - .8 : 9) / .4) : 0;
+  const dbx = $('dbx' + i);
+  const fg = ph === 2 ? clamp(1 - Math.abs(u - 1.3) / .8) : 0, fr = ph === 3 ? clamp(1 - Math.abs(u - 1.3) / .8) : 0;
+  dbx.style.boxShadow = fg ? `0 0 ${80 * fg}px rgba(52,211,153,${fg})` : fr ? `0 0 ${80 * fr}px rgba(248,113,113,${fr})` : 'none';
+  dbx.style.borderColor = ph === 3 && u > 1 ? '#F87171' : '#34D399';
+  $('st' + i).textContent = ph >= 2 && (ph > 2 || u > 1.2) ? 'ส่งมอบสำเร็จ (delivered)' : 'รอจ่าย';
+  $('sv' + i).textContent = ph >= 2 && (ph > 2 || u > 1.4) ? 8 : 10;
+  $('sk' + i).style.transform = `scale(${ph === 2 ? 1 + .12 * clamp(1 - Math.abs(u - 1.5) / .5) : 1})`;
+  const ra = $('ra' + i), rb = $('rb' + i);
+  ra.style.opacity = ph >= 2 ? ease((ph === 2 ? u - 1.4 : 9) / .4) : 0; ra.textContent = '✓ affectedRows = 1'; ra.style.color = '#34D399';
+  rb.style.opacity = ph >= 4 ? ease((u - 1.2) / .4) : 0; rb.textContent = '✗ 409 ALREADY_DISPATCHED'; rb.style.color = '#F87171';
+  const rl = $('rl' + i);
+  const msg = ph === 2 ? 'A ผ่าน → ตัดสต็อก → commit' : ph === 3 ? 'B: เงื่อนไขสถานะไม่ตรงแล้ว → affectedRows = 0' : ph === 4 ? 'สต็อกถูกหักครั้งเดียว ✓ (TC-06)' : '';
+  rl.textContent = msg; rl.style.opacity = msg ? ease((u - .3) / .4) : 0; rl.style.color = ph === 3 ? '#F87171' : ph === 4 ? '#FACC15' : '#34D399';
+}
+
+function drawScene(i, local, enter, dir) {
+  const sc = S[i], el = $('s' + i), j = beatAt(sc, local);
+  el.style.display = 'block'; el.style.opacity = enter;
+  el.querySelector('.vis').style.transform = `scale(${lerp(1.04, 1, enter)})`;
+  sc.beats.forEach((b, k) => {
+    const s = $('su' + i + '_' + k), on = k === j ? ease((local - b.start + .15) / .3) : 0;
+    s.style.opacity = on; s.style.transform = `translateY(${(1 - on) * 18}px)`;
+  });
+  if (sc.kind === 'slide') drawSlide(i, sc, local, j);
+  else if (sc.kind === 'code') drawCode(i, sc, local, j);
+  else if (sc.kind === 'race') drawRace(i, sc, local, j);
+  else if (sc.kind === 'title') {
+    const tt = el.querySelector('.tt'), ts = el.querySelector('.ts'), tk = el.querySelector('.tk');
+    tk.style.opacity = ease((local - .1) / .4);
+    tt.style.opacity = ease((local - .3) / .5); tt.style.transform = `scale(${lerp(.8, 1, ease((local - .3) / .7))})`;
+    ts.style.opacity = ease((local - .9) / .6);
+  }
+}
+
+let shown = new Set();
+window.render = function (t) {
+  let i = S.findIndex((s) => t >= s.start && t < s.end); if (i < 0) i = S.length - 1;
+  const sc = S[i], local = t - sc.start, TR = .6;
+  const enter = i === 0 ? ease(local / .8) : ease(local / TR);
+  const now = new Set([i]);
+  if (i > 0 && local < TR) {
+    const p = S[i - 1]; drawScene(i - 1, p.end - p.start - .001 + local, 1, 0); $('s' + (i - 1)).style.opacity = 1 - enter; now.add(i - 1);
+  }
+  shown.forEach((k) => { if (!now.has(k)) $('s' + k).style.display = 'none'; });
+  shown = now;
+  $('s' + i).style.zIndex = 2; if (i > 0) $('s' + (i - 1)).style.zIndex = 1;
+  drawScene(i, local, enter, 1);
+  $('g1').style.transform = `translate(${-300 + 220 * Math.sin(t / 8)}px, ${-400 + 160 * Math.cos(t / 10)}px)`;
+  $('g2').style.transform = `translate(${1100 + 200 * Math.cos(t / 9)}px, ${300 + 160 * Math.sin(t / 7)}px)`;
+  $('grid').style.backgroundPosition = `${(t * 10) % 64}px 0`;
+  $('pbi').style.width = (100 * t / D.total) + '%';
+  let talk = 0; sc.beats.forEach((b) => { if (local >= b.start && local < b.start + b.dur) talk = 1; });
+  const m = talk ? .25 + .75 * Math.abs(Math.sin(local * 13) * Math.sin(local * 5.3 + 1)) : 0;
+  $('mouth').setAttribute('ry', (3 + 13 * m).toFixed(1));
+  const blink = (t % 4.2) < .14 ? .15 : 1;
+  $('e1').setAttribute('ry', 9 * blink); $('e2').setAttribute('ry', 9 * blink);
+  $('mbody').setAttribute('transform', `translate(0 ${(Math.sin(t * 2.2) * 4 - talk * 2).toFixed(2)})`);
+  $('ant').setAttribute('fill', talk && Math.sin(local * 10) > 0 ? '#FB923C' : '#FACC15');
+};
+document.fonts.ready.then(() => { measure(); window.ready = true; render(0); });
+</script>
+</body></html>

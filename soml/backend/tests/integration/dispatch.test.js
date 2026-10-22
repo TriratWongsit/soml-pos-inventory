@@ -1,4 +1,4 @@
-// ยืนยันจ่ายสินค้าและตัดสต็อก   [ตารางที่ 3.13 โมดูล 5, 6 · FR-05, FR-06 · UC-07 · AC-07, AC-08 · TC-06 · NFR-04 · BR-02]
+// ยืนยันจ่ายสินค้าและตัดสต็อก   [ตารางที่ 3.16 โมดูล BE-05, 6 · FR-05, FR-06 · UC-07 · AC-07, AC-08 · TC-06 · NFR-04 · BR-02]
 const { app, request, pool, allTokens, auth } = require('./helpers');
 const { withTransaction } = require('../../config/db');
 const stockDeduction = require('../../modules/stock-deduction');
@@ -73,7 +73,7 @@ describe('E1 จ่ายซ้ำ [AC-07 · TC-06 · NFR-04]', () => {
   test('ผ่าน HTTP: สองเครื่องกดพร้อมกัน สำเร็จหนึ่ง ปฏิเสธหนึ่ง สต็อกหักครั้งเดียว', async () => {
     await setStock(P1.product_id, 10);
     const o = await newOrder([{ productId: P1.product_id, qty: 4 }]);
-    const [a, b] = await Promise.all([confirm(tokens.warehouse, o.orderId), confirm(tokens.manager, o.orderId)]);
+    const [a, b] = await Promise.all([confirm(tokens.warehouse, o.orderId), confirm(tokens.manager, o.orderId)]);  // ◀ [D-5] เดโม: เทสยิงยืนยันจ่ายพร้อมกันสองคำขอ
     expect([a.status, b.status].sort()).toEqual([200, 409]);
     expect(await stockOf(P1.product_id)).toBe(6);
     const [moves] = await pool.query('SELECT * FROM stock_movements WHERE order_id = ?', [o.orderId]);
@@ -128,6 +128,30 @@ describe('E2 สต็อกไม่พอ [AC-08]', () => {
     const o = await newOrder([{ productId: P1.product_id, qty: 1 }, { productId: P2.product_id, qty: 1 }]);
     expect((await confirm(tokens.warehouse, o.orderId)).status).toBe(409);
     expect(await stockOf(P1.product_id)).toBe(10);
+  });
+});
+
+describe('K-1 คอมเมนต์กรรมการ: สองใบต่างกัน สินค้าตัวเดียวกัน สต็อก 1 กดจ่ายพร้อมกัน', () => {
+  test('ผ่าน HTTP: สำเร็จหนึ่งใบ อีกใบสต็อกไม่พอ สต็อกเหลือ 0 ไม่ติดลบ', async () => {
+    await setStock(P1.product_id, 1);
+    const a = await newOrder([{ productId: P1.product_id, qty: 1 }]);
+    const b = await newOrder([{ productId: P1.product_id, qty: 1 }]);
+    const [ra, rb] = await Promise.all([confirm(tokens.warehouse, a.orderId), confirm(tokens.manager, b.orderId)]);
+    expect([ra.status, rb.status].sort()).toEqual([200, 409]);
+    expect([ra.body.code, rb.body.code]).toContain('INSUFFICIENT_STOCK');
+    expect(await stockOf(P1.product_id)).toBe(0);
+    const statuses = [(await orderRow(a.orderId)).status, (await orderRow(b.orderId)).status].sort();
+    expect(statuses).toEqual(['awaiting_dispatch', 'delivered']);
+  });
+
+  test('ตรง ๆ 10 ใบพร้อมกัน สต็อก 3: สำเร็จ 3 ใบพอดี สต็อกเหลือ 0', async () => {
+    await setStock(P1.product_id, 3);
+    const orders = [];
+    for (let i = 0; i < 10; i++) orders.push(await newOrder([{ productId: P1.product_id, qty: 1 }]));
+    const outcomes = await Promise.allSettled(orders.map((o) =>
+      withTransaction((conn) => stockDeduction.dispatch(conn, { orderId: o.orderId, userId: 3, ip: 'test' }))));
+    expect(outcomes.filter((r) => r.status === 'fulfilled')).toHaveLength(3);
+    expect(await stockOf(P1.product_id)).toBe(0);
   });
 });
 

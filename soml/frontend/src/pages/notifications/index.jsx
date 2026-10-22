@@ -1,4 +1,4 @@
-// การแจ้งเตือน                                [ตารางที่ 3.15 หน้าจอ 8 · UC-11 · FR-08]
+// การแจ้งเตือน                                [ตารางที่ 3.18 หน้าจอ 8 · UC-11 · FR-08]
 // งานเดียว: เห็นการแจ้งเตือนที่ยังไม่อ่านก่อน · ผู้จัดการทำเครื่องหมายอ่านแล้ว (พนักงานคลังอ่านอย่างเดียว)
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../../components/Layout.jsx';
@@ -14,7 +14,7 @@ export default function Notifications() {
   const [rows, setRows] = useState([]);
   const [error, setError] = useState(null);
   const load = useCallback(() => api.get('/notifications').then((r) => setRows(r.notifications)).catch((e) => setError(e.message)), []);
-  useEffect(() => { load(); const stop = subscribe((ev) => { if (ev === 'notification.created') load(); }); return stop; }, [load]);
+  useEffect(() => { load(); const stop = subscribe((ev) => { if (ev === 'connected' || ev === 'notification.created') load(); }); return stop; }, [load]);
 
   const markRead = async (id) => { try { await api.patch(`/notifications/${id}/read`); load(); notifyUnreadChanged(); } catch (e) { setError(e.message); } };
   const unread = rows.filter((n) => !n.is_read);

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ส่วนควบคุมข้อมูลสินค้า (Product Controller)     [ตารางที่ 3.13 โมดูล 2 · FR-02 · UC-02]
+// ส่วนควบคุมข้อมูลสินค้า (Product Controller)     [ตารางที่ 3.16 โมดูล BE-02 · FR-02 · UC-02]
 //
 // รับผิดชอบเรื่องเดียว: ตาราง products และการเปลี่ยนสต็อกที่ "คนทำ" (ไม่ใช่การขาย)
 //   GET   /api/products?q=&category=  ทุกบทบาท   ค้นหาสินค้าที่ยังขายอยู่ (หน้าขายใช้) พร้อมรายชื่อหมวด
@@ -18,6 +18,7 @@ const { pool, withTransaction } = require('../../config/db');
 const { clientIp } = require('../../middleware/auth');
 const auditLog = require('../audit-log');
 const alert = require('../alert');
+const queue = require('../queue');
 
 const COLUMNS = 'product_id, sku, name, category, unit, price, stock_qty, reorder_point, is_active';
 
@@ -63,7 +64,7 @@ async function list(req, res, next) {
       `SELECT ${COLUMNS} FROM products ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY sku LIMIT 200`,
       params
     );
-    // รายชื่อหมวดส่งไปพร้อมกัน ให้หน้าจอวาดปุ่มกรองได้โดยไม่ต้องมีเส้นทางเพิ่ม (ตาราง 3.18 คงเดิม)
+    // รายชื่อหมวดส่งไปพร้อมกัน ให้หน้าจอวาดปุ่มกรองได้โดยไม่ต้องมีเส้นทางเพิ่ม (ตาราง 3.25 คงเดิม)
     const [cats] = await pool.query(
       `SELECT category, COUNT(*) AS n FROM products ${includeInactive ? '' : 'WHERE is_active = TRUE'} GROUP BY category ORDER BY n DESC`
     );
@@ -136,7 +137,7 @@ async function update(req, res, next) {
  * reason  'receive' รับสินค้าเข้า | 'manual_adjust' ปรับตามการนับจริง (ต้องมี note)
  *
  * ทั้ง UPDATE products และ INSERT stock_movements อยู่ในธุรกรรมเดียว (BR-02)
- * ยอดใหม่ต้องไม่ติดลบ — ตรวจในโปรแกรมก่อน และฐานข้อมูลมี CHECK เป็นชั้นสุดท้าย (3.7.2 ข้อ 4)
+ * ยอดใหม่ต้องไม่ติดลบ — ตรวจในโปรแกรมก่อน และฐานข้อมูลมี CHECK เป็นชั้นสุดท้าย (3.4.1.3 ข้อ 4)
  *
  * หลัง commit เรียก alert ตรวจจุดสั่งซื้อเพิ่ม — BR-05: "ตรวจเองหลังทุกครั้งที่สต็อกเปลี่ยน"
  */
@@ -168,6 +169,7 @@ async function adjustStock(req, res, next) {
     });
     if (result.notFound) return res.status(404).json({ error: 'ไม่พบสินค้า' });
     if (result.error) return res.status(409).json({ error: result.error });
+    queue.broadcast('product.stock', { productId, stockQty: result.balanceAfter }); // หน้าขายและหน้าสินค้าโหลดยอดใหม่เอง (K-1)
     await alert.checkStock([productId]); // นอกธุรกรรม (BR-05)
     return res.json({ productId, stockQty: result.balanceAfter });
   } catch (err) { return next(err); }

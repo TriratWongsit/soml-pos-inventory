@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="975" viewBox="0 0 1000 975" font-family="Sarabun, TH Sarabun New, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#333"/></marker></defs>
+<rect width="1000" height="975" fill="#fff"/>
+<rect x="22" y="126" width="970" height="644" rx="6" fill="#f7f8fc" stroke="#9aa6c8" stroke-dasharray="6 4"/>
+<text x="34" y="150" font-size="18" font-weight="bold" fill="#333">ระบบหลังบ้าน</text>
+<text x="34" y="174" font-size="16" fill="#333">[โหนดเจเอส + เอ็กซ์เพรสเจเอส]</text>
+<path d="M497,114 L497,140" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M497,244 L497,266" fill="none" stroke="#333" stroke-width="1.8"  />
+<path d="M128,266 L826,266" fill="none" stroke="#333" stroke-width="1.8"  />
+<path d="M128,266 L128,290" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M374,266 L374,290" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M620,266 L620,290" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M826,266 L826,290" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M251,266 L251,440 L128,440 L128,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M916,290 L916,244" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M866,394 L866,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M980,342 L986,342 L986,702 L980,702" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M620,394 L620,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<text x="628" y="452" font-size="16" fill="#333" text-anchor="start">ธุรกรรมเดียวกัน</text>
+<path d="M570,394 L424,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M670,394 L816,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M344,394 L344,460" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M334,564 L334,592 L826,592 L826,564" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M906,564 L906,614 L8,614 L8,62 L383,62" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<text x="16" y="104" font-size="16" fill="#333" text-anchor="start">เว็บซ็อกเก็ต</text>
+<path d="M866,754 L866,800" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<path d="M497,622 L497,650" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<text x="507" y="640" font-size="16" fill="#333" text-anchor="start">โมดูล BE ทุกตัวเข้าถึงข้อมูลผ่าน SP-02</text>
+<path d="M497,754 L497,800" fill="none" stroke="#333" stroke-width="1.8"  marker-end="url(#a)"/>
+<rect x="383" y="10" width="228" height="104" rx="4" fill="#dbe6f7" stroke="#1a4a8a" stroke-width="1.6"/>
+<text x="497" y="46" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">FE-01 ถึง FE-09</text>
+<text x="497" y="69" font-size="19" text-anchor="middle" fill="#111">ส่วนติดต่อผู้ใช้</text>
+<text x="497" y="92" font-size="19" text-anchor="middle" fill="#111">[รีแอ็กต์]</text>
+<rect x="383" y="140" width="228" height="104" rx="4" fill="#fbefd9" stroke="#9a6a12" stroke-width="1.6"/>
+<text x="497" y="164" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">SP-01</text>
+<text x="497" y="188" font-size="19" text-anchor="middle" fill="#111">Auth Middleware</text>
+<text x="497" y="210" font-size="19" text-anchor="middle" fill="#111">ตรวจโทเคนและบทบาท</text>
+<text x="497" y="234" font-size="19" text-anchor="middle" fill="#111">ทุกคำขอ</text>
+<rect x="752" y="140" width="228" height="104" rx="4" fill="#fbefd9" stroke="#9a6a12" stroke-width="1.6"/>
+<text x="866" y="164" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">SP-03</text>
+<text x="866" y="188" font-size="19" text-anchor="middle" fill="#111">PromptPay Library</text>
+<text x="866" y="210" font-size="19" text-anchor="middle" fill="#111">สร้างข้อความ</text>
+<text x="866" y="234" font-size="19" text-anchor="middle" fill="#111">รหัสคิวอาร์</text>
+<rect x="14" y="290" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="128" y="314" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-01</text>
+<text x="128" y="338" font-size="19" text-anchor="middle" fill="#111">Auth Controller</text>
+<text x="128" y="360" font-size="19" text-anchor="middle" fill="#111">เข้าสู่ระบบ</text>
+<text x="128" y="384" font-size="19" text-anchor="middle" fill="#111">ออกโทเคน</text>
+<rect x="168" y="293" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="203" y="309" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="260" y="290" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="374" y="314" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-02</text>
+<text x="374" y="338" font-size="19" text-anchor="middle" fill="#111">Product Controller</text>
+<text x="374" y="360" font-size="19" text-anchor="middle" fill="#111">สินค้าและ</text>
+<text x="374" y="384" font-size="19" text-anchor="middle" fill="#111">จุดสั่งซื้อเพิ่ม</text>
+<rect x="414" y="293" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="449" y="309" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="506" y="290" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="620" y="314" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-05</text>
+<text x="620" y="338" font-size="19" text-anchor="middle" fill="#111">Dispatch Controller</text>
+<text x="620" y="360" font-size="19" text-anchor="middle" fill="#111">รับคำขอ</text>
+<text x="620" y="384" font-size="19" text-anchor="middle" fill="#111">ยืนยันจ่ายสินค้า</text>
+<rect x="752" y="290" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="866" y="314" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-03</text>
+<text x="866" y="338" font-size="19" text-anchor="middle" fill="#111">Order Controller</text>
+<text x="866" y="360" font-size="19" text-anchor="middle" fill="#111">คำนวณยอด</text>
+<text x="866" y="384" font-size="19" text-anchor="middle" fill="#111">เลขที่ไม่ซ้ำ</text>
+<rect x="906" y="293" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="941" y="309" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="14" y="460" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="128" y="484" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-07</text>
+<text x="128" y="508" font-size="19" text-anchor="middle" fill="#111">Dashboard Aggregator</text>
+<text x="128" y="530" font-size="19" text-anchor="middle" fill="#111">รวมตัวเลข</text>
+<text x="128" y="554" font-size="19" text-anchor="middle" fill="#111">แดชบอร์ด</text>
+<rect x="260" y="460" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="374" y="484" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-08</text>
+<text x="374" y="508" font-size="19" text-anchor="middle" fill="#111">Alert Engine</text>
+<text x="374" y="530" font-size="19" text-anchor="middle" fill="#111">สินค้าใกล้หมด</text>
+<text x="374" y="554" font-size="19" text-anchor="middle" fill="#111">คิวค้าง</text>
+<rect x="414" y="463" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="449" y="479" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="506" y="460" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="620" y="484" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-06</text>
+<text x="620" y="508" font-size="19" text-anchor="middle" fill="#111">Stock Deduction Service</text>
+<text x="620" y="530" font-size="19" text-anchor="middle" fill="#111">ธุรกรรมตัดสต็อก</text>
+<text x="620" y="554" font-size="19" text-anchor="middle" fill="#111">กันจ่ายซ้ำ</text>
+<rect x="660" y="463" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="695" y="479" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="752" y="460" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="866" y="484" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-04</text>
+<text x="866" y="508" font-size="19" text-anchor="middle" fill="#111">Queue Manager</text>
+<text x="866" y="530" font-size="19" text-anchor="middle" fill="#111">คิวงาน</text>
+<text x="866" y="554" font-size="19" text-anchor="middle" fill="#111">ผลักเหตุการณ์</text>
+<rect x="906" y="463" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="941" y="479" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<rect x="14" y="650" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="128" y="674" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-09</text>
+<text x="128" y="698" font-size="19" text-anchor="middle" fill="#111">Audit Log Service</text>
+<text x="128" y="720" font-size="19" text-anchor="middle" fill="#111">บันทึกและ</text>
+<text x="128" y="744" font-size="19" text-anchor="middle" fill="#111">ค้นประวัติ</text>
+<rect x="383" y="650" width="228" height="104" rx="4" fill="#fbefd9" stroke="#9a6a12" stroke-width="1.6"/>
+<text x="497" y="674" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">SP-02</text>
+<text x="497" y="698" font-size="19" text-anchor="middle" fill="#111">Database Config</text>
+<text x="497" y="720" font-size="19" text-anchor="middle" fill="#111">พูลการเชื่อมต่อ</text>
+<text x="497" y="744" font-size="19" text-anchor="middle" fill="#111">ธุรกรรม</text>
+<rect x="752" y="650" width="228" height="104" rx="4" fill="#e8e2f5" stroke="#5a3a8a" stroke-width="1.6"/>
+<text x="866" y="674" font-size="19" text-anchor="middle" fill="#111" font-weight="bold">BE-10</text>
+<text x="866" y="698" font-size="19" text-anchor="middle" fill="#111">Print Service Client</text>
+<text x="866" y="720" font-size="19" text-anchor="middle" fill="#111">ส่งงานพิมพ์</text>
+<text x="866" y="744" font-size="19" text-anchor="middle" fill="#111">ใบเสร็จ</text>
+<rect x="752" y="800" width="228" height="70" rx="4" fill="#dbe6f7" stroke="#1a4a8a" stroke-width="1.6"/>
+<text x="866" y="842" font-size="19" text-anchor="middle" fill="#111">บริการพิมพ์ใบเสร็จ</text>
+<path d="M383,812 v58 a114,12 0 0 0 228,0 v-58" fill="#d8ece8" stroke="#136055" stroke-width="1.6"/>
+<ellipse cx="497" cy="812" rx="114" ry="12" fill="#d8ece8" stroke="#136055" stroke-width="1.6"/>
+<text x="497" y="852" font-size="19" text-anchor="middle" fill="#111">มายเอสคิวแอล</text>
+<rect x="22" y="900" width="70" height="22" rx="3" fill="#fff" stroke="#5a3a8a" stroke-dasharray="4 3"/>
+<text x="57" y="916" font-size="14" text-anchor="middle" fill="#5a3a8a">→ BE-09</text>
+<text x="102" y="917" font-size="17" fill="#333">โมดูลนี้บันทึกประวัติการทำรายการผ่าน BE-09</text>
+<rect x="22" y="938" width="26" height="18" fill="#fbefd9" stroke="#9a6a12"/>
+<text x="58" y="953" font-size="17" fill="#333">ส่วนสนับสนุน (SP)</text>
+<rect x="250" y="938" width="26" height="18" fill="#e8e2f5" stroke="#5a3a8a"/>
+<text x="286" y="953" font-size="17" fill="#333">โมดูลหลัก (BE)</text>
+</svg>

@@ -1,13 +1,15 @@
-// หน้ายืนยันจ่ายสินค้า                      [ตารางที่ 3.15 หน้าจอ 4 · ตารางที่ 3.21 · UC-07 · 3.9.1 ข้อสาม]
+// หน้ายืนยันจ่ายสินค้า                      [ตารางที่ 3.18 หน้าจอ 4 · ตารางที่ 3.24 · UC-07 · 3.4.3.1 ข้อสาม]
 //
 // งานเดียว: เห็นรายการที่ต้องจัด → ยืนยัน → ยืนยันซ้ำ → จ่าย
-// การจ่ายทำให้สถานะเป็น delivered ซึ่งย้อนกลับไม่ได้ (ตาราง 3.20) จึงต้องยืนยันสองครั้ง
-// ปุ่มใหญ่กดด้วยนิ้วได้แม้สวมถุงมือ (3.9.3) · ผลจากหลังบ้าน: ALREADY_DISPATCHED / INSUFFICIENT_STOCK แสดงตรง ๆ
+// การจ่ายทำให้สถานะเป็น delivered ซึ่งย้อนกลับไม่ได้ (ตาราง 3.23) จึงต้องยืนยันสองครั้ง
+// ปุ่มใหญ่กดด้วยนิ้วได้แม้สวมถุงมือ (3.4.3.4) · ผลจากหลังบ้าน: ALREADY_DISPATCHED / INSUFFICIENT_STOCK แสดงตรง ๆ
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../components/Layout.jsx';
 import { baht, int } from '../../components/Money.jsx';
 import { api } from '../../services/api.js';
+import { subscribe } from '../../services/events.js';
+import PayBadge from '../../components/PayBadge.jsx';
 
 export default function Dispatch() {
   const { id } = useParams();
@@ -19,8 +21,14 @@ export default function Dispatch() {
   const [error, setError] = useState(null);
 
   useEffect(() => { api.get(`/orders/${id}`).then((r) => setOrder(r.order)).catch((e) => setError(e.message)); }, [id]);
+  // อีกเครื่องจ่ายของหรือปรับสต็อก → โหลดใบนี้ใหม่ ยอด "ในคลัง" และปุ่มจ่ายจะตรงกับปัจจุบันก่อนกด (K-1)
+  useEffect(() => subscribe((ev) => {
+    if (!result && (ev === 'order.dispatched' || ev === 'order.status' || ev === 'product.stock' || ev === 'connected')) {
+      api.get(`/orders/${id}`).then((r) => setOrder(r.order)).catch(() => {});
+    }
+  }), [id, result]);
 
-  const confirm = async () => {
+  const confirm = async () => {  // ◀ [D-4] เดโม: กดยืนยันจ่าย (หลังกดยืนยันซ้ำ)
     setBusy(true); setError(null);
     try {
       const r = await api.post(`/orders/${id}/dispatch`);
@@ -57,7 +65,8 @@ export default function Dispatch() {
         {error && <div className="alert crit">{error}</div>}
         {order && (
           <>
-            <div className="qhead"><b className="qno">{order.order_no}</b><small className="muted">ขายโดย {order.created_by_name}</small></div>
+            <div className="qhead"><b className="qno">{order.order_no}</b><PayBadge order={order} /><small className="muted">ขายโดย {order.created_by_name}</small></div>
+            {order.payment_method === 'credit' && <div className="alert warn" style={{ marginTop: 8 }}>ขายเชื่อ — ให้ <b>{order.customer_name}</b> เซ็นรับของในใบที่ร้านเก็บ ก่อนส่งของ</div>}
             <table style={{ margin: '12px 0' }}>
               <thead><tr><th>สินค้า</th><th className="num">จำนวนที่ต้องจัด</th><th className="num">ในคลัง</th></tr></thead>
               <tbody>
@@ -70,7 +79,7 @@ export default function Dispatch() {
                 ))}
               </tbody>
             </table>
-            <div className="total"><span>ยอดชำระแล้ว</span><b>{baht(order.total_amount)} ฿</b></div>
+            <div className="total"><span>{order.payment_method === 'credit' ? 'ยอดขายเชื่อ (ยังไม่ชำระ)' : 'ยอดชำระแล้ว'}</span><b>{baht(order.total_amount)} ฿</b></div>
 
             {done ? (
               <div className="alert warn" style={{ marginTop: 12 }}>คำสั่งซื้อนี้{order.status === 'delivered' ? 'ถูกจ่ายไปแล้ว' : 'ถูกยกเลิกแล้ว'} ไม่สามารถจ่ายซ้ำได้</div>

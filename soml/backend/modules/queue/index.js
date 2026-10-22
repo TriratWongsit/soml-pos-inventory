@@ -1,18 +1,18 @@
 // ---------------------------------------------------------------------
-// ส่วนจัดการคิวงาน (Queue Manager)          [ตารางที่ 3.13 โมดูล 4 · FR-04 · UC-05, UC-06]
+// ส่วนจัดการคิวงาน (Queue Manager)          [ตารางที่ 3.16 โมดูล BE-04 · FR-04 · UC-05, UC-06]
 //
 // รับผิดชอบเรื่องเดียว: "คลังเห็นอะไรอยู่ในคิว และรู้ทันทีเมื่อมีของใหม่"
 //   GET   /api/queue                 รายการที่รอจ่าย เรียงตามเวลาชำระ (UC-05)
-//   PATCH /api/orders/:id/status     เปลี่ยนสถานะตามแผนภาพ 3.13 / ตาราง 3.20 เท่านั้น (UC-06)
+//   PATCH /api/orders/:id/status     เปลี่ยนสถานะตามรูปที่ 3.11 / ตาราง 3.23 เท่านั้น (UC-06)
 //   broadcast(event, data)           ผลักเหตุการณ์ไปทุกหน้าจอที่เปิดค้าง — order, dispatch เรียก
 //   attach(server)                   ผูกช่องทางค้างเข้ากับ http server (server.js เรียก)
 //   GET   /api/events                ช่องทางค้างทางเดียว (SSE) เป็นทางสำรอง
 //
 // ทำไมต้อง "ผลัก" ไม่ให้หน้าจอถามเอง: BR-03 คลังต้องรู้ก่อนลูกค้าเดินไปถึง (NFR-02 ≤ 3 วินาที)
-// ทำไมมีสองช่องทาง: 3.5.2 — อุปกรณ์เครือข่ายบางรุ่นยกระดับเป็น WebSocket ไม่ได้ จึงมี SSE สำรอง
+// ทำไมมีสองช่องทาง: 3.3.3 — อุปกรณ์เครือข่ายบางรุ่นยกระดับเป็น WebSocket ไม่ได้ จึงมี SSE สำรอง
 //
 // สถานะ delivered ตั้งผ่านเส้นทางนี้ไม่ได้ — เกิดได้ทางเดียวคือธุรกรรมตัดสต็อก (ขั้น 13)
-// มิฉะนั้นสถานะจะไม่ใช่หลักฐานว่าสต็อกถูกหักแล้วจริง (ย่อหน้าท้ายตาราง 3.20)
+// มิฉะนั้นสถานะจะไม่ใช่หลักฐานว่าสต็อกถูกหักแล้วจริง (ย่อหน้าท้ายตาราง 3.23)
 // ---------------------------------------------------------------------
 const { WebSocketServer } = require('ws');
 const jwt = require('jsonwebtoken');
@@ -20,14 +20,14 @@ const { pool, withTransaction } = require('../../config/db');
 const { clientIp, JWT_SECRET } = require('../../middleware/auth');
 const auditLog = require('../audit-log');
 
-// ตาราง 3.20 — สถานะที่เปลี่ยนผ่านเส้นทางนี้ได้ (delivered ไม่อยู่ในนี้โดยตั้งใจ)
-const TRANSITIONS = Object.freeze({
+// ตาราง 3.23 — สถานะที่เปลี่ยนผ่านเส้นทางนี้ได้ (delivered ไม่อยู่ในนี้โดยตั้งใจ)
+const TRANSITIONS = Object.freeze({  // ◀ [D-4] เดโม: สถานะที่เปลี่ยนต่อได้ (ไม่มี delivered)
   awaiting_dispatch: ['picking', 'cancelled'],
   picking: ['awaiting_dispatch', 'cancelled'],
   delivered: [],
   cancelled: [],
 });
-// ใครเปลี่ยนไปสถานะใดได้ (ตาราง 3.13 โมดูล 4: พนักงานคลังกับผู้จัดการ · ยกเลิกเฉพาะผู้จัดการ)
+// ใครเปลี่ยนไปสถานะใดได้ (ตาราง 3.16 โมดูล BE-04: พนักงานคลังกับผู้จัดการ · ยกเลิกเฉพาะผู้จัดการ)
 const WHO_CAN = Object.freeze({ picking: ['warehouse', 'manager'], awaiting_dispatch: ['warehouse', 'manager'], cancelled: ['manager'] });
 
 // ---------- ช่องทางค้าง ----------
@@ -35,7 +35,7 @@ const wsClients = new Set();   // WebSocket ที่ยืนยันตัว
 const sseClients = new Set();  // response ของ /api/events ที่เปิดค้าง
 
 /** ส่งเหตุการณ์ไปทุกช่องทาง ผู้เรียกต้องเรียกหลัง commit เท่านั้น เพื่อไม่ให้คิวเห็นของที่ยังไม่มีจริง */
-function broadcast(event, data) {
+function broadcast(event, data) {  // ◀ [D-3] เดโม: broadcast() ส่งเหตุการณ์ไปทุกจอ
   const payload = JSON.stringify({ event, data, at: new Date().toISOString() });
   for (const ws of wsClients) {
     if (ws.readyState === ws.OPEN) ws.send(payload);
@@ -80,14 +80,16 @@ function events(req, res) {
 const QUEUE_SQL = `
   SELECT o.order_id, o.order_no, o.total_amount, o.status, o.paid_at,
          TIMESTAMPDIFF(SECOND, o.paid_at, NOW()) AS waited_seconds,
-         u.full_name AS created_by_name
+         u.full_name AS created_by_name,
+         o.payment_method, c.name AS customer_name
     FROM orders o
     JOIN users u ON u.user_id = o.created_by
+    LEFT JOIN customers c ON c.customer_id = o.customer_id
    WHERE o.status IN ('awaiting_dispatch', 'picking')
    ORDER BY o.paid_at ASC, o.order_id ASC`;
 
 /** GET /api/queue — คิวพร้อมรายการสินค้าของแต่ละใบ เก่าสุดอยู่บน */
-async function list(req, res, next) {
+async function list(req, res, next) {  // ◀ [D-3] เดโม: list() ส่งรายการคิว
   try {
     const [orders] = await pool.query(QUEUE_SQL);
     if (orders.length === 0) return res.json({ queue: [] });
@@ -104,7 +106,7 @@ async function list(req, res, next) {
 }
 
 /** PATCH /api/orders/:id/status  { status } */
-async function updateStatus(req, res, next) {
+async function updateStatus(req, res, next) {  // ◀ [D-4] เดโม: updateStatus() เปลี่ยนสถานะการจัดของ
   try {
     const orderId = Number(req.params.id);
     const target = req.body?.status;

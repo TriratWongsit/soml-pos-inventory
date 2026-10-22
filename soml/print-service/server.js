@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------
-// บริการพิมพ์ใบเสร็จ (Receipt Print Service)         [หน่วยติดตั้งที่ 3 · ตารางที่ 3.17 · FR-03]
+// บริการพิมพ์ใบเสร็จ (Receipt Print Service)         [หน่วยติดตั้งที่ 3 · ตารางที่ 3.15 · FR-03]
 //
-// แยกเป็นกระบวนการต่างหากเพราะต้องรันบนเครื่องที่ต่อสาย USB กับ TM-T82 เสมอ (3.5.2)
+// แยกเป็นกระบวนการต่างหากเพราะต้องรันบนเครื่องที่ต่อสาย USB กับ TM-T82 เสมอ (3.3.3)
 // หลังบ้านย้ายไปเครื่องไหนก็ได้ แต่บริการนี้ต้องอยู่หน้าร้าน
 //   GET  /health          ตรวจว่ารันอยู่และชี้เครื่องพิมพ์ทางไหน
 //   POST /print/receipt   รับใบเสร็จเป็น JSON → ESC/POS → ส่งเครื่องพิมพ์
@@ -25,11 +25,15 @@ app.post('/print/receipt', async (req, res) => {
     return res.status(400).json({ ok: false, error: 'ใบเสร็จต้องมีเลขที่และรายการสินค้า' });
   }
   try {
-    const payload = buildReceipt(receipt, {
+    const opts = {
       width: Number(process.env.PRINTER_WIDTH_CHARS || 48),
       codepage: Number(process.env.PRINTER_CODEPAGE ?? 21),
       shopName: process.env.SHOP_NAME || undefined,
-    });
+    };
+    // ขายเชื่อพิมพ์ 2 ใบในงานเดียว: ลูกค้าเก็บ 1 ใบ ร้านเก็บ 1 ใบที่ลูกค้าเซ็นแล้ว (K-6)
+    const payload = receipt.copies === 2
+      ? Buffer.concat([buildReceipt({ ...receipt, copyLabel: 'สำเนาลูกค้า' }, opts), buildReceipt({ ...receipt, copyLabel: 'สำเนาร้าน ลูกค้าเซ็นรับของ' }, opts)])
+      : buildReceipt(receipt, opts);
     const result = await transport.send(payload, receipt);
     const elapsedMs = Date.now() - started;
     console.log(`พิมพ์ ${receipt.orderNo} สำเร็จใน ${elapsedMs} ms → ${result.target}`);

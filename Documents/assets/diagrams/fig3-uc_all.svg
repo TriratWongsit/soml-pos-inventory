@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1010" height="1190" viewBox="0 0 1010 1190" font-family="Sarabun, TH Sarabun New, sans-serif">
+<defs><marker id="open" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0L10,5L0,10" fill="none" stroke="#333" stroke-width="1.3"/></marker><marker id="tri" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="14" markerHeight="14" orient="auto"><path d="M0,0L12,6L0,12z" fill="#fff" stroke="#333" stroke-width="1.2"/></marker></defs>
+<rect width="1010" height="1190" fill="#fff"/>
+<rect x="250" y="20" width="650" height="1140" fill="#f7f8fc" stroke="#5a6b8a" stroke-width="1.5"/>
+<text x="575" y="44" font-size="20" font-weight="bold" text-anchor="middle" fill="#222">ระบบอำพร OMS</text>
+<line x1="144" y1="145" x2="275" y2="80" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="145" x2="275" y2="190" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="80" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="360" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="460" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="560" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="670" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="505" x2="275" y2="780" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="980" x2="275" y2="670" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="980" x2="275" y2="780" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="980" x2="275" y2="890" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="980" x2="275" y2="990" stroke="#333" stroke-width="1.4"/>
+<line x1="144" y1="980" x2="275" y2="1090" stroke="#333" stroke-width="1.4"/>
+<line x1="911" y1="782" x2="605" y2="780" stroke="#333" stroke-width="1.4"/>
+<line x1="600" y1="200" x2="562" y2="261" stroke="#333" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="589" y="224" font-size="17" fill="#333">«include»</text>
+<line x1="120" y1="938" x2="120" y2="580" stroke="#333" stroke-width="1.4" marker-end="url(#tri)"/>
+<polyline points="96,975 40,975 40,150 90,150" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#tri)"/>
+<ellipse cx="440" cy="80" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="76" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-01</text>
+<text x="440" y="100" font-size="18" text-anchor="middle" fill="#111">เข้าสู่ระบบและควบคุมสิทธิ์ตามบทบาท</text>
+<ellipse cx="440" cy="190" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="186" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-03</text>
+<text x="440" y="210" font-size="18" text-anchor="middle" fill="#111">สร้างคำสั่งซื้อและออกใบเสร็จ</text>
+<ellipse cx="720" cy="272" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="720" y="268" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-04</text>
+<text x="720" y="292" font-size="18" text-anchor="middle" fill="#111">สร้างเลขที่คำสั่งซื้อไม่ซ้ำอัตโนมัติ</text>
+<ellipse cx="440" cy="360" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="356" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-05</text>
+<text x="440" y="380" font-size="18" text-anchor="middle" fill="#111">ดูคิวรอจ่ายสินค้าแบบเรียลไทม์</text>
+<ellipse cx="440" cy="460" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="456" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-06</text>
+<text x="440" y="480" font-size="18" text-anchor="middle" fill="#111">ปรับสถานะการจัดของในคิวงาน</text>
+<ellipse cx="440" cy="560" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="556" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-07</text>
+<text x="440" y="580" font-size="18" text-anchor="middle" fill="#111">ยืนยันจ่ายสินค้าและตัดสต็อก</text>
+<ellipse cx="440" cy="670" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="666" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-08</text>
+<text x="440" y="690" font-size="18" text-anchor="middle" fill="#111">แสดงแดชบอร์ดปฏิบัติการ</text>
+<ellipse cx="440" cy="780" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="776" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-11</text>
+<text x="440" y="800" font-size="18" text-anchor="middle" fill="#111">รับการแจ้งเตือนภายในแอปพลิเคชัน</text>
+<ellipse cx="440" cy="890" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="886" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-02</text>
+<text x="440" y="910" font-size="18" text-anchor="middle" fill="#111">จัดการข้อมูลสินค้าและจุดสั่งซื้อเพิ่ม</text>
+<ellipse cx="440" cy="990" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="986" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-09</text>
+<text x="440" y="1010" font-size="18" text-anchor="middle" fill="#111">แสดงแดชบอร์ดระดับบริหาร</text>
+<ellipse cx="440" cy="1090" rx="165" ry="40" fill="#fdf6e3" stroke="#8a6a12" stroke-width="1.5"/>
+<text x="440" y="1086" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">UC-10</text>
+<text x="440" y="1110" font-size="18" text-anchor="middle" fill="#111">ค้นหาและดูประวัติการทำรายการ</text>
+<circle cx="120" cy="105" r="11" fill="#fff" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="116" x2="120" y2="151" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="102" y1="129" x2="138" y2="129" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="151" x2="105" y2="175" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="151" x2="135" y2="175" stroke="#1f5a2e" stroke-width="1.8"/>
+<text x="120" y="197" font-size="19" text-anchor="middle" fill="#111">พนักงานขาย</text>
+<circle cx="120" cy="465" r="11" fill="#fff" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="476" x2="120" y2="511" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="102" y1="489" x2="138" y2="489" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="511" x2="105" y2="535" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="511" x2="135" y2="535" stroke="#1f5a2e" stroke-width="1.8"/>
+<text x="120" y="557" font-size="19" text-anchor="middle" fill="#111">พนักงานคลังสินค้า</text>
+<circle cx="120" cy="940" r="11" fill="#fff" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="951" x2="120" y2="986" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="102" y1="964" x2="138" y2="964" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="986" x2="105" y2="1010" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="120" y1="986" x2="135" y2="1010" stroke="#1f5a2e" stroke-width="1.8"/>
+<text x="120" y="1032" font-size="19" text-anchor="middle" fill="#111">ผู้จัดการ</text>
+<circle cx="935" cy="742" r="11" fill="#fff" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="935" y1="753" x2="935" y2="788" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="917" y1="766" x2="953" y2="766" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="935" y1="788" x2="920" y2="812" stroke="#1f5a2e" stroke-width="1.8"/>
+<line x1="935" y1="788" x2="950" y2="812" stroke="#1f5a2e" stroke-width="1.8"/>
+<text x="935" y="834" font-size="19" text-anchor="middle" fill="#111">ระบบอัตโนมัติ</text>
+</svg>

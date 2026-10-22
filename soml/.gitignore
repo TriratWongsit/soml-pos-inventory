@@ -6,3 +6,5 @@ dist/
 # ผลการรันชั่วคราวของการทดสอบระดับระบบ (ร่องรอย ภาพตอนล้มเหลว)
 test-results/
 playwright-report/
+runtime/
+data/

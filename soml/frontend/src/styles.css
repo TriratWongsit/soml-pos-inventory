@@ -1,4 +1,4 @@
-/* หลัก 3.9.1: หนึ่งหน้าหนึ่งงาน · ตัวเลขใหญ่ชิดขวา · ยืนยันก่อนทำสิ่งที่ย้อนกลับไม่ได้ · ปุ่มกดด้วยนิ้วได้ (3.9.3)
+/* หลัก 3.4.3.1: หนึ่งหน้าหนึ่งงาน · ตัวเลขใหญ่ชิดขวา · ยืนยันก่อนทำสิ่งที่ย้อนกลับไม่ได้ · ปุ่มกดด้วยนิ้วได้ (3.4.3.4)
    สีทั้งหมดเป็นตัวแปรใต้ html[data-theme] — สลับโหมดสว่าง/มืดโดยไม่แตะส่วนอื่น (services/theme.js) */
 :root, :root[data-theme="light"] {
   --bg: #F5F3EE; --side: #FFFFFF; --card: #FFFFFF; --input: #FFFFFF; --line: #E4DFD4; --row: #EFEAE0;
@@ -92,7 +92,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--fill); bord
 .btn.green { background: var(--ok); border-color: var(--ok); color: var(--on-ok); }
 .btn.red { background: var(--danger-fill); border-color: var(--danger-fill); color: #FFFFFF; }
 .btn.ghost { background: transparent; color: var(--ink); border-color: var(--btn-line); }
-.btn.small { min-height: 40px; padding: 0 14px; font-size: 14px; }
+.btn.small { min-height: 44px; padding: 0 14px; font-size: 14px; }
 .alert { padding: 12px 16px; border-radius: 12px; border: 1px solid transparent; }
 .alert.crit { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-line); }
 .alert.ok { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-line); }
@@ -120,7 +120,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .qr-amount { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .center-text { text-align: center; }
 
-/* คิวและจ่ายสินค้า — ใช้บนมือถือ (3.9.3) */
+/* คิวและจ่ายสินค้า — ใช้บนมือถือ (3.4.3.4) */
 .queue { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
 .qcard { cursor: pointer; display: flex; flex-direction: column; gap: 10px; }
 .qcard.late { background: var(--warn-bg); border-color: var(--warn-line); }
@@ -190,3 +190,34 @@ label.inline input { min-height: 0; }
 .chip { font: inherit; font-size: 15px; font-weight: 500; padding: 0 16px; border-radius: 20px; border: 1px solid var(--btn-line); background: transparent; color: var(--ink); cursor: pointer; min-height: 40px; }
 .chip.on { background: var(--fill); color: var(--on-fill); border-color: var(--fill); font-weight: 700; }
 .chip.static { cursor: default; font-size: 13px; font-weight: 600; padding: 3px 10px; min-height: 0; border: none; background: var(--chip); }
+
+/* ---- หลังสอบ: ขายเชื่อ ป้ายสถานะการชำระ รายงานรายวัน (K-3 K-6 K-9 K-10) ---- */
+.badge.pay-qr { background: var(--ok-bg); color: var(--ok); }
+.badge.pay-credit { background: var(--warn-bg); color: var(--warn); }
+.seg { display: flex; gap: 0; margin: 12px 0; border: 1px solid var(--btn-line); border-radius: 12px; overflow: hidden; }
+.seg button { flex: 1; padding: 10px 8px; border: 0; background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+.seg button.on { background: var(--fill); color: var(--on-fill); }
+.credit-box { display: flex; flex-direction: column; gap: 8px; }
+.cust-list { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow: auto; }
+.cust { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--item); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.cust:disabled { opacity: .5; cursor: not-allowed; }
+.new-cust { display: flex; flex-wrap: wrap; gap: 6px; }
+.new-cust input { flex: 1 1 160px; padding: 8px 10px; border: 1px solid var(--btn-line); border-radius: 10px; background: var(--input); color: var(--ink); font: inherit; }
+.picked { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: var(--warn-bg); border-radius: 10px; }
+label.check { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; font-weight: 600; cursor: pointer; }
+label.check input { width: 20px; height: 20px; margin-top: 2px; }
+.report-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.report-sum div { background: var(--item); border-radius: 12px; padding: 10px 12px; }
+.report-sum small { display: block; color: var(--muted); }
+.report-sum b { font-size: 20px; }
+.print-only { display: none; }
+@media print {
+  .sidebar, .page-actions, .no-print { display: none !important; }
+  .app { display: block; } main { padding: 0 !important; }
+  body { background: #fff; color: #000; }
+  .card { box-shadow: none !important; border: 0 !important; padding: 0 !important; }
+  .print-only { display: block; }
+  table { font-size: 12px; } th, td { padding: 3px 6px !important; }
+}
+.change-box { padding: 10px 12px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font-size: 18px; }
+.quick-cash { display: flex; gap: 6px; flex-wrap: wrap; }

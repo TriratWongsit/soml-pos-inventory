@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="366" viewBox="0 0 990 366" font-family="Sarabun, TH Sarabun New, sans-serif">
+<rect width="990" height="366" fill="#fff"/>
+<text x="20" y="40" font-size="19" font-weight="bold" fill="#111">กิจกรรม</text>
+<rect x="300" y="60" width="110" height="276" fill="#fff" stroke="#c8cdd8"/>
+<text x="355" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 1</text>
+<rect x="410" y="60" width="110" height="276" fill="#f7f8fc" stroke="#c8cdd8"/>
+<text x="465" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 2</text>
+<rect x="520" y="60" width="110" height="276" fill="#fff" stroke="#c8cdd8"/>
+<text x="575" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 3</text>
+<rect x="630" y="60" width="110" height="276" fill="#f7f8fc" stroke="#c8cdd8"/>
+<text x="685" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 4</text>
+<rect x="740" y="60" width="110" height="276" fill="#fff" stroke="#c8cdd8"/>
+<text x="795" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 5</text>
+<rect x="850" y="60" width="110" height="276" fill="#f7f8fc" stroke="#c8cdd8"/>
+<text x="905" y="40" font-size="18" text-anchor="middle" fill="#111">เดือนที่ 6</text>
+<line x1="20" y1="106" x2="980" y2="106" stroke="#e1e4ea"/>
+<text x="20" y="90" font-size="19" fill="#111">1 วิเคราะห์ความต้องการ</text>
+<rect x="308" y="72" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M410,72 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="398" y="90" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M1</text>
+<line x1="20" y1="152" x2="980" y2="152" stroke="#e1e4ea"/>
+<text x="20" y="136" font-size="19" fill="#111">2 ออกแบบระบบ</text>
+<rect x="418" y="118" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M520,118 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="508" y="136" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M2</text>
+<line x1="20" y1="198" x2="980" y2="198" stroke="#e1e4ea"/>
+<text x="20" y="182" font-size="19" fill="#111">3 พัฒนาโมดูลหลักระยะที่ 1</text>
+<rect x="528" y="164" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M630,164 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="618" y="182" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M3</text>
+<line x1="20" y1="244" x2="980" y2="244" stroke="#e1e4ea"/>
+<text x="20" y="228" font-size="19" fill="#111">4 พัฒนาโมดูลหลักระยะที่ 2</text>
+<rect x="638" y="210" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M740,210 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="728" y="228" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M4</text>
+<line x1="20" y1="290" x2="980" y2="290" stroke="#e1e4ea"/>
+<text x="20" y="274" font-size="19" fill="#111">5 พัฒนาแดชบอร์ดและการแจ้งเตือน</text>
+<rect x="748" y="256" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M850,256 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="838" y="274" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M5</text>
+<line x1="20" y1="336" x2="980" y2="336" stroke="#e1e4ea"/>
+<text x="20" y="320" font-size="19" fill="#111">6 ทดสอบและประเมินผล</text>
+<rect x="858" y="302" width="94" height="22" rx="4" fill="#5a3a8a"/>
+<path d="M960,302 l9,11 l-9,11 l-9,-11z" fill="#d9822b" stroke="#9a5a12"/>
+<text x="948" y="320" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="end">M6</text>
+</svg>

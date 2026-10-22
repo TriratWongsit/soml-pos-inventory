@@ -1,4 +1,4 @@
-// ส่วนควบคุมคำสั่งซื้อ           [ตารางที่ 3.13 โมดูล 3 · FR-03 · UC-03, UC-04 · AC-03, AC-04 · TC-03, TC-04]
+// ส่วนควบคุมคำสั่งซื้อ           [ตารางที่ 3.16 โมดูล BE-03 · FR-03 · UC-03, UC-04 · AC-03, AC-04 · TC-03, TC-04]
 const { app, request, pool, allTokens, auth } = require('./helpers');
 const { crc16 } = require('../../lib/promptpay');
 
@@ -27,7 +27,7 @@ describe('POST /api/orders/quote [TC-03]', () => {
     expect(res.body.qrPayload.slice(-4)).toBe(crc16(res.body.qrPayload.slice(0, -4)));
   });
 
-  test('ไม่เขียนฐานข้อมูล เพราะยังไม่ได้รับชำระเงิน (3.7.2 ข้อ 3)', async () => {
+  test('ไม่เขียนฐานข้อมูล เพราะยังไม่ได้รับชำระเงิน (3.4.1.3 ข้อ 3)', async () => {
     const before = await countOrders();
     await quote(tokens.sales, [{ productId: P1.product_id, qty: 1 }]);
     expect(await countOrders()).toBe(before);
@@ -79,7 +79,7 @@ describe('POST /api/orders [AC-03]', () => {
     expect(items[0]).toMatchObject({ qty: 3, unit_price: 130 });
   });
 
-  test('ราคาในใบเสร็จเก่าไม่เปลี่ยนเมื่อราคาสินค้าเปลี่ยน (3.7.2 ข้อ 1)', async () => {
+  test('ราคาในใบเสร็จเก่าไม่เปลี่ยนเมื่อราคาสินค้าเปลี่ยน (3.4.1.3 ข้อ 1)', async () => {
     const { order } = (await create(tokens.sales, [{ productId: P2.product_id, qty: 1 }])).body;
     await pool.query('UPDATE products SET price = 999 WHERE product_id = ?', [P2.product_id]);
     try {

@@ -1,6 +1,6 @@
-// แดชบอร์ดปฏิบัติการ                        [ตารางที่ 3.15 หน้าจอ 5 · ตารางที่ 3.21 · UC-08 · BR-04]
+// แดชบอร์ดปฏิบัติการ                        [ตารางที่ 3.18 หน้าจอ 5 · ตารางที่ 3.24 · UC-08 · BR-04]
 // บนสุดคือกล่องต้องดูแลวันนี้ (UC-08 ข้อ 3) รวมสามเรื่องจากข้อมูลที่มีอยู่แล้ว: คิวที่รอเกินเกณฑ์ ·
-// สินค้าที่ต่ำกว่าจุดสั่งซื้อเพิ่ม · การแจ้งเตือนที่ยังไม่อ่าน แล้วตามด้วยตัวเลขใหญ่ (3.9.1 ข้อสอง)
+// สินค้าที่ต่ำกว่าจุดสั่งซื้อเพิ่ม · การแจ้งเตือนที่ยังไม่อ่าน แล้วตามด้วยตัวเลขใหญ่ (3.4.3.1 ข้อสอง)
 // ดึงใหม่เมื่อมีเหตุการณ์จากหลังบ้าน เพราะทุกตัวเลขคำนวณสด ไม่มีค่าสรุปค้าง
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -32,7 +32,7 @@ export default function DashboardOps() {
   const unread = useUnreadCount(true);
   const [d, setD] = useState(null);
   const [error, setError] = useState(null);
-  const load = useCallback(() => api.get('/dashboard/ops').then(setD).catch((e) => setError(e.message)), []);
+  const load = useCallback(() => api.get('/dashboard/ops').then(setD).catch((e) => setError(e.message)), []);  // ◀ [D-8] เดโม: แดชบอร์ดดึงข้อมูล และโหลดใหม่ทุกเหตุการณ์
   useEffect(() => { load(); const stop = subscribe(() => load()); const t = setInterval(load, 60_000); return () => { stop(); clearInterval(t); }; }, [load]);
 
   const items = [];

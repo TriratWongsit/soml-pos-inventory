@@ -95,7 +95,7 @@ npm run test:system               # เดินตามเกณฑ์กา�
 ```bash
 node evidence/measure-tc05.js       # TC-05 เวลาจากยืนยันรับชำระจนถึงหน้าจอคิว (WebSocket)
 node evidence/measure-tc05.js sse   # TC-05 ผ่านช่องทางสำรอง
-node evidence/measure-tc14.js       # TC-14 สิบเซสชันจากสามบทบาทใช้งานพร้อมกัน
+node evidence/measure-tc13.js       # TC-13 สิบเซสชันจากสามบทบาทใช้งานพร้อมกัน
 npm run test:system                 # ภาพหน้าจอลง Documents/assets/screens/
 ```
 

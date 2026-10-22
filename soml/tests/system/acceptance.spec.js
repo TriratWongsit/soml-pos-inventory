@@ -76,6 +76,8 @@ test.describe('AC-03 AC-04 AC-05 การขายและการออก�
     const qrAmount = (await page.locator('.qr-amount').innerText()).replace(/[^\d.]/g, '');
     expect(qrAmount).toBe(total);
 
+    await page.getByLabel(/ตรวจแอปธนาคารแล้ว/).check();   // K-3 ต้องยืนยันว่าเงินเข้าก่อน ปุ่มจึงกดได้
+
     await page.getByRole('button', { name: 'ยืนยันรับชำระเงิน' }).click();
     await expect(page.locator('.alert.ok')).toContainText(/ORD-\d{8}-\d{4}/);
     await expect(page.locator('.total b')).toContainText(total);
@@ -154,6 +156,7 @@ test.describe('AC-07 และ AC-08 การจ่ายสินค้าแ�
     const name = await addToCart(page, STOCKED_SKU);
     await page.getByRole('button', { name: 'แสดงรหัส QR เพื่อรับชำระ' }).click();
     await page.locator('.qrbox img').waitFor();
+    await page.getByLabel(/ตรวจแอปธนาคารแล้ว/).check();   // K-3 ต้องยืนยันว่าเงินเข้าก่อน ปุ่มจึงกดได้
     await page.getByRole('button', { name: 'ยืนยันรับชำระเงิน' }).click();
     const orderNo = (await page.locator('.alert.ok').innerText()).match(/ORD-\d{8}-\d{4}/)[0];
 
@@ -217,7 +220,8 @@ test.describe('AC-02 AC-09 AC-10 AC-11 งานของผู้จัดก�
     const api = await apiAs(page, 'GET', '/dashboard/ops');
     const revenue = Number(api.body.today.revenue).toLocaleString('th-TH', { minimumFractionDigits: 2 });
     await expect(page.locator('main')).toContainText(revenue);
-    await expect(page.locator('main')).toContainText(String(api.body.queue.waiting ?? api.body.queue.count ?? ''));
+    // หน้าจอแสดงจำนวนแบบมีจุลภาค (int() ใน components/Money.jsx) จึงต้องจัดรูปแบบเดียวกันก่อนเทียบ เช่น 3,435
+    await expect(page.locator('main')).toContainText(Number(api.body.queue.waiting).toLocaleString('th-TH'));
   });
 
   test('AC-10 จ่ายสินค้าจนต่ำกว่าจุดสั่งซื้อเพิ่มแล้วมีการแจ้งเตือนเอง', async ({ page }) => {
@@ -235,6 +239,7 @@ test.describe('AC-02 AC-09 AC-10 AC-11 งานของผู้จัดก�
     await addToCart(page, product.sku);
     await page.getByRole('button', { name: 'แสดงรหัส QR เพื่อรับชำระ' }).click();
     await page.locator('.qrbox img').waitFor();
+    await page.getByLabel(/ตรวจแอปธนาคารแล้ว/).check();   // K-3 ต้องยืนยันว่าเงินเข้าก่อน ปุ่มจึงกดได้
     await page.getByRole('button', { name: 'ยืนยันรับชำระเงิน' }).click();
     const orderNo = (await page.locator('.alert.ok').innerText()).match(/ORD-\d{8}-\d{4}/)[0];
 

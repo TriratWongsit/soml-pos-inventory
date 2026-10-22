@@ -1,4 +1,4 @@
-// ประวัติการทำรายการ                          [ตารางที่ 3.15 หน้าจอ 9 · ตารางที่ 3.21 · UC-10 · AC-11]
+// ประวัติการทำรายการ                          [ตารางที่ 3.18 หน้าจอ 9 · ตารางที่ 3.24 · UC-10 · AC-11]
 // งานเดียว: กรองตามช่วงเวลาและประเภทการกระทำ → เห็นผู้กระทำ เวลา และข้อมูลที่ถูกกระทำ
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout.jsx';
@@ -8,8 +8,9 @@ const ACTION_LABEL = {
   LOGIN: 'เข้าสู่ระบบ', CREATE_PRODUCT: 'เพิ่มสินค้า', UPDATE_PRODUCT: 'แก้ไขสินค้า', ADJUST_STOCK: 'ปรับสต็อก',
   CREATE_ORDER: 'สร้างคำสั่งซื้อ', UPDATE_STATUS: 'เปลี่ยนสถานะ', CONFIRM_DISPATCH: 'ยืนยันจ่ายสินค้า',
   CANCEL_ORDER: 'ยกเลิกคำสั่งซื้อ', CREATE_NOTIFICATION: 'ระบบสร้างการแจ้งเตือน', READ_NOTIFICATION: 'อ่านการแจ้งเตือน',
+  CREATE_CUSTOMER: 'เพิ่มลูกค้าขายเชื่อ', RECEIVE_PAYMENT: 'รับชำระหนี้ขายเชื่อ',
 };
-const ENTITY_LABEL = { order: 'คำสั่งซื้อ', product: 'สินค้า', notification: 'การแจ้งเตือน' };
+const ENTITY_LABEL = { order: 'คำสั่งซื้อ', product: 'สินค้า', notification: 'การแจ้งเตือน', customer: 'ลูกค้า' };
 // วันที่ตามเวลาเครื่องผู้ใช้ ไม่ใช่ UTC — toISOString() ให้วัน UTC ซึ่งช่วงเที่ยงคืนถึง 7 โมงเช้าไทยยังเป็น "เมื่อวาน"
 const localDate = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const today = () => localDate();
@@ -24,7 +25,7 @@ export default function AuditLogs() {
   useEffect(() => {
     const p = new URLSearchParams({ from: `${from} 00:00:00`, to: `${to} 23:59:59`, limit: 300 });
     if (action) p.set('action', action);
-    api.get(`/audit-logs?${p}`).then(setData).catch((e) => setError(e.message));
+    api.get(`/audit-logs?${p}`).then(setData).catch((e) => setError(e.message));  // ◀ [D-8] เดโม: หน้าจอส่งตัวกรองไปค้น
   }, [from, to, action]);
 
   return (

@@ -1,0 +1,234 @@
+<title>สืบย้อนความต้องการ อำพร OMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#F2F1EE; --surface:#FFFFFF; --ink:#1E2430; --muted:#646B78; --line:#D9D6CF;
+  --brand:#D9962B; --brand-soft:#FBEFD9;
+  --blue:#2F6FB3; --blue-soft:#E3EDF8; --green:#2E8A5E; --green-soft:#DFF1E8; --plum:#7A4DA8; --plum-soft:#EEE6F7;
+  --ok:#2E8A5E; --sel:#D9962B;
+  --sans:'IBM Plex Sans Thai','Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340; --ok:#6CCB9C; --sel:#E9B04F;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340; --ok:#6CCB9C; --sel:#E9B04F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;align-items:center;gap:12px}
+.mark{width:44px;height:44px;border-radius:12px;background:var(--brand);color:#231A08;display:grid;place-items:center;font-weight:700;font-size:17px;flex:none}
+h1{margin:0;font-size:24px;line-height:1.2;text-wrap:balance}
+.sub{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.counts{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;color:var(--muted)}
+.counts b{color:var(--ink);font-size:18px;font-variant-numeric:tabular-nums;margin-right:4px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+h2{margin:0 0 10px;font-size:18px;text-wrap:balance}
+h3{margin:0 0 6px;font-size:12.5px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.pick{display:flex;flex-direction:column;gap:8px}
+.pick .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pick .lab{font-size:12.5px;color:var(--muted);width:44px}
+.rq{font:inherit;font-family:var(--mono);font-size:12.5px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:3px 9px;cursor:pointer}
+.rq:hover{border-color:var(--ink)}
+.rq[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rq.hl{border-color:var(--sel);box-shadow:0 0 0 2px var(--brand-soft)}
+button:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
+.head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;margin:14px 0 4px}
+.head .code{font-family:var(--mono);font-size:15px;font-weight:500;background:var(--brand-soft);border-radius:6px;padding:1px 8px}
+.head .title{font-size:19px;font-weight:600;flex:1 1 320px}
+.result{font-size:13px;font-weight:600;color:var(--ok);background:var(--green-soft);border-radius:999px;padding:2px 12px}
+.chain{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column}
+.chain > li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 12px}
+.chain .n{display:flex;flex-direction:column;align-items:center}
+.chain .n span{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:13px;font-weight:600;flex:none}
+.chain .n::after{content:"";flex:1;width:2px;background:var(--line);margin:4px 0}
+.chain > li:last-child .n::after{display:none}
+.chain .body{padding-bottom:16px;min-width:0}
+.chain .step{font-size:14px;font-weight:600;margin:3px 0 6px}
+.chain .step small{font-weight:400;color:var(--muted);font-size:12.5px;margin-left:6px}
+.items{display:flex;flex-direction:column;gap:6px}
+.it{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:baseline;font-size:14px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+.it .why{display:block;font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:500;border-radius:5px;padding:0 6px;white-space:nowrap}
+.t-scope{background:var(--brand-soft);color:var(--ink)} .t-ev{background:var(--surface);border:1px solid var(--line)}
+.t-uc{background:var(--blue-soft);color:var(--blue)} .t-br{background:var(--brand-soft);color:var(--ink)}
+.t-ac{background:var(--surface);border:1px solid var(--line)} .t-tc{background:var(--green-soft);color:var(--green)} .t-us{background:var(--plum-soft);color:var(--plum)}
+.derived{font-size:11.5px;color:var(--muted);border:1px dashed var(--line);border-radius:999px;padding:0 8px;margin-left:6px;font-weight:400}
+.stks{display:flex;flex-wrap:wrap;gap:6px}
+.sbtn{font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:2px 12px;cursor:pointer}
+.sbtn:hover{border-color:var(--ink)}
+.ac dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;font-size:13.5px}
+.ac dt{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.ac dd{margin:0}
+.none{font-size:13.5px;color:var(--muted)}
+.ucfig{font-size:12.5px;color:var(--muted)}
+.ucfig button{font:inherit;font-size:12.5px;color:var(--blue);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{font-size:12.5px;color:var(--muted);font-weight:600}
+tr.on td{background:var(--brand-soft)}
+.result{white-space:nowrap}
+td .sub2{display:block;font-size:12.5px;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tabs button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:3px 11px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs button.has{border-color:var(--sel)}
+.diag{background:#FFFFFF;border:1px solid var(--line);border-radius:10px;padding:8px;max-height:720px;overflow:auto}
+.diag img{display:block;margin:0 auto;max-width:100%;height:auto}
+.diag.tall img{max-width:520px;width:100%}
+.cap{font-size:12.5px;color:var(--muted);margin-top:6px}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+@media (max-width:420px){.ac dl{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="mark" aria-hidden="true">อพ</div>
+    <div>
+      <h1>สืบย้อนความต้องการ อำพร OMS</h1>
+      <p class="sub">เลือกความต้องการหนึ่งข้อ แล้วดูย้อนไปถึงขอบเขต หลักฐานหน้างาน ผู้มีส่วนได้ส่วนเสีย กรณีการใช้งาน จนถึงผลการทดสอบ</p>
+    </div>
+  </header>
+  <div class="counts" id="counts"></div>
+
+  <section class="panel" aria-label="เลือกความต้องการ">
+    <div class="pick" id="pick"></div>
+    <div id="chainWrap"></div>
+  </section>
+
+  <section class="panel" aria-label="Use Case ทั้งหมด">
+    <h2 id="ucTitle">Use Case ที่ทำแล้ว</h2>
+    <div class="tbl"><table id="ucTable"></table></div>
+    <p class="note" style="margin-top:8px">ที่มา: ตารางที่ 3.8 (ผู้กระทำและความต้องการ) ตารางที่ 4.8 (กรณีทดสอบและผล) และบทที่ 5 หัวข้อ 5.1 · แตะรหัสความต้องการเพื่อดูการสืบย้อน</p>
+  </section>
+
+  <div class="two">
+    <section class="panel" aria-label="ผู้มีส่วนได้ส่วนเสีย">
+      <h2 id="stkTitle">ผู้มีส่วนได้ส่วนเสีย</h2>
+      <div class="tbl"><table id="stkTable"></table></div>
+      <p class="note" style="margin-top:8px">ที่มา: เอกสารผู้มีส่วนได้ส่วนเสีย หัวข้อ 1 · แถวที่เน้นสีคือกลุ่มที่เกี่ยวกับความต้องการที่เลือกอยู่</p>
+    </section>
+    <section class="panel" aria-label="แผนภาพกรณีการใช้งาน">
+      <h2>แผนภาพกรณีการใช้งาน (Use Case Diagram)</h2>
+      <div class="tabs" id="figTabs" role="group" aria-label="เลือกแผนภาพ"></div>
+      <div class="diag" id="diag"></div>
+      <div class="cap" id="figCap"></div>
+    </section>
+  </div>
+  <p class="note">ข้อความทุกช่องคัดจากปริญญานิพนธ์บทที่ 1 (1.2, 1.3) บทที่ 3 (ตารางที่ 3.2 ถึง 3.12 และ 3.23) บทที่ 4 (ตารางที่ 4.8) และเอกสารผู้มีส่วนได้ส่วนเสีย · ช่องที่มีป้าย “ไล่เทียบ” คือการจับคู่ที่เล่มไม่มีตารางกำกับโดยตรง ผู้จัดทำไล่เทียบจากเนื้อความของขอบเขตและผู้กระทำของกรณีการใช้งาน</p>
+</div>
+
+<script>
+/*DATA*/
+const FIGS = [
+  {id:'all', label:'ภาพรวม 11 UC', src:'diagrams/fig-srs-usecase-all.png', cap:'แผนภาพกรณีการใช้งานทั้งระบบ UC-01 ถึง UC-11 (รูปที่ ก.2 ในภาคผนวก ก)', tall:true, ucs:Object.keys(DATA.UC)},
+  {id:'fig32', label:'รูปที่ 3.2 เข้าสู่ระบบ', src:'diagrams/fig3-06_uc_auth.png', cap:'รูปที่ 3.2 แผนภาพกรณีการใช้งานกลุ่มการเข้าสู่ระบบและควบคุมสิทธิ์ (UC-01, UC-02)', ucs:['UC-01','UC-02']},
+  {id:'fig33', label:'รูปที่ 3.3 พนักงานขาย', src:'diagrams/fig3-07_uc_sales.png', cap:'รูปที่ 3.3 แผนภาพกรณีการใช้งานของพนักงานขาย (UC-03, UC-04)', ucs:['UC-03','UC-04']},
+  {id:'fig34', label:'รูปที่ 3.4 พนักงานคลัง', src:'diagrams/fig3-08_uc_warehouse.png', cap:'รูปที่ 3.4 แผนภาพกรณีการใช้งานของพนักงานคลังสินค้า (UC-05, UC-06, UC-07)', ucs:['UC-05','UC-06','UC-07']},
+  {id:'fig35', label:'รูปที่ 3.5 ผู้จัดการ', src:'diagrams/fig3-09_uc_manager.png', cap:'รูปที่ 3.5 แผนภาพกรณีการใช้งานของผู้จัดการ (UC-08 ถึง UC-11)', tall:true, ucs:['UC-08','UC-09','UC-10','UC-11']},
+];
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let sel = 'FR-03', fig = 'all';
+try { const s = localStorage.getItem('rt-sel'); if (s && DATA.MAP[s]) sel = s; } catch (e) {}
+
+function counts(){
+  const people = DATA.STK.filter(s => s.type !== 'ผู้กระทำที่ไม่ใช่คน').length;
+  $('counts').innerHTML = `<span><b>${Object.keys(DATA.FR).length}</b>FR</span><span><b>${Object.keys(DATA.NFR).length}</b>NFR</span>
+    <span><b>${Object.keys(DATA.UC).length}</b>Use Case</span><span><b>${Object.keys(DATA.AC).length}</b>เกณฑ์การยอมรับ</span>
+    <span><b>${DATA.STK.length}</b>กลุ่มผู้มีส่วนได้ส่วนเสีย (คน ${people} กลุ่ม · ระบบอัตโนมัติ 1)</span><span><b>${Object.keys(DATA.EV).length}</b>หลักฐานหน้างาน</span>`;
+}
+
+function picker(){
+  const b = (k) => `<button type="button" class="rq" data-k="${k}" aria-pressed="${k===sel}">${k}</button>`;
+  $('pick').innerHTML = `<div class="grp"><span class="lab">FR</span>${Object.keys(DATA.FR).map(b).join('')}</div>
+    <div class="grp"><span class="lab">NFR</span>${Object.keys(DATA.NFR).map(b).join('')}</div>`;
+  $('pick').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => choose(x.dataset.k)));
+}
+
+function chain(){
+  const k = sel, m = DATA.MAP[k], isFR = k.startsWith('FR'), r = isFR ? DATA.FR[k] : DATA.NFR[k], rtm = DATA.RTM[k];
+  const derived = '<span class="derived">ไล่เทียบ</span>';
+  const scope = m.scope.length ? m.scope.map(s => `<div class="it"><span class="tag t-scope">${s}</span><span>${esc(DATA.SCOPE[s])}</span></div>`).join('')
+    : `<div class="none">${esc(m.note || 'ไม่ได้มาจากข้อขอบเขตโดยตรง')}</div>`;
+  const objs = [...new Set(m.ev.map(e => DATA.EV[e].obj))];
+  const ev = m.ev.length ? m.ev.map(e => `<div class="it"><span class="tag t-ev">${e}</span><span>${esc(DATA.EV[e].text)}<span class="why">วัตถุประสงค์ที่รองรับ ${DATA.EV[e].obj}</span></span></div>`).join('')
+      + objs.map(o => `<div class="it"><span class="tag t-scope">${o}</span><span>${esc(DATA.OBJ[o])}</span></div>`).join('')
+    : `<div class="none">ไม่ได้สืบมาจากหลักฐานข้อใดโดยตรง เป็นคุณภาพที่ระบบต้องมี (หัวข้อ 3.2.3)</div>`;
+  const us = m.us.map(u => `<div class="it"><span class="tag t-us">${u}</span><span>ในฐานะ${esc(DATA.US[u].as)} ฉันต้องการ${esc(DATA.US[u].want)} เพื่อที่จะ${esc(DATA.US[u].so)}</span></div>`).join('');
+  const br = m.br.map(b => `<div class="it"><span class="tag t-br">${b}</span><span>${esc(DATA.BR[b].text)}<span class="why">ข้อบังคับต่อการออกแบบ: ${esc(DATA.BR[b].design)}</span></span></div>`).join('');
+  const stk = `<div class="stks">${m.stk.map(s => `<button type="button" class="sbtn" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div>`;
+  const uc = m.uc.length ? m.uc.map(u => `<div class="it"><span class="tag t-uc">${u}</span><span>${esc(DATA.UC[u].name)}<span class="why">ผู้กระทำหลัก: ${esc(DATA.UC[u].actor)} · <span class="ucfig">อยู่ใน <button type="button" data-fig="${DATA.FIG[u]}">${FIGS.find(f=>f.id===DATA.FIG[u]).label}</button></span></span></span></div>`).join('')
+    : `<div class="none">${esc(rtm.uc)} (ใช้กับทุกกรณีการใช้งาน)</div>`;
+  const ac = m.ac.length ? m.ac.map(a => { const x = DATA.AC[a]; return `<div class="it ac"><span class="tag t-ac">${a}</span><dl><dt>เงื่อนไขตั้งต้น</dt><dd>${esc(x.given)}</dd><dt>การกระทำ</dt><dd>${esc(x.when)}</dd><dt>ผลที่ต้องเกิด</dt><dd>${esc(x.then)}</dd></dl></div>`; }).join('')
+    : `<div class="none">ไม่มีเกณฑ์การยอมรับในตารางที่ 3.11 ทวนสอบด้วยวิธีในข้อถัดไป</div>`;
+  const tc = (m.tc.length ? m.tc.map(t => `<div class="it"><span class="tag t-tc">${t}</span><span>${esc(DATA.TC[t].what)}<span class="why">วิธีทดสอบ: ${esc(DATA.TC[t].how)}</span></span></div>`).join('')
+    : `<div class="it"><span class="tag t-tc">วิธีทวนสอบ</span><span>${esc(rtm.tc)}</span></div>`)
+    + `<div class="it"><span class="tag t-tc">ผล</span><span>${esc(rtm.result)} (ตารางที่ 4.8)</span></div>`;
+
+  $('chainWrap').innerHTML = `
+    <div class="head"><span class="code">${k}</span><span class="title">${esc(r.text)}</span><span class="result">${esc(rtm.result.split(' ')[0])}</span></div>
+    ${!isFR ? `<p class="note">วิธีทวนสอบตามตารางที่ 3.4: ${esc(r.verify)}</p>` : ''}
+    <ol class="chain">
+      <li><div class="n"><span>1</span></div><div class="body"><div class="step">มาจากขอบเขตข้อไหน <small>หัวข้อ 1.3</small>${derived}</div><div class="items">${scope}</div></div></li>
+      <li><div class="n"><span>2</span></div><div class="body"><div class="step">ปัญหาจากหน้างานและวัตถุประสงค์ <small>ตารางที่ 3.2 · 3.12${isFR ? ' · ช่อง “มาจากหลักฐาน” ในตารางที่ 3.3' : ''}</small></div><div class="items">${ev}${us}${br}</div></div></li>
+      <li><div class="n"><span>3</span></div><div class="body"><div class="step">ผู้มีส่วนได้ส่วนเสียที่เกี่ยวข้อง <small>${m.stk.length} กลุ่ม · แตะเพื่อดูรายละเอียด</small>${derived}</div>${stk}</div></li>
+      <li><div class="n"><span>4</span></div><div class="body"><div class="step">Use Case ที่รองรับ <small>ตารางที่ 3.8 · 4.8</small></div><div class="items">${uc}</div></div></li>
+      <li><div class="n"><span>5</span></div><div class="body"><div class="step">เกณฑ์การยอมรับ <small>ตารางที่ 3.11</small></div><div class="items">${ac}</div></div></li>
+      <li><div class="n"><span>6</span></div><div class="body"><div class="step">ทดสอบด้วยอะไรและได้ผลอย่างไร <small>ตารางที่ 3.23 · 4.8</small></div><div class="items">${tc}</div></div></li>
+    </ol>`;
+  $('chainWrap').querySelectorAll('[data-fig]').forEach(b => b.addEventListener('click', () => { fig = b.dataset.fig; drawFig(); $('diag').scrollIntoView({behavior:'smooth', block:'nearest'}); }));
+  $('chainWrap').querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => { const row = document.querySelector(`tr[data-s="${b.dataset.s}"]`); if (row) { row.scrollIntoView({behavior:'smooth', block:'center'}); } }));
+}
+
+function stkTable(){
+  const on = new Set(DATA.MAP[sel].stk);
+  const related = (name) => Object.keys(DATA.MAP).filter(k => DATA.MAP[k].stk.includes(name));
+  $('stkTitle').textContent = `ผู้มีส่วนได้ส่วนเสีย ${DATA.STK.length} กลุ่ม`;
+  $('stkTable').innerHTML = `<tr><th>ผู้มีส่วนได้ส่วนเสีย</th><th>เกี่ยวข้องกับระบบอย่างไร</th><th>ความต้องการที่เกี่ยวข้อง</th></tr>` +
+    DATA.STK.map(s => `<tr data-s="${esc(s.name)}" class="${on.has(s.name) ? 'on' : ''}"><td><b>${esc(s.name)}</b><span class="sub2">${esc(s.type)}</span><span class="sub2">ปัญหาเดิม: ${esc(s.ev)}</span></td>
+      <td>${esc(s.how)}<span class="sub2">ได้จากระบบ: ${esc(s.gain)}</span></td>
+      <td>${related(s.name).map(k => `<button type="button" class="rq${k===sel?' hl':''}" data-k="${k}">${k}</button>`).join(' ') || '<span class="none">–</span>'}</td></tr>`).join('');
+  $('stkTable').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => { choose(x.dataset.k); $('pick').scrollIntoView({behavior:'smooth', block:'start'}); }));
+}
+
+function ucTable(){
+  const ucs = Object.keys(DATA.UC), on = new Set(DATA.MAP[sel].uc);
+  const reqsOf = (u) => Object.keys(DATA.MAP).filter(k => DATA.MAP[k].uc.includes(u));
+  const tcsOf = (u) => [...new Set(reqsOf(u).filter(k => k.startsWith('FR')).flatMap(k => DATA.MAP[k].tc))];
+  $('ucTitle').textContent = `Use Case ที่ทำแล้ว ${ucs.length} จาก ${ucs.length} กรณี`;
+  $('ucTable').innerHTML = `<tr><th>รหัส</th><th>ชื่อกรณีการใช้งาน</th><th>ผู้กระทำหลัก</th><th>รองรับความต้องการ</th><th>ทดสอบด้วย</th><th>สถานะ</th></tr>` +
+    ucs.map(u => `<tr class="${on.has(u) ? 'on' : ''}"><td><span class="tag t-uc">${u}</span></td><td>${esc(DATA.UC[u].name)}</td><td>${esc(DATA.UC[u].actor)}</td>
+      <td>${reqsOf(u).map(k => `<button type="button" class="rq${k===sel?' hl':''}" data-k="${k}">${k}</button>`).join(' ')}</td>
+      <td>${tcsOf(u).map(t => `<span class="tag t-tc">${t}</span>`).join(' ')}</td>
+      <td><span class="result">พัฒนาแล้ว · ผ่าน</span></td></tr>`).join('');
+  $('ucTable').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => { choose(x.dataset.k); $('pick').scrollIntoView({behavior:'smooth', block:'start'}); }));
+}
+
+function drawFig(){
+  const ucs = new Set(DATA.MAP[sel].uc);
+  $('figTabs').innerHTML = FIGS.map(f => `<button type="button" data-f="${f.id}" aria-pressed="${f.id===fig}" class="${f.id!=='all' && f.ucs.some(u=>ucs.has(u)) ? 'has' : ''}">${f.label}</button>`).join('');
+  $('figTabs').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { fig = b.dataset.f; drawFig(); }));
+  const f = FIGS.find(x => x.id === fig);
+  $('diag').className = 'diag' + (f.tall ? ' tall' : '');
+  $('diag').innerHTML = `<img src="${f.src}" alt="${esc(f.cap)}" loading="lazy">`;
+  const hit = f.ucs.filter(u => ucs.has(u));
+  $('figCap').textContent = f.cap + (hit.length ? ` · ${sel} ใช้ ${hit.join(', ')} ในแผนภาพนี้` : '') + ' · แท็บที่มีขอบสีส้มคือแผนภาพที่มี Use Case ของความต้องการที่เลือก';
+}
+
+function choose(k){ sel = k; try { localStorage.setItem('rt-sel', k); } catch (e) {} picker(); chain(); ucTable(); stkTable(); drawFig(); }
+counts(); choose(sel);
+</script>

@@ -1,4 +1,4 @@
-// บริการบันทึกประวัติ                                   [ตารางที่ 3.13 โมดูล 9 · FR-09 · UC-10 · AC-11]
+// บริการบันทึกประวัติ                                   [ตารางที่ 3.16 โมดูล BE-09 · FR-09 · UC-10 · AC-11]
 const { app, request, pool, allTokens, auth } = require('./helpers');
 const auditLog = require('../../modules/audit-log');
 const { withTransaction } = require('../../config/db');
@@ -20,7 +20,7 @@ describe('record — ฝั่งเขียน', () => {
     await expect(auditLog.record(pool, { action: 'LOGGED_IN' })).rejects.toThrow(/ไม่รู้จัก/);
   });
 
-  test('อยู่ในธุรกรรมของผู้เรียก: งาน rollback แล้วประวัติต้องหายด้วย (3.7.3)', async () => {
+  test('อยู่ในธุรกรรมของผู้เรียก: งาน rollback แล้วประวัติต้องหายด้วย (3.4.2.2)', async () => {
     const [[{ n: before }]] = await pool.query("SELECT COUNT(*) AS n FROM audit_logs WHERE action = 'CREATE_ORDER'");
     await expect(
       withTransaction(async (conn) => {

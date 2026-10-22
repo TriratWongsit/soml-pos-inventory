@@ -24,7 +24,7 @@
     "test:unit": "jest --selectProjects unit",
     "test:integration": "jest --selectProjects integration --runInBand --detectOpenHandles",
     "test:system": "playwright test",
-    "evidence": "node evidence/measure-tc05.js && node evidence/measure-tc14.js"
+    "evidence": "node evidence/measure-tc05.js && node evidence/measure-tc13.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

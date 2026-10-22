@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// เก็บภาพหน้าจอจริงของทั้งเก้าหน้าจอ (ตารางที่ 3.15) สำหรับบทที่ 4
+// เก็บภาพหน้าจอจริงของทั้งเก้าหน้าจอ (ตารางที่ 3.18) สำหรับบทที่ 4
 //
 // ภาพถูกเก็บที่ Documents/assets/screens/ แล้วอ้างเป็นรูปที่ 4.x ในรูปเล่ม
 // ไฟล์นี้สร้างข้อมูลที่จำเป็นเองก่อนถ่าย เพื่อให้ภาพไม่ใช่หน้าจอว่างเปล่า
@@ -35,6 +35,9 @@ test.describe('ภาพหน้าจอประกอบบทที่ 4', 
     await page.locator('td.qty input').first().fill('2');
     await addToCart(page, 'เหล็ก');
     await expect(page.locator('.total b')).not.toHaveText('0.00 ฿');
+    // รอให้ราคาทุกบรรทัดคำนวณเสร็จก่อนถ่าย มิฉะนั้นภาพจะติดยอดรวมของสินค้าบรรทัดแรกบรรทัดเดียว
+    await expect(page.locator('td.num', { hasText: '…' })).toHaveCount(0);
+    await page.waitForLoadState('networkidle');
     await shot(page, '02-pos');
 
     await page.getByRole('button', { name: 'แสดงรหัส QR เพื่อรับชำระ' }).click();
@@ -73,7 +76,7 @@ test.describe('ภาพหน้าจอประกอบบทที่ 4', 
     await expect(page.getByRole('button', { name: 'ยืนยันจ่ายสินค้า' })).toBeVisible();
     await shot(page, '05-dispatch');
 
-    // ขั้นยืนยันซ้ำ — หลักฐานของหัวข้อ 3.9.1 ข้อสาม
+    // ขั้นยืนยันซ้ำ — หลักฐานของหัวข้อ 3.4.3.1 ข้อสาม
     await page.getByRole('button', { name: 'ยืนยันจ่ายสินค้า' }).click();
     await expect(page.locator('.confirm-box')).toBeVisible();
     await shot(page, '06-dispatch-confirm');

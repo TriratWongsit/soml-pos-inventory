@@ -1,78 +1,45 @@
-<!DOCTYPE html>
-<html lang="th"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOML · คิวรอจ่ายสินค้า (อุปกรณ์เคลื่อนที่)</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#c8cfd8;font-family:'TH Sarabun New','Sarabun','Segoe UI',Tahoma,sans-serif;font-size:17px;
-     background:#eef1f5;color:#1b2430;-webkit-font-smoothing:antialiased}
-.top{background:#1e2b3c;color:#fff;padding:11px 14px}
-.top .row{display:flex;align-items:center;justify-content:space-between}
-.top b{font-size:19px}
-.top .sub{font-size:13px;color:#93a5bc;margin-top:1px}
-.av{width:28px;height:28px;border-radius:50%;background:#4d90d9;color:#fff;display:flex;
-    align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:0 0 28px}
-.live{display:inline-flex;align-items:center;gap:5px;background:#25547f;color:#cfe4fb;
-      padding:2px 9px;border-radius:10px;font-size:12px;margin-top:7px}
-.live i{width:7px;height:7px;border-radius:50%;background:#5ed17a;display:block}
-.kpi{display:flex;gap:8px;padding:12px 12px 4px}
-.kpi div{flex:1;background:#fff;border:1px solid #dde3ea;border-radius:8px;padding:9px 10px;text-align:center}
-.kpi .lab{font-size:13px;color:#6c7c92}
-.kpi .val{font-size:24px;font-weight:700;color:#16283d;line-height:1.2}
-h2{font-size:17px;padding:14px 14px 7px;color:#22364d}
-.list{padding:0 12px 14px}
-.item{background:#fff;border:1px solid #dde3ea;border-left:4px solid #c9762a;border-radius:8px;
-      padding:11px 13px;margin-bottom:9px}
-.item.picking{border-left-color:#8b98a9}
-.item.urgent{border-left-color:#b3352f}
-.hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.no{font-size:17px;font-weight:700;color:#16283d}
-.wait{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
-.ok{color:#1d7a3d}.mid{color:#c9762a}.bad{color:#b3352f}
-.goods{font-size:15px;color:#44546b;margin:5px 0 9px;line-height:1.45}
-.ft{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pill{background:#fdf1dc;color:#8a5a10;padding:3px 10px;border-radius:11px;font-size:13px;font-weight:600}
-.pill.gray{background:#eceff3;color:#55637a}
-.btn{background:#1d6fc4;color:#fff;border:none;border-radius:6px;padding:8px 15px;
-     font-size:15px;font-family:inherit;font-weight:600}
-.phone{width:390px;background:#eef1f5;overflow:hidden}
-</style></head>
-<body><div class="phone">
-  <div class="top">
-    <div class="row">
-      <div><b>คิวรอจ่ายสินค้า</b><div class="sub">พนาวุฒน์ · พนักงานคลังสินค้า</div></div>
-      <div class="av">พว</div>
-    </div>
-    <span class="live"><i></i>เชื่อมต่อเรียลไทม์</span>
-  </div>
-
-  <div class="kpi">
-    <div><div class="lab">รอจ่าย</div><div class="val">4</div></div>
-    <div><div class="lab">จัดของ</div><div class="val">1</div></div>
-    <div><div class="lab">ส่งแล้ว</div><div class="val">23</div></div>
-  </div>
-
-  <h2>รายการรอจ่ายสินค้า</h2>
-  <div class="list">
-    <div class="item urgent">
-      <div class="hd"><span class="no">ORD-20690902-0004</span><span class="wait bad">32 นาที</span></div>
-      <div class="goods">เหล็กเส้นกลม RB6 × 40 เส้น และอีก 1 รายการ · 10:12 น.</div>
-      <div class="ft"><span class="pill gray">กำลังจัดของ</span><button class="btn">เปิดรายการ</button></div>
-    </div>
-    <div class="item">
-      <div class="hd"><span class="no">ORD-20690902-0005</span><span class="wait mid">18 นาที</span></div>
-      <div class="goods">ปูนฉาบสำเร็จรูป × 20 ถุง · 10:26 น.</div>
-      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
-    </div>
-    <div class="item">
-      <div class="hd"><span class="no">ORD-20690902-0006</span><span class="wait ok">9 นาที</span></div>
-      <div class="goods">กระเบื้องมุงหลังคา × 120 แผ่น · 10:35 น.</div>
-      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
-    </div>
-    <div class="item">
-      <div class="hd"><span class="no">ORD-20690902-0007</span><span class="wait ok">2 นาที</span></div>
-      <div class="goods">ปูนซีเมนต์ปอร์ตแลนด์ × 50 ถุง และอีก 2 รายการ · 10:42 น.</div>
-      <div class="ft"><span class="pill">รอจ่ายสินค้า</span><button class="btn">เปิดรายการ</button></div>
-    </div>
-  </div>
-</div></body></html>
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><title>คิวรอจ่ายสินค้าบนมือถือ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:'Bai Jamjuree',sans-serif}.num{font-variant-numeric:tabular-nums}</style></head>
+<body><div id="root" style="width: 390px; display: flex; background: #F5F3EE; color: #1E2226; font-family: 'Bai Jamjuree', sans-serif; min-height: 900px"><div style="width: 390px; display: flex; flex-direction: column">
+<div style="background: #FFFFFF; border-bottom: 1px solid #E4DFD4; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="width: 40px; height: 40px; border-radius: 11px; background: #E8A93E; color: #16181B; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">อพ</div>
+<b style="font-size: 18px; letter-spacing: 1px">อำพร OMS</b>
+<div style="margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 10px; border-radius: 12px; background: #F1EDE3">
+<div style="display: flex; flex-direction: column"><b style="font-size: 14px">สันติ ศิริกันทา</b><span style="font-size: 12px; color: #5F666D">พนักงานคลังสินค้า</span></div>
+<button aria-label="ออกจากระบบ" style="width: 44px; height: 44px; border: 1px solid #D6CFBF; background: #FFFFFF; border-radius: 10px; color: #3A4045; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M15 17l5-5-5-5M20 12H9M12 20H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7"></path></svg></button>
+</div>
+</div>
+<nav style="display: flex; gap: 4px"><a href="#" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; white-space: nowrap; font-size: 15px; background: #E8A93E; color: #16181B; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>คิวรอจ่ายสินค้า</a><a href="#" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; white-space: nowrap; font-size: 15px; color: #3A4045; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"></path></svg>แดชบอร์ด</a><a href="#" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; white-space: nowrap; font-size: 15px; color: #3A4045; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"></path></svg>แจ้งเตือน<span class="num" style="min-width: 24px; height: 24px; padding: 0 8px; box-sizing: border-box; border-radius: 12px; background: #C2410C; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">4</span></a></nav>
+</div>
+<div style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px"><div style="font-size: 13px; color: #5F666D">วันเสาร์ที่ 27 กันยายน 2569</div><h1 style="margin: 0; font-size: 24px; font-weight: 700">คิวรอจ่ายสินค้า (4)</h1></div>
+<button aria-label="สลับโหมดสว่างและมืด" style="height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #D6CFBF; background: #FFFFFF; color: #1E2226; font: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>โหมดมืด</button>
+</div>
+<div style="font-size: 14px; color: #5F666D"><span style="display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; border-radius: 4px; background: #2F7D4F"></span><span class="num">รับข้อมูลสดจากหน้าร้าน</span></span></div>
+<div style="background: #FCEBD7; border: 1px solid #EFC39A; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><b class="num" style="font-size: 17px">ORD-20260927-0014</b><span style="display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; white-space: nowrap; background: #F1EDE3; color: #1E2226">รอจ่ายสินค้า</span></div>
+<span class="num" style="font-size: 15px; color: #A13F12; font-weight: 700">รอ 34 นาที</span>
+<div style="font-size: 16px; border-top: 1px solid #EFEAE0; border-bottom: 1px solid #EFEAE0; padding: 2px 0"><div style="display: flex; justify-content: space-between; gap: 12px; padding: 6px 0"><span>สีภายนอก IBC แกลลอน #100</span><b class="num" style="white-space: nowrap">4 แกลลอน</b></div><div style="display: flex; justify-content: space-between; gap: 12px; padding: 6px 0"><span>เหล็ก 2 หุนเต็ม (6 มิล)</span><b class="num" style="white-space: nowrap">10 เส้น</b></div></div>
+<div class="num" style="font-size: 14px; color: #5F666D">ยอด 1,850.00 ฿</div>
+<div style="display: flex; gap: 8px"><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: transparent; color: #1E2226; border: 1px solid #D6CFBF; flex: 1">เริ่มจัดของ</button><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: #E8A93E; color: #16181B; border: 1px solid #E8A93E; flex: 1">จ่ายสินค้า ›</button></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DFD4; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><b class="num" style="font-size: 17px">ORD-20260927-0016</b><span style="display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; white-space: nowrap; background: #F6E3BF; color: #8A5200">กำลังจัดของ</span></div>
+<span class="num" style="font-size: 15px; color: #5F666D">รอ 12 นาที</span>
+<div style="font-size: 16px; border-top: 1px solid #EFEAE0; border-bottom: 1px solid #EFEAE0; padding: 2px 0"><div style="display: flex; justify-content: space-between; gap: 12px; padding: 6px 0"><span>เหล็ก 4 หุนข้ออ้อย (12 มิล)</span><b class="num" style="white-space: nowrap">20 เส้น</b></div></div>
+<div class="num" style="font-size: 14px; color: #5F666D">ยอด 4,400.00 ฿</div>
+<div style="display: flex; gap: 8px"><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: transparent; color: #1E2226; border: 1px solid #D6CFBF; flex: 1">ยกเลิกการจัด</button><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: #E8A93E; color: #16181B; border: 1px solid #E8A93E; flex: 1">จ่ายสินค้า ›</button></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DFD4; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><b class="num" style="font-size: 17px">ORD-20260927-0017</b><span style="display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; white-space: nowrap; background: #F1EDE3; color: #1E2226">รอจ่ายสินค้า</span></div>
+<span class="num" style="font-size: 15px; color: #5F666D">รอ 6 นาที</span>
+<div style="font-size: 16px; border-top: 1px solid #EFEAE0; border-bottom: 1px solid #EFEAE0; padding: 2px 0"><div style="display: flex; justify-content: space-between; gap: 12px; padding: 6px 0"><span>เหล็กแป๊บ 4 หุนเรียบ (แดง)</span><b class="num" style="white-space: nowrap">3 เส้น</b></div><div style="display: flex; justify-content: space-between; gap: 12px; padding: 6px 0"><span>เหล็ก 3หุนเต็ม (9 มิล)</span><b class="num" style="white-space: nowrap">6 เส้น</b></div></div>
+<div class="num" style="font-size: 14px; color: #5F666D">ยอด 1,395.00 ฿</div>
+<div style="display: flex; gap: 8px"><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: transparent; color: #1E2226; border: 1px solid #D6CFBF; flex: 1">เริ่มจัดของ</button><button style="min-height: 44px; padding: 0 16px; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; background: #E8A93E; color: #16181B; border: 1px solid #E8A93E; flex: 1">จ่ายสินค้า ›</button></div>
+</div>
+</div>
+</div></div></body></html>

@@ -10,8 +10,8 @@ export default defineConfig({
   server: {
     port: Number(process.env.VITE_PORT || 5173),
     proxy: {
-      '/api': { target: API_TARGET, changeOrigin: true },
-      '/ws': { target: API_TARGET, changeOrigin: true, ws: true },
+      '/api': { target: API_TARGET, changeOrigin: true, xfwd: true },  // ส่ง X-Forwarded-For ให้ audit_logs ได้ไอพีของเครื่องผู้ใช้ (FR-09)
+      '/ws': { target: API_TARGET, changeOrigin: true, ws: true, xfwd: true },
     },
   },
 });

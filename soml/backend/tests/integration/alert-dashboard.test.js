@@ -1,4 +1,4 @@
-// แจ้งเตือนและแดชบอร์ด   [ตารางที่ 3.13 โมดูล 7, 8 · FR-07, FR-08 · UC-08, 09, 11 · AC-09, AC-10 · BR-04, BR-05]
+// แจ้งเตือนและแดชบอร์ด   [ตารางที่ 3.16 โมดูล BE-07, 8 · FR-07, FR-08 · UC-08, 09, 11 · AC-09, AC-10 · BR-04, BR-05]
 const { app, request, pool, allTokens, auth } = require('./helpers');
 const alert = require('../../modules/alert');
 
