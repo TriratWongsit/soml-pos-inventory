@@ -2,7 +2,7 @@ flowchart TD
     SALES["พนักงานขาย"]
     WH["พนักงานคลังสินค้า"]
     MGR["ผู้จัดการ"]
-    subgraph SOML["ขอบเขตระบบ SOML"]
+    subgraph SOML["ขอบเขตระบบอำพร OMS"]
         FE["Web Application (Frontend)<br/>[React.js]<br/>หน้าจอ POS · คิวคลังสินค้า · Dashboard<br/>Responsive Design"]
         BE["Backend API<br/>[Node.js + Express.js]<br/>ตรรกะธุรกิจ · RBAC · Real-time Push<br/>ตัดสต็อกอะตอมมิก · แจ้งเตือน"]
         DB[("Database<br/>[MySQL 8.0 / InnoDB]<br/>users · products · orders<br/>stock_movements · audit_logs")]
@@ -10,11 +10,11 @@ flowchart TD
     end
     QR["PromptPay QR Module<br/>[External Library]"]
     PRN["เครื่องพิมพ์ใบเสร็จความร้อน<br/>[External Hardware]"]
-    SALES -->|"HTTPS"| FE
-    WH -->|"HTTPS"| FE
-    MGR -->|"HTTPS"| FE
-    FE -->|"REST API (JSON/HTTPS)"| BE
-    BE -->|"WebSocket · ผลักคิวงานเรียลไทม์"| FE
+    SALES -->|"HTTP"| FE
+    WH -->|"HTTP"| FE
+    MGR -->|"HTTP"| FE
+    FE -->|"REST API (JSON/HTTP)"| BE
+    BE -->|"WebSocket (สำรองด้วย SSE)<br/>ผลักคิวงานเรียลไทม์"| FE
     BE -->|"SQL Query แบบ ACID Transaction"| DB
     BE -->|"เรียกสร้าง QR ตามยอด"| QR
     BE -->|"ส่งคำสั่งพิมพ์"| PSVC

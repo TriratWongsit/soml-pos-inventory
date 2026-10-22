@@ -1,4 +1,4 @@
-// ส่วนควบคุมข้อมูลสินค้า                        [ตารางที่ 3.13 โมดูล 2 · FR-02 · UC-02 · AC-02 · BR-02]
+// ส่วนควบคุมข้อมูลสินค้า                        [ตารางที่ 3.16 โมดูล BE-02 · FR-02 · UC-02 · AC-02 · BR-02]
 const { app, request, pool, allTokens, auth } = require('./helpers');
 
 let tokens;
@@ -104,7 +104,7 @@ describe('PATCH /api/products/:id/stock — ปรับสต็อกด้ว
     productId = row.product_id;
   });
 
-  test('รับสินค้าเข้า: ยอดเพิ่ม และ stock_movements บันทึกยอดหลังเปลี่ยน (3.7.2 ข้อ 2)', async () => {
+  test('รับสินค้าเข้า: ยอดเพิ่ม และ stock_movements บันทึกยอดหลังเปลี่ยน (3.4.1.3 ข้อ 2)', async () => {
     const res = await asManager(request(app).patch(`/api/products/${productId}/stock`).send({ change: 40, reason: 'receive' }));
     expect(res.status).toBe(200);
     expect(res.body.stockQty).toBe(40);

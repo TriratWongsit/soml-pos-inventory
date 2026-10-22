@@ -1,0 +1,234 @@
+<title>สืบย้อนความต้องการ อำพร OMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#F2F1EE; --surface:#FFFFFF; --ink:#1E2430; --muted:#646B78; --line:#D9D6CF;
+  --brand:#D9962B; --brand-soft:#FBEFD9;
+  --blue:#2F6FB3; --blue-soft:#E3EDF8; --green:#2E8A5E; --green-soft:#DFF1E8; --plum:#7A4DA8; --plum-soft:#EEE6F7;
+  --ok:#2E8A5E; --sel:#D9962B;
+  --sans:'IBM Plex Sans Thai','Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340; --ok:#6CCB9C; --sel:#E9B04F;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340; --ok:#6CCB9C; --sel:#E9B04F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;align-items:center;gap:12px}
+.mark{width:44px;height:44px;border-radius:12px;background:var(--brand);color:#231A08;display:grid;place-items:center;font-weight:700;font-size:17px;flex:none}
+h1{margin:0;font-size:24px;line-height:1.2;text-wrap:balance}
+.sub{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.counts{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;color:var(--muted)}
+.counts b{color:var(--ink);font-size:18px;font-variant-numeric:tabular-nums;margin-right:4px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+h2{margin:0 0 10px;font-size:18px;text-wrap:balance}
+h3{margin:0 0 6px;font-size:12.5px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.pick{display:flex;flex-direction:column;gap:8px}
+.pick .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pick .lab{font-size:12.5px;color:var(--muted);width:44px}
+.rq{font:inherit;font-family:var(--mono);font-size:12.5px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:3px 9px;cursor:pointer}
+.rq:hover{border-color:var(--ink)}
+.rq[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rq.hl{border-color:var(--sel);box-shadow:0 0 0 2px var(--brand-soft)}
+button:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
+.head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;margin:14px 0 4px}
+.head .code{font-family:var(--mono);font-size:15px;font-weight:500;background:var(--brand-soft);border-radius:6px;padding:1px 8px}
+.head .title{font-size:19px;font-weight:600;flex:1 1 320px}
+.result{font-size:13px;font-weight:600;color:var(--ok);background:var(--green-soft);border-radius:999px;padding:2px 12px}
+.chain{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column}
+.chain > li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 12px}
+.chain .n{display:flex;flex-direction:column;align-items:center}
+.chain .n span{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:13px;font-weight:600;flex:none}
+.chain .n::after{content:"";flex:1;width:2px;background:var(--line);margin:4px 0}
+.chain > li:last-child .n::after{display:none}
+.chain .body{padding-bottom:16px;min-width:0}
+.chain .step{font-size:14px;font-weight:600;margin:3px 0 6px}
+.chain .step small{font-weight:400;color:var(--muted);font-size:12.5px;margin-left:6px}
+.items{display:flex;flex-direction:column;gap:6px}
+.it{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:baseline;font-size:14px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+.it .why{display:block;font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:500;border-radius:5px;padding:0 6px;white-space:nowrap}
+.t-scope{background:var(--brand-soft);color:var(--ink)} .t-ev{background:var(--surface);border:1px solid var(--line)}
+.t-uc{background:var(--blue-soft);color:var(--blue)} .t-br{background:var(--brand-soft);color:var(--ink)}
+.t-ac{background:var(--surface);border:1px solid var(--line)} .t-tc{background:var(--green-soft);color:var(--green)} .t-us{background:var(--plum-soft);color:var(--plum)}
+.derived{font-size:11.5px;color:var(--muted);border:1px dashed var(--line);border-radius:999px;padding:0 8px;margin-left:6px;font-weight:400}
+.stks{display:flex;flex-wrap:wrap;gap:6px}
+.sbtn{font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:2px 12px;cursor:pointer}
+.sbtn:hover{border-color:var(--ink)}
+.ac dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;font-size:13.5px}
+.ac dt{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.ac dd{margin:0}
+.none{font-size:13.5px;color:var(--muted)}
+.ucfig{font-size:12.5px;color:var(--muted)}
+.ucfig button{font:inherit;font-size:12.5px;color:var(--blue);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{font-size:12.5px;color:var(--muted);font-weight:600}
+tr.on td{background:var(--brand-soft)}
+.result{white-space:nowrap}
+td .sub2{display:block;font-size:12.5px;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tabs button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:3px 11px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs button.has{border-color:var(--sel)}
+.diag{background:#FFFFFF;border:1px solid var(--line);border-radius:10px;padding:8px;max-height:720px;overflow:auto}
+.diag img{display:block;margin:0 auto;max-width:100%;height:auto}
+.diag.tall img{max-width:520px;width:100%}
+.cap{font-size:12.5px;color:var(--muted);margin-top:6px}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+@media (max-width:420px){.ac dl{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="mark" aria-hidden="true">อพ</div>
+    <div>
+      <h1>สืบย้อนความต้องการ อำพร OMS</h1>
+      <p class="sub">เลือกความต้องการหนึ่งข้อ แล้วดูย้อนไปถึงขอบเขต หลักฐานหน้างาน ผู้มีส่วนได้ส่วนเสีย กรณีการใช้งาน จนถึงผลการทดสอบ</p>
+    </div>
+  </header>
+  <div class="counts" id="counts"></div>
+
+  <section class="panel" aria-label="เลือกความต้องการ">
+    <div class="pick" id="pick"></div>
+    <div id="chainWrap"></div>
+  </section>
+
+  <section class="panel" aria-label="Use Case ทั้งหมด">
+    <h2 id="ucTitle">Use Case ที่ทำแล้ว</h2>
+    <div class="tbl"><table id="ucTable"></table></div>
+    <p class="note" style="margin-top:8px">ที่มา: ตารางที่ 3.8 (ผู้กระทำและความต้องการ) ตารางที่ 4.8 (กรณีทดสอบและผล) และบทที่ 5 หัวข้อ 5.1 · แตะรหัสความต้องการเพื่อดูการสืบย้อน</p>
+  </section>
+
+  <div class="two">
+    <section class="panel" aria-label="ผู้มีส่วนได้ส่วนเสีย">
+      <h2 id="stkTitle">ผู้มีส่วนได้ส่วนเสีย</h2>
+      <div class="tbl"><table id="stkTable"></table></div>
+      <p class="note" style="margin-top:8px">ที่มา: เอกสารผู้มีส่วนได้ส่วนเสีย หัวข้อ 1 · แถวที่เน้นสีคือกลุ่มที่เกี่ยวกับความต้องการที่เลือกอยู่</p>
+    </section>
+    <section class="panel" aria-label="แผนภาพกรณีการใช้งาน">
+      <h2>แผนภาพกรณีการใช้งาน (Use Case Diagram)</h2>
+      <div class="tabs" id="figTabs" role="group" aria-label="เลือกแผนภาพ"></div>
+      <div class="diag" id="diag"></div>
+      <div class="cap" id="figCap"></div>
+    </section>
+  </div>
+  <p class="note">ข้อความทุกช่องคัดจากปริญญานิพนธ์บทที่ 1 (1.2, 1.3) บทที่ 3 (ตารางที่ 3.2 ถึง 3.12 และ 3.23) บทที่ 4 (ตารางที่ 4.8) และเอกสารผู้มีส่วนได้ส่วนเสีย · ช่องที่มีป้าย “ไล่เทียบ” คือการจับคู่ที่เล่มไม่มีตารางกำกับโดยตรง ผู้จัดทำไล่เทียบจากเนื้อความของขอบเขตและผู้กระทำของกรณีการใช้งาน</p>
+</div>
+
+<script>
+const DATA = {"SCOPE": {"1.3.1": "พัฒนาเว็บแอปพลิเคชันรูปแบบ Responsive Design รองรับการใช้งานผ่านคอมพิวเตอร์และอุปกรณ์เคลื่อนที่ ครอบคลุมผู้ใช้งาน 3 บทบาทหลัก ได้แก่ พนักงานขาย พนักงานคลังสินค้า และผู้จัดการ", "1.3.2": "พัฒนาระบบลงชื่อเข้าใช้งาน การควบคุมสิทธิ์ตามบทบาท (Role-Based Access Control: RBAC) และการจัดการข้อมูลสินค้าคงคลัง (Product Master) รวมถึงการตั้งค่าจุดสั่งซื้อเพิ่ม (Reorder Point)", "1.3.3": "พัฒนาระบบรับชำระเงินผ่าน QR พร้อมเพย์ (PromptPay) และเมื่อพนักงานยืนยันรับเงินแล้ว ระบบพิมพ์ใบเสร็จกระดาษผ่านเครื่องพิมพ์ใบเสร็จความร้อน (Thermal Receipt Printer) พร้อมส่งคำสั่งซื้อเข้าคิวคลังสินค้าแบบเรียลไทม์ทันที", "1.3.4": "พัฒนาระบบจัดการคลังสินค้าแบบเรียลไทม์ แสดงคิวรอจ่ายสินค้าทันทีที่ลูกค้าชำระเงิน และให้พนักงานยืนยันจ่ายสินค้าพร้อมตัดสต็อกแบบอะตอมมิก (Atomic Stock Deduction)", "1.3.5": "พัฒนาแดชบอร์ดปฏิบัติการ (Operational Dashboard) แสดงสถิติยอดขายและสต็อก ระบบบันทึกประวัติการทำรายการ (Audit Logs) และระบบแจ้งเตือนภายในแอปพลิเคชัน (In-App Notification)", "1.3.6": "โครงงานนี้ไม่ครอบคลุมระบบบัญชีเต็มรูปแบบ การชำระเงินผ่าน Payment Gateway หรือเครื่องรูดบัตร (EDC) ภายนอก การตรวจสอบสถานะการชำระเงินอัตโนมัติผ่าน API ของธนาคาร การพัฒนาแอปพลิเคชันแบบ Mobile Native การเชื่อมต่อระบบ ERP หรือซัพพลายเออร์ภายนอกแบบอัตโนมัติ และการแจ้งเตือนผ่านบริการภายนอก เช่น LINE Notify หรือ Email ส่วนโมดูล AI-Assisted ถือเป็น Future Work ที่ไม่อยู่ในขอบเขตของโครงงานนี้"}, "OBJ": {"1.2.1": "เพื่อลดข้อผิดพลาดในกระบวนการบันทึกการขายและจัดการสินค้าคงคลัง อันเกิดจากการพึ่งพาเอกสารกระดาษที่ไม่มีการยืนยันโดยระบบ", "1.2.2": "เพื่อลดระยะเวลารอคอยของลูกค้า โดยให้พนักงานคลังสินค้าสามารถรับข้อมูลคำสั่งซื้อและเริ่มจัดเตรียมสินค้าได้ทันทีที่ชำระเงิน โดยไม่ต้องรอให้ลูกค้าเดินมาถึงจุดรับของ", "1.2.3": "เพื่อให้ยอดสินค้าคงเหลือในระบบสะท้อนจำนวนสินค้าจริงในคลังได้อย่างแม่นยำ และป้องกันการรับสินค้าซ้ำด้วยการควบคุมสถานะคำสั่งซื้อผ่านระบบ", "1.2.4": "เพื่อให้ผู้บริหารสามารถติดตามสถานะยอดขาย สต็อก และคิวงานได้แบบเรียลไทม์ และตัดสินใจสั่งซื้อสินค้าได้จากข้อมูลจริง แทนการใช้ประสบการณ์และสัญชาตญาณ"}, "EV": {"EV-01": {"text": "ไม่มีระบบบันทึกการขายที่เชื่อมกับสต็อก ใช้ใบเสร็จและบิลกระดาษ", "obj": "1.2.1"}, "EV-02": {"text": "ข้อมูลรายการขายกระจัดกระจาย ตรวจสอบย้อนหลังได้ยาก", "obj": "1.2.1"}, "EV-03": {"text": "หน้าร้านกับคลังสินค้าอยู่คนละพื้นที่ ไม่มีช่องทางสื่อสารแบบเรียลไทม์", "obj": "1.2.2"}, "EV-04": {"text": "ลูกค้าต้องถือใบเสร็จเดินไปคลังเอง เกิดคอขวดในชั่วโมงเร่งด่วน", "obj": "1.2.2"}, "EV-05": {"text": "พนักงานคลังอ่านใบเสร็จด้วยสายตา จึงหยิบสินค้าผิดประเภทหรือผิดจำนวน", "obj": "1.2.3"}, "EV-06": {"text": "มีการนำบิลเก่ามาใช้รับสินค้าซ้ำ", "obj": "1.2.3"}, "EV-07": {"text": "ยอดสต็อกในบันทึกคลาดเคลื่อนจากจำนวนสินค้าจริง", "obj": "1.2.3"}, "EV-08": {"text": "ผู้จัดการต้องรอสรุปยอดขายและนับสต็อกด้วยมือตอนท้ายวัน", "obj": "1.2.4"}, "EV-09": {"text": "การตัดสินใจสั่งซื้อสินค้าพึ่งประสบการณ์แทนข้อมูลจริง", "obj": "1.2.4"}}, "FR": {"FR-01": {"text": "เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน และควบคุมสิทธิ์การเข้าถึงตามบทบาท", "ev": "EV-02"}, "FR-02": {"text": "จัดการข้อมูลสินค้า หมวดหมู่ ราคา หน่วยนับ และจุดสั่งซื้อเพิ่ม (Reorder Point)", "ev": "EV-09"}, "FR-03": {"text": "สร้างคำสั่งซื้อ คำนวณยอด แสดงรหัส QR สำหรับชำระเงิน และสั่งพิมพ์ใบเสร็จ", "ev": "EV-01"}, "FR-04": {"text": "แสดงคิวคำสั่งซื้อที่รอจ่ายสินค้าบนหน้าจอคลัง โดยอัปเดตเองเมื่อมีรายการใหม่", "ev": "EV-03, EV-04"}, "FR-05": {"text": "ให้พนักงานคลังยืนยันจ่ายสินค้าจากรายการในคิวได้", "ev": "EV-05"}, "FR-06": {"text": "ตัดยอดสินค้าคงเหลือในธุรกรรม (Transaction) เดียวกับการเปลี่ยนสถานะคำสั่งซื้อ และป้องกันการจ่ายซ้ำ", "ev": "EV-06, EV-07"}, "FR-07": {"text": "แสดงแดชบอร์ดสรุปยอดขาย ระดับสต็อก และสถานะคิวงาน", "ev": "EV-08"}, "FR-08": {"text": "แจ้งเตือนภายในแอปพลิเคชันเมื่อสินค้าต่ำกว่าจุดสั่งซื้อเพิ่มหรือคิวค้างผิดปกติ", "ev": "EV-09"}, "FR-09": {"text": "บันทึกประวัติการทำรายการทุกเหตุการณ์สำคัญและค้นหาย้อนหลังได้", "ev": "EV-02"}}, "NFR": {"NFR-01": {"text": "ทุกคำขอต้องแนบโทเคน (Token) และถูกตรวจสิทธิ์ที่ฝั่งเซิร์ฟเวอร์ก่อนประมวลผล รหัสผ่านต้องเก็บเป็นค่าที่ผ่านการเข้ารหัส", "verify": "เรียกทุกเส้นทางโดยไม่แนบโทเคน แนบโทเคนปลอม และแนบโทเคนของบทบาทที่ไม่มีสิทธิ์"}, "NFR-02": {"text": "คำสั่งซื้อใหม่ต้องปรากฏบนหน้าจอคิวภายใน 3 วินาที", "verify": "จับเวลาตั้งแต่ยืนยันรับชำระจนรายการปรากฏบนหน้าจอคิว วัดซ้ำหลายครั้ง"}, "NFR-03": {"text": "หน้าจอคิวและหน้าจอยืนยันจ่ายต้องใช้งานได้บนแท็บเล็ตและสมาร์ตโฟน", "verify": "เปิดทุกหน้าจอที่ความกว้างของอุปกรณ์เคลื่อนที่แล้วตรวจว่าใช้งานครบทุกปุ่ม"}, "NFR-04": {"text": "ฐานข้อมูลต้องทนทานต่อธุรกรรมพร้อมกันโดยไม่เกิดสภาวะแข่งขัน", "verify": "ยิงคำขอยืนยันจ่ายพร้อมกันหลายคำขอต่อคำสั่งซื้อเดียว แล้วตรวจว่าสำเร็จเพียงคำขอเดียว"}, "NFR-05": {"text": "เครื่องพิมพ์ใบเสร็จต้องพิมพ์สำเร็จภายใน 5 วินาทีหลังยืนยันรับชำระ", "verify": "จับเวลากับเครื่องพิมพ์ความร้อนจริงที่สถานประกอบการ"}, "NFR-06": {"text": "รองรับผู้ใช้งานพร้อมกันไม่น้อยกว่า 10 เซสชันในช่วงเวลาเร่งด่วน", "verify": "จำลองการใช้งานพร้อมกัน 10 เซสชันจากทั้งสามบทบาท"}, "NFR-07": {"text": "ทำงานถูกต้องบนเบราว์เซอร์ Chrome, Edge และ Firefox รุ่นล่าสุด", "verify": "เปิดทุกหน้าจอบนเบราว์เซอร์ที่กำหนดและตรวจข้อผิดพลาดในคอนโซล"}, "NFR-08": {"text": "แยกชั้นและแยกส่วนประกอบตามที่ออกแบบไว้ เพื่อให้บำรุงรักษาแยกส่วนได้", "verify": "ตรวจโครงสร้างซอร์สโค้ดเทียบกับแผนภาพส่วนประกอบในหัวข้อ 3.6"}, "NFR-09": {"text": "ติดตั้งซ้ำบนเครื่องใหม่ได้ด้วยเอกสารเพียงอย่างเดียว โดยไม่แก้ซอร์สโค้ด", "verify": "ให้ผู้ที่ไม่ได้ร่วมพัฒนาติดตั้งตามคู่มือ"}}, "BR": {"BR-01": {"text": "การออกใบเสร็จกระดาษและการส่งคำสั่งซื้อเข้าคิวคลังต้องเกิดจากการกระทำเดียวกัน", "design": "การยืนยันรับชำระเงินเป็นจุดเดียวที่ทั้งพิมพ์ใบเสร็จและผลักเข้าคิว"}, "BR-02": {"text": "ตัวเลขสินค้าคงเหลือในระบบต้องตรงกับจำนวนสินค้าจริงในคลัง", "design": "การจ่ายสินค้าและการตัดสต็อกต้องอยู่ในธุรกรรมเดียวกัน และเจ้าของงานคือพนักงานคลังเท่านั้น"}, "BR-03": {"text": "ต้องลดระยะเวลารอคอยของลูกค้า", "design": "คลังต้องรู้คำสั่งซื้อก่อนลูกค้าเดินไปถึง จึงต้องผลักข้อมูลจากฝั่งเซิร์ฟเวอร์"}, "BR-04": {"text": "ผู้บริหารต้องติดตามยอดขายและคิวงานได้ตลอดเวลา", "design": "ตัวชี้วัดต้องคำนวณสดจากฐานข้อมูล ไม่ใช้ค่าสรุปที่เก็บไว้ล่วงหน้า"}, "BR-05": {"text": "ต้องแจ้งเตือนเชิงรุกเพื่อลดความเสี่ยงสินค้าขาดมือ", "design": "ระบบต้องตรวจเงื่อนไขเองหลังทุกครั้งที่สต็อกเปลี่ยน ไม่รอให้ผู้ใช้มาเปิดดู"}}, "US": {"US-01": {"as": "พนักงานขาย", "want": "บันทึกคำสั่งซื้อและออกใบเสร็จจากระบบในขั้นตอนเดียว", "so": "ไม่ต้องเขียนบิลด้วยมือและไม่ต้องคำนวณยอดเอง"}, "US-02": {"as": "พนักงานคลังสินค้า", "want": "เห็นคำสั่งซื้อใหม่ขึ้นบนหน้าจอเองโดยไม่ต้องกดรีเฟรช", "so": "เริ่มจัดของได้ทันทีก่อนลูกค้าเดินมาถึง"}, "US-03": {"as": "พนักงานคลังสินค้า", "want": "ให้ระบบกันไม่ให้จ่ายของซ้ำจากใบเดิม", "so": "ไม่ต้องจำเองว่าใบไหนจ่ายไปแล้ว"}, "US-04": {"as": "ผู้จัดการ", "want": "เห็นยอดขายและคิวงานระหว่างวันได้ทันที", "so": "ไม่ต้องรอสรุปตอนปิดร้าน"}, "US-05": {"as": "ผู้จัดการ", "want": "ให้ระบบเตือนเมื่อสินค้าใกล้หมด", "so": "สั่งของได้ทันก่อนของขาดมือ"}, "US-06": {"as": "ผู้จัดการ", "want": "ค้นหาย้อนหลังได้ว่าใครทำรายการใดเมื่อไร", "so": "ตรวจสอบได้เมื่อยอดไม่ตรง"}}, "AC": {"AC-01": {"given": "มีบัญชีผู้ใช้บทบาทพนักงานขาย", "when": "เรียกเส้นทางของผู้จัดการโดยตรง", "then": "ระบบปฏิเสธคำขอที่ฝั่งเซิร์ฟเวอร์", "ref": "FR-01"}, "AC-02": {"given": "เข้าสู่ระบบด้วยบทบาทผู้จัดการ", "when": "แก้ไขจุดสั่งซื้อเพิ่มของสินค้า", "then": "ค่าที่บันทึกตรงกับที่กรอก และมีบันทึกในประวัติการทำรายการ", "ref": "FR-02"}, "AC-03": {"given": "มีสินค้าในระบบและสต็อกเพียงพอ", "when": "สร้างคำสั่งซื้อและยืนยันรับชำระ", "then": "มีคำสั่งซื้อสถานะรอจ่ายสินค้า พร้อมเลขที่ไม่ซ้ำ", "ref": "FR-03"}, "AC-04": {"given": "มีคำสั่งซื้อในระบบอยู่แล้วจำนวนหนึ่ง", "when": "สร้างคำสั่งซื้อต่อเนื่องและพร้อมกันหลายรายการ", "then": "เลขที่คำสั่งซื้อไม่ซ้ำกันทุกรายการ", "ref": "FR-03"}, "AC-05": {"given": "บริการพิมพ์ใบเสร็จขัดข้องหรือปิดอยู่", "when": "พนักงานขายกดยืนยันรับชำระเงิน", "then": "คำสั่งซื้อยังถูกบันทึกและเข้าคิวคลังตามปกติ พร้อมแจ้งบนหน้าจอว่าพิมพ์ไม่สำเร็จ", "ref": "FR-03, BR-01"}, "AC-06": {"given": "หน้าจอคิวเปิดค้างอยู่", "when": "พนักงานขายยืนยันรับชำระคำสั่งซื้อใหม่", "then": "รายการปรากฏบนหน้าจอคิวภายใน 3 วินาทีโดยไม่กดรีเฟรช", "ref": "FR-04, NFR-02"}, "AC-07": {"given": "มีคำสั่งซื้อหนึ่งใบในสถานะรอจ่ายสินค้า", "when": "ส่งคำขอยืนยันจ่ายพร้อมกันสองคำขอ", "then": "สำเร็จเพียงคำขอเดียว อีกคำขอถูกปฏิเสธ และสต็อกถูกหักเพียงครั้งเดียว", "ref": "FR-06, NFR-04"}, "AC-08": {"given": "สต็อกสินค้าน้อยกว่าจำนวนที่สั่ง", "when": "ยืนยันจ่ายสินค้า", "then": "ธุรกรรมถูกยกเลิกทั้งหมด สถานะและยอดสต็อกไม่เปลี่ยน", "ref": "FR-06"}, "AC-09": {"given": "มีคำสั่งซื้อที่ชำระเงินแล้วในระบบ", "when": "เปิดแดชบอร์ดปฏิบัติการ", "then": "ตัวเลขบนแดชบอร์ดตรงกับผลรวมที่คำนวณจากฐานข้อมูลโดยตรง", "ref": "FR-07"}, "AC-10": {"given": "ตั้งจุดสั่งซื้อเพิ่มของสินค้าไว้", "when": "จ่ายสินค้าจนยอดต่ำกว่าจุดสั่งซื้อเพิ่ม", "then": "ระบบสร้างการแจ้งเตือนโดยไม่ต้องรอให้ผู้ใช้เปิดดู", "ref": "FR-08, BR-05"}, "AC-11": {"given": "มีการทำรายการเกิดขึ้นแล้ว", "when": "ค้นหาประวัติตามช่วงเวลาและประเภทการกระทำ", "then": "ระบบแสดงผู้กระทำ เวลา และข้อมูลที่ถูกกระทำ", "ref": "FR-09"}, "AC-12": {"given": "ผู้ใช้มีบัญชีที่เปิดใช้งานอยู่", "when": "เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ถูกต้อง", "then": "ไปหน้าแรกของบทบาทและเห็นเฉพาะเมนูของตน ส่วนการเข้าไม่สำเร็จทุกกรณีได้ข้อความเดียวกัน", "ref": "FR-01, NFR-01"}, "AC-13": {"given": "มีคำสั่งซื้อค้างอยู่ในคิวรอจ่ายสินค้า", "when": "เวลารอเกินเกณฑ์ที่กำหนดไว้ โดยไม่มีใครเปิดหน้าจอ", "then": "ระบบสร้างการแจ้งเตือนคิวงานค้างนานผิดปกติที่ระบุเลขที่คำสั่งซื้อและระยะเวลาที่รอ", "ref": "FR-08"}, "AC-14": {"given": "เครื่องพิมพ์ใบเสร็จเชื่อมต่อและพร้อมทำงาน", "when": "พนักงานขายยืนยันรับชำระเงิน", "then": "ใบเสร็จพิมพ์เสร็จภายใน 5 วินาทีนับจากเวลาที่กดยืนยัน", "ref": "NFR-05"}, "AC-15": {"given": "มีผู้ใช้งานเข้าสู่ระบบพร้อมกัน 10 เซสชันจากทั้งสามบทบาท", "when": "ทุกเซสชันเรียกใช้งานระบบพร้อมกันอย่างต่อเนื่อง", "then": "ไม่มีคำขอใดล้มเหลว", "ref": "NFR-06"}}, "UC": {"UC-01": {"name": "เข้าสู่ระบบและควบคุมสิทธิ์ตามบทบาท", "actor": "ทุกบทบาท", "req": "FR-01"}, "UC-02": {"name": "จัดการข้อมูลสินค้าและจุดสั่งซื้อเพิ่ม", "actor": "ผู้จัดการ", "req": "FR-02"}, "UC-03": {"name": "สร้างคำสั่งซื้อและออกใบเสร็จ", "actor": "พนักงานขาย", "req": "FR-03"}, "UC-04": {"name": "สร้างเลขที่คำสั่งซื้อไม่ซ้ำอัตโนมัติ", "actor": "ระบบอัตโนมัติ", "req": "FR-03"}, "UC-05": {"name": "ดูคิวรอจ่ายสินค้าแบบเรียลไทม์", "actor": "พนักงานคลังสินค้า", "req": "FR-04"}, "UC-06": {"name": "ปรับสถานะการจัดของในคิวงาน", "actor": "พนักงานคลังสินค้า", "req": "FR-04"}, "UC-07": {"name": "ยืนยันจ่ายสินค้าและตัดสต็อก", "actor": "พนักงานคลังสินค้า", "req": "FR-05, FR-06"}, "UC-08": {"name": "แสดงแดชบอร์ดปฏิบัติการ", "actor": "ผู้จัดการ, พนักงานคลังสินค้า", "req": "FR-07"}, "UC-09": {"name": "แสดงแดชบอร์ดระดับบริหาร", "actor": "ผู้จัดการ", "req": "FR-07"}, "UC-10": {"name": "ค้นหาและดูประวัติการทำรายการ", "actor": "ผู้จัดการ", "req": "FR-09"}, "UC-11": {"name": "รับการแจ้งเตือนภายในแอปพลิเคชัน", "actor": "ผู้จัดการ, พนักงานคลังสินค้า, ระบบอัตโนมัติ", "req": "FR-08"}}, "TC": {"TC-01": {"what": "การควบคุมสิทธิ์ตามบทบาท", "how": "เข้าสู่ระบบด้วยบัญชีพนักงานขายแล้วเรียกเส้นทางของผู้จัดการ ทั้งแบบไม่แนบโทเคน แนบโทเคนปลอม และแนบโทเคนบทบาทอื่น", "expect": "ถูกปฏิเสธทุกกรณีที่ฝั่งเซิร์ฟเวอร์ และเมนูไม่ปรากฏ", "ref": "FR-01, AC-01"}, "TC-02": {"what": "การตั้งจุดสั่งซื้อเพิ่ม", "how": "ผู้จัดการแก้ไขจุดสั่งซื้อเพิ่มของสินค้าหนึ่งรายการ", "expect": "ค่าที่บันทึกตรงกับที่กรอก และมีบันทึกในประวัติการทำรายการ", "ref": "FR-02, AC-02"}, "TC-03": {"what": "ความถูกต้องของยอดและรหัส QR", "how": "สร้างคำสั่งซื้อสามรายการแล้วเทียบยอดรวมกับการคำนวณด้วยมือ", "expect": "ยอดรวมถูกต้องและรหัส QR ระบุยอดตรงกัน", "ref": "FR-03, AC-03"}, "TC-04": {"what": "ความไม่ซ้ำของเลขที่คำสั่งซื้อ", "how": "สร้างคำสั่งซื้อต่อเนื่อง 100 รายการ และสร้างพร้อมกันหลายรายการ", "expect": "ไม่มีเลขที่ซ้ำกันแม้แต่รายการเดียว", "ref": "FR-03, AC-04"}, "TC-05": {"what": "ความหน่วงของคิวเรียลไทม์", "how": "จับเวลาตั้งแต่ยืนยันรับชำระจนรายการปรากฏบนหน้าจอคิว วัดซ้ำหลายครั้ง", "expect": "ไม่เกิน 3 วินาทีทุกครั้ง", "ref": "FR-04, NFR-02, AC-06"}, "TC-06": {"what": "การป้องกันการจ่ายซ้ำ", "how": "เปิดหน้าจอคลังสองเครื่องแล้วกดยืนยันจ่ายคำสั่งซื้อเดียวกันพร้อมกัน และส่งคำขอพร้อมกันด้วยสคริปต์", "expect": "สำเร็จเพียงคำขอเดียว อีกคำขอถูกปฏิเสธ และสต็อกถูกหักครั้งเดียว", "ref": "FR-05, FR-06, NFR-04, AC-07"}, "TC-07": {"what": "การป้องกันสต็อกไม่พอ", "how": "ยืนยันจ่ายคำสั่งซื้อที่จำนวนเกินยอดคงเหลือ", "expect": "ธุรกรรมถูกยกเลิกทั้งหมด สต็อกและสถานะไม่เปลี่ยน", "ref": "FR-06, AC-08"}, "TC-08": {"what": "ความถูกต้องของแดชบอร์ด", "how": "เทียบตัวเลขบนแดชบอร์ดกับผลรวมที่คำนวณจากฐานข้อมูลโดยตรง", "expect": "ตรงกันทุกตัวชี้วัด", "ref": "FR-07, AC-09"}, "TC-09": {"what": "การแจ้งเตือนสินค้าใกล้หมด", "how": "จ่ายสินค้าจนยอดต่ำกว่าจุดสั่งซื้อเพิ่ม", "expect": "ระบบสร้างการแจ้งเตือนเองและแสดงทันที โดยไม่แจ้งซ้ำขณะที่ยังไม่อ่าน", "ref": "FR-08, AC-10"}, "TC-10": {"what": "การแจ้งเตือนคิวค้าง", "how": "ปล่อยคำสั่งซื้อค้างในคิวเกินเกณฑ์เวลาที่กำหนด", "expect": "ระบบสร้างการแจ้งเตือนคิวค้างนานผิดปกติ", "ref": "FR-08, AC-13"}, "TC-11": {"what": "ความครบถ้วนของประวัติการทำรายการ", "how": "ค้นหาประวัติโดยกรองตามช่วงวันที่และประเภทการกระทำ", "expect": "ผลลัพธ์ตรงตามเงื่อนไข และมีผู้กระทำ เวลา และข้อมูลที่ถูกกระทำครบ", "ref": "FR-09, AC-11"}, "TC-12": {"what": "การพิมพ์ใบเสร็จภาษาไทย", "how": "สั่งพิมพ์กับเครื่องพิมพ์ความร้อนจริงและจับเวลา", "expect": "ข้อความภาษาไทยถูกต้อง คอลัมน์ตรง และเสร็จภายใน 5 วินาที", "ref": "NFR-05, AC-14"}, "TC-13": {"what": "การรองรับผู้ใช้พร้อมกัน", "how": "จำลองการใช้งานพร้อมกัน 10 เซสชันจากสามบทบาท", "expect": "ไม่มีคำขอใดล้มเหลว และเวลาตอบสนองยังอยู่ในเกณฑ์", "ref": "NFR-06, AC-15"}}, "RTM": {"FR-01": {"uc": "UC-01", "mod": "FE-01, BE-01, SP-01", "tc": "TC-01", "result": "ผ่าน"}, "FR-02": {"uc": "UC-02", "mod": "FE-07, BE-02", "tc": "TC-02", "result": "ผ่าน"}, "FR-03": {"uc": "UC-03, UC-04", "mod": "FE-02, BE-03, BE-10, SP-03", "tc": "TC-03, TC-04, TC-12", "result": "ผ่าน"}, "FR-04": {"uc": "UC-05, UC-06", "mod": "FE-03, BE-04", "tc": "TC-05", "result": "ผ่าน"}, "FR-05": {"uc": "UC-07", "mod": "FE-04, BE-05", "tc": "TC-06", "result": "ผ่าน"}, "FR-06": {"uc": "UC-07", "mod": "BE-06", "tc": "TC-06, TC-07", "result": "ผ่าน"}, "FR-07": {"uc": "UC-08, UC-09", "mod": "FE-05, FE-06, BE-07", "tc": "TC-08", "result": "ผ่าน"}, "FR-08": {"uc": "UC-11", "mod": "FE-08, BE-08", "tc": "TC-09, TC-10", "result": "ผ่าน"}, "FR-09": {"uc": "UC-10", "mod": "FE-09, BE-09", "tc": "TC-11", "result": "ผ่าน"}, "NFR-01": {"uc": "UC-01", "mod": "SP-01, BE-01", "tc": "TC-01", "result": "ผ่าน"}, "NFR-02": {"uc": "UC-05", "mod": "FE-03, BE-04", "tc": "TC-05", "result": "ผ่าน สูงสุด 80 มิลลิวินาที"}, "NFR-03": {"uc": "UC-05, UC-07", "mod": "FE-03, FE-04", "tc": "ตรวจที่ความกว้าง 390 พิกเซล", "result": "ผ่าน"}, "NFR-04": {"uc": "UC-07", "mod": "BE-06", "tc": "TC-06", "result": "ผ่าน"}, "NFR-05": {"uc": "UC-03", "mod": "BE-10", "tc": "TC-12", "result": "ผ่าน"}, "NFR-06": {"uc": "ทุกกรณี", "mod": "ทุกโมดูล", "tc": "TC-13", "result": "ผ่าน ไม่มีคำขอล้มเหลว"}, "NFR-07": {"uc": "ทุกกรณี", "mod": "FE-01 ถึง FE-09", "tc": "ทดสอบระดับระบบบน Chromium และ Firefox และทวนสอบด้วยวิธีสาธิตบน Edge", "result": "ผ่าน Chromium 153 และ Firefox 155 ผ่านครบ 13 ข้อ Edge 154 ทำงานถูกต้องทุกหน้าจอ"}, "NFR-08": {"uc": "ทุกกรณี", "mod": "BE-01 ถึง BE-10, SP-01 ถึง SP-03", "tc": "ตรวจโครงสร้างซอร์สโค้ดเทียบตารางที่ 3.13", "result": "ผ่าน"}, "NFR-09": {"uc": "ทุกกรณี", "mod": "ชุดติดตั้ง", "tc": "ให้ผู้ที่ไม่ได้ร่วมพัฒนาติดตั้งตามคู่มือ", "result": "ผ่าน ผู้จัดการร้านติดตั้งบนเครื่องของร้านตามคู่มือ ใช้เวลาประมาณ 5 นาที"}}, "STK": [{"name": "พนักงานขาย", "type": "ผู้ใช้ระบบ", "how": "บันทึกการขาย แสดง QR ยืนยันรับเงิน สั่งพิมพ์ใบเสร็จ", "gain": "ไม่ต้องเขียนบิลและคิดยอดเอง (US-01)", "ev": "EV-01"}, {"name": "พนักงานคลังสินค้า", "type": "ผู้ใช้ระบบ", "how": "ดูคิว ปรับสถานะการจัดของ ยืนยันจ่ายสินค้า", "gain": "รู้คำสั่งซื้อก่อนลูกค้ามาถึง ไม่ต้องอ่านลายมือ ระบบกันจ่ายซ้ำให้ (US-02, US-03)", "ev": "EV-03 ถึง EV-07"}, {"name": "ผู้จัดการ", "type": "ผู้ใช้ระบบ", "how": "จัดการสินค้า ดูแดชบอร์ด ตรวจประวัติ รับแจ้งเตือน และทำงานแทนพนักงานได้", "gain": "เห็นยอดและคิวทันที รู้ก่อนของหมด ตรวจย้อนหลังได้ (US-04 ถึง US-06)", "ev": "EV-02, EV-08, EV-09"}, {"name": "ระบบอัตโนมัติ", "type": "ผู้กระทำที่ไม่ใช่คน", "how": "ออกเลขที่คำสั่งซื้อ ผลักเหตุการณ์ไปหน้าจอ ตรวจเงื่อนไขและสร้างการแจ้งเตือน", "gain": "ไม่มี (เป็นส่วนหนึ่งของระบบ)", "ev": "EV-06, EV-09"}, {"name": "ลูกค้าของร้าน", "type": "ได้รับผลโดยอ้อม ไม่ได้ใช้ระบบ", "how": "สแกน QR จ่ายเงินด้วยแอปธนาคารของตัวเอง รับใบเสร็จ รับของที่คลัง", "gain": "รอน้อยลง ได้ของถูกต้อง", "ev": "EV-04, EV-05"}, {"name": "เจ้าของร้าน", "type": "ผู้ให้ข้อมูลและยืนยันความต้องการ", "how": "ให้ข้อมูลหน้างาน ยืนยันขอบเขต บทบาท และกฎทางธุรกิจ ในการใช้งานจริงคือผู้ใช้บทบาทผู้จัดการ", "gain": "ข้อมูลจริงแทนการเดา", "ev": "EV-08, EV-09"}, {"name": "อาจารย์ที่ปรึกษา", "type": "ผู้ตรวจงาน", "how": "ตรวจว่าความต้องการสืบกลับถึงหลักฐานได้ และ Use Case ครอบคลุม FR ครบ", "gain": "ไม่ได้ใช้ระบบ", "ev": "ไม่มี"}, {"name": "ผู้จัดทำ", "type": "ผู้พัฒนาและผู้ทดสอบ", "how": "ออกแบบ พัฒนา ทดสอบ และติดตั้ง", "gain": "ไม่ได้ใช้ระบบในงานประจำ", "ev": "ไม่มี"}], "MAP": {"FR-01": {"scope": ["1.3.2", "1.3.1"], "ev": ["EV-02"], "br": [], "us": [], "stk": ["พนักงานขาย", "พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": ["AC-01", "AC-12"], "tc": ["TC-01"], "uc": ["UC-01"]}, "FR-02": {"scope": ["1.3.2"], "ev": ["EV-09"], "br": ["BR-05"], "us": [], "stk": ["ผู้จัดการ", "เจ้าของร้าน"], "ac": ["AC-02"], "tc": ["TC-02"], "uc": ["UC-02"]}, "FR-03": {"scope": ["1.3.3"], "ev": ["EV-01"], "br": ["BR-01"], "us": ["US-01"], "stk": ["พนักงานขาย", "ลูกค้าของร้าน", "ระบบอัตโนมัติ"], "ac": ["AC-03", "AC-04", "AC-05"], "tc": ["TC-03", "TC-04", "TC-12"], "uc": ["UC-03", "UC-04"]}, "FR-04": {"scope": ["1.3.3", "1.3.4"], "ev": ["EV-03", "EV-04"], "br": ["BR-03"], "us": ["US-02"], "stk": ["พนักงานคลังสินค้า", "ลูกค้าของร้าน", "ระบบอัตโนมัติ"], "ac": ["AC-06"], "tc": ["TC-05"], "uc": ["UC-05", "UC-06"]}, "FR-05": {"scope": ["1.3.4"], "ev": ["EV-05"], "br": [], "us": [], "stk": ["พนักงานคลังสินค้า", "ลูกค้าของร้าน"], "ac": [], "tc": ["TC-06"], "uc": ["UC-07"]}, "FR-06": {"scope": ["1.3.4"], "ev": ["EV-06", "EV-07"], "br": ["BR-02"], "us": ["US-03"], "stk": ["พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": ["AC-07", "AC-08"], "tc": ["TC-06", "TC-07"], "uc": ["UC-07"]}, "FR-07": {"scope": ["1.3.5"], "ev": ["EV-08"], "br": ["BR-04"], "us": ["US-04"], "stk": ["ผู้จัดการ", "พนักงานคลังสินค้า", "เจ้าของร้าน"], "ac": ["AC-09"], "tc": ["TC-08"], "uc": ["UC-08", "UC-09"]}, "FR-08": {"scope": ["1.3.5"], "ev": ["EV-09"], "br": ["BR-05"], "us": ["US-05"], "stk": ["ผู้จัดการ", "พนักงานคลังสินค้า", "ระบบอัตโนมัติ"], "ac": ["AC-10", "AC-13"], "tc": ["TC-09", "TC-10"], "uc": ["UC-11"]}, "FR-09": {"scope": ["1.3.5"], "ev": ["EV-02"], "br": [], "us": ["US-06"], "stk": ["ผู้จัดการ", "ระบบอัตโนมัติ"], "ac": ["AC-11"], "tc": ["TC-11"], "uc": ["UC-10"]}, "NFR-01": {"scope": ["1.3.2"], "ev": [], "br": [], "us": [], "stk": ["พนักงานขาย", "พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": ["AC-12"], "tc": ["TC-01"], "uc": ["UC-01"]}, "NFR-02": {"scope": ["1.3.3", "1.3.4"], "ev": ["EV-03", "EV-04"], "br": ["BR-03"], "us": ["US-02"], "stk": ["พนักงานคลังสินค้า", "ลูกค้าของร้าน"], "ac": ["AC-06"], "tc": ["TC-05"], "uc": ["UC-05"]}, "NFR-03": {"scope": ["1.3.1"], "ev": [], "br": [], "us": [], "stk": ["พนักงานคลังสินค้า"], "ac": [], "tc": [], "uc": ["UC-05", "UC-07"]}, "NFR-04": {"scope": ["1.3.4"], "ev": ["EV-06"], "br": ["BR-02"], "us": ["US-03"], "stk": ["พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": ["AC-07"], "tc": ["TC-06"], "uc": ["UC-07"]}, "NFR-05": {"scope": ["1.3.3"], "ev": [], "br": ["BR-01"], "us": [], "stk": ["พนักงานขาย", "ลูกค้าของร้าน"], "ac": ["AC-14"], "tc": ["TC-12"], "uc": ["UC-03"]}, "NFR-06": {"scope": ["1.3.1"], "ev": [], "br": [], "us": [], "stk": ["พนักงานขาย", "พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": ["AC-15"], "tc": ["TC-13"], "uc": []}, "NFR-07": {"scope": ["1.3.1"], "ev": [], "br": [], "us": [], "stk": ["พนักงานขาย", "พนักงานคลังสินค้า", "ผู้จัดการ"], "ac": [], "tc": [], "uc": []}, "NFR-08": {"scope": [], "ev": [], "br": [], "us": [], "stk": ["ผู้จัดทำ", "อาจารย์ที่ปรึกษา"], "note": "มาจากสมมติฐานข้อ 1.4.1 สถาปัตยกรรมระบบแบบ 3 ชั้น ไม่ได้มาจากข้อขอบเขตโดยตรง", "ac": [], "tc": [], "uc": []}, "NFR-09": {"scope": [], "ev": [], "br": [], "us": [], "stk": ["เจ้าของร้าน", "ผู้จัดทำ"], "note": "เป็นคุณภาพที่ระบบต้องมีเพื่อนำไปติดตั้งที่ร้านได้ ไม่ได้มาจากข้อขอบเขตหรือหลักฐานข้อใดโดยตรง", "ac": [], "tc": [], "uc": []}}, "FIG": {"UC-01": "fig32", "UC-02": "fig32", "UC-03": "fig33", "UC-04": "fig33", "UC-05": "fig34", "UC-06": "fig34", "UC-07": "fig34", "UC-08": "fig35", "UC-09": "fig35", "UC-10": "fig35", "UC-11": "fig35"}};
+const FIGS = [
+  {id:'all', label:'ภาพรวม 11 UC', src:'diagrams/fig-srs-usecase-all.png', cap:'แผนภาพกรณีการใช้งานทั้งระบบ UC-01 ถึง UC-11 (รูปที่ ก.2 ในภาคผนวก ก)', tall:true, ucs:Object.keys(DATA.UC)},
+  {id:'fig32', label:'รูปที่ 3.2 เข้าสู่ระบบ', src:'diagrams/fig3-06_uc_auth.png', cap:'รูปที่ 3.2 แผนภาพกรณีการใช้งานกลุ่มการเข้าสู่ระบบและควบคุมสิทธิ์ (UC-01, UC-02)', ucs:['UC-01','UC-02']},
+  {id:'fig33', label:'รูปที่ 3.3 พนักงานขาย', src:'diagrams/fig3-07_uc_sales.png', cap:'รูปที่ 3.3 แผนภาพกรณีการใช้งานของพนักงานขาย (UC-03, UC-04)', ucs:['UC-03','UC-04']},
+  {id:'fig34', label:'รูปที่ 3.4 พนักงานคลัง', src:'diagrams/fig3-08_uc_warehouse.png', cap:'รูปที่ 3.4 แผนภาพกรณีการใช้งานของพนักงานคลังสินค้า (UC-05, UC-06, UC-07)', ucs:['UC-05','UC-06','UC-07']},
+  {id:'fig35', label:'รูปที่ 3.5 ผู้จัดการ', src:'diagrams/fig3-09_uc_manager.png', cap:'รูปที่ 3.5 แผนภาพกรณีการใช้งานของผู้จัดการ (UC-08 ถึง UC-11)', tall:true, ucs:['UC-08','UC-09','UC-10','UC-11']},
+];
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let sel = 'FR-03', fig = 'all';
+try { const s = localStorage.getItem('rt-sel'); if (s && DATA.MAP[s]) sel = s; } catch (e) {}
+
+function counts(){
+  const people = DATA.STK.filter(s => s.type !== 'ผู้กระทำที่ไม่ใช่คน').length;
+  $('counts').innerHTML = `<span><b>${Object.keys(DATA.FR).length}</b>FR</span><span><b>${Object.keys(DATA.NFR).length}</b>NFR</span>
+    <span><b>${Object.keys(DATA.UC).length}</b>Use Case</span><span><b>${Object.keys(DATA.AC).length}</b>เกณฑ์การยอมรับ</span>
+    <span><b>${DATA.STK.length}</b>กลุ่มผู้มีส่วนได้ส่วนเสีย (คน ${people} กลุ่ม · ระบบอัตโนมัติ 1)</span><span><b>${Object.keys(DATA.EV).length}</b>หลักฐานหน้างาน</span>`;
+}
+
+function picker(){
+  const b = (k) => `<button type="button" class="rq" data-k="${k}" aria-pressed="${k===sel}">${k}</button>`;
+  $('pick').innerHTML = `<div class="grp"><span class="lab">FR</span>${Object.keys(DATA.FR).map(b).join('')}</div>
+    <div class="grp"><span class="lab">NFR</span>${Object.keys(DATA.NFR).map(b).join('')}</div>`;
+  $('pick').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => choose(x.dataset.k)));
+}
+
+function chain(){
+  const k = sel, m = DATA.MAP[k], isFR = k.startsWith('FR'), r = isFR ? DATA.FR[k] : DATA.NFR[k], rtm = DATA.RTM[k];
+  const derived = '<span class="derived">ไล่เทียบ</span>';
+  const scope = m.scope.length ? m.scope.map(s => `<div class="it"><span class="tag t-scope">${s}</span><span>${esc(DATA.SCOPE[s])}</span></div>`).join('')
+    : `<div class="none">${esc(m.note || 'ไม่ได้มาจากข้อขอบเขตโดยตรง')}</div>`;
+  const objs = [...new Set(m.ev.map(e => DATA.EV[e].obj))];
+  const ev = m.ev.length ? m.ev.map(e => `<div class="it"><span class="tag t-ev">${e}</span><span>${esc(DATA.EV[e].text)}<span class="why">วัตถุประสงค์ที่รองรับ ${DATA.EV[e].obj}</span></span></div>`).join('')
+      + objs.map(o => `<div class="it"><span class="tag t-scope">${o}</span><span>${esc(DATA.OBJ[o])}</span></div>`).join('')
+    : `<div class="none">ไม่ได้สืบมาจากหลักฐานข้อใดโดยตรง เป็นคุณภาพที่ระบบต้องมี (หัวข้อ 3.2.3)</div>`;
+  const us = m.us.map(u => `<div class="it"><span class="tag t-us">${u}</span><span>ในฐานะ${esc(DATA.US[u].as)} ฉันต้องการ${esc(DATA.US[u].want)} เพื่อที่จะ${esc(DATA.US[u].so)}</span></div>`).join('');
+  const br = m.br.map(b => `<div class="it"><span class="tag t-br">${b}</span><span>${esc(DATA.BR[b].text)}<span class="why">ข้อบังคับต่อการออกแบบ: ${esc(DATA.BR[b].design)}</span></span></div>`).join('');
+  const stk = `<div class="stks">${m.stk.map(s => `<button type="button" class="sbtn" data-s="${esc(s)}">${esc(s)}</button>`).join('')}</div>`;
+  const uc = m.uc.length ? m.uc.map(u => `<div class="it"><span class="tag t-uc">${u}</span><span>${esc(DATA.UC[u].name)}<span class="why">ผู้กระทำหลัก: ${esc(DATA.UC[u].actor)} · <span class="ucfig">อยู่ใน <button type="button" data-fig="${DATA.FIG[u]}">${FIGS.find(f=>f.id===DATA.FIG[u]).label}</button></span></span></span></div>`).join('')
+    : `<div class="none">${esc(rtm.uc)} (ใช้กับทุกกรณีการใช้งาน)</div>`;
+  const ac = m.ac.length ? m.ac.map(a => { const x = DATA.AC[a]; return `<div class="it ac"><span class="tag t-ac">${a}</span><dl><dt>เงื่อนไขตั้งต้น</dt><dd>${esc(x.given)}</dd><dt>การกระทำ</dt><dd>${esc(x.when)}</dd><dt>ผลที่ต้องเกิด</dt><dd>${esc(x.then)}</dd></dl></div>`; }).join('')
+    : `<div class="none">ไม่มีเกณฑ์การยอมรับในตารางที่ 3.11 ทวนสอบด้วยวิธีในข้อถัดไป</div>`;
+  const tc = (m.tc.length ? m.tc.map(t => `<div class="it"><span class="tag t-tc">${t}</span><span>${esc(DATA.TC[t].what)}<span class="why">วิธีทดสอบ: ${esc(DATA.TC[t].how)}</span></span></div>`).join('')
+    : `<div class="it"><span class="tag t-tc">วิธีทวนสอบ</span><span>${esc(rtm.tc)}</span></div>`)
+    + `<div class="it"><span class="tag t-tc">ผล</span><span>${esc(rtm.result)} (ตารางที่ 4.8)</span></div>`;
+
+  $('chainWrap').innerHTML = `
+    <div class="head"><span class="code">${k}</span><span class="title">${esc(r.text)}</span><span class="result">${esc(rtm.result.split(' ')[0])}</span></div>
+    ${!isFR ? `<p class="note">วิธีทวนสอบตามตารางที่ 3.4: ${esc(r.verify)}</p>` : ''}
+    <ol class="chain">
+      <li><div class="n"><span>1</span></div><div class="body"><div class="step">มาจากขอบเขตข้อไหน <small>หัวข้อ 1.3</small>${derived}</div><div class="items">${scope}</div></div></li>
+      <li><div class="n"><span>2</span></div><div class="body"><div class="step">ปัญหาจากหน้างานและวัตถุประสงค์ <small>ตารางที่ 3.2 · 3.12${isFR ? ' · ช่อง “มาจากหลักฐาน” ในตารางที่ 3.3' : ''}</small></div><div class="items">${ev}${us}${br}</div></div></li>
+      <li><div class="n"><span>3</span></div><div class="body"><div class="step">ผู้มีส่วนได้ส่วนเสียที่เกี่ยวข้อง <small>${m.stk.length} กลุ่ม · แตะเพื่อดูรายละเอียด</small>${derived}</div>${stk}</div></li>
+      <li><div class="n"><span>4</span></div><div class="body"><div class="step">Use Case ที่รองรับ <small>ตารางที่ 3.8 · 4.8</small></div><div class="items">${uc}</div></div></li>
+      <li><div class="n"><span>5</span></div><div class="body"><div class="step">เกณฑ์การยอมรับ <small>ตารางที่ 3.11</small></div><div class="items">${ac}</div></div></li>
+      <li><div class="n"><span>6</span></div><div class="body"><div class="step">ทดสอบด้วยอะไรและได้ผลอย่างไร <small>ตารางที่ 3.23 · 4.8</small></div><div class="items">${tc}</div></div></li>
+    </ol>`;
+  $('chainWrap').querySelectorAll('[data-fig]').forEach(b => b.addEventListener('click', () => { fig = b.dataset.fig; drawFig(); $('diag').scrollIntoView({behavior:'smooth', block:'nearest'}); }));
+  $('chainWrap').querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => { const row = document.querySelector(`tr[data-s="${b.dataset.s}"]`); if (row) { row.scrollIntoView({behavior:'smooth', block:'center'}); } }));
+}
+
+function stkTable(){
+  const on = new Set(DATA.MAP[sel].stk);
+  const related = (name) => Object.keys(DATA.MAP).filter(k => DATA.MAP[k].stk.includes(name));
+  $('stkTitle').textContent = `ผู้มีส่วนได้ส่วนเสีย ${DATA.STK.length} กลุ่ม`;
+  $('stkTable').innerHTML = `<tr><th>ผู้มีส่วนได้ส่วนเสีย</th><th>เกี่ยวข้องกับระบบอย่างไร</th><th>ความต้องการที่เกี่ยวข้อง</th></tr>` +
+    DATA.STK.map(s => `<tr data-s="${esc(s.name)}" class="${on.has(s.name) ? 'on' : ''}"><td><b>${esc(s.name)}</b><span class="sub2">${esc(s.type)}</span><span class="sub2">ปัญหาเดิม: ${esc(s.ev)}</span></td>
+      <td>${esc(s.how)}<span class="sub2">ได้จากระบบ: ${esc(s.gain)}</span></td>
+      <td>${related(s.name).map(k => `<button type="button" class="rq${k===sel?' hl':''}" data-k="${k}">${k}</button>`).join(' ') || '<span class="none">–</span>'}</td></tr>`).join('');
+  $('stkTable').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => { choose(x.dataset.k); $('pick').scrollIntoView({behavior:'smooth', block:'start'}); }));
+}
+
+function ucTable(){
+  const ucs = Object.keys(DATA.UC), on = new Set(DATA.MAP[sel].uc);
+  const reqsOf = (u) => Object.keys(DATA.MAP).filter(k => DATA.MAP[k].uc.includes(u));
+  const tcsOf = (u) => [...new Set(reqsOf(u).filter(k => k.startsWith('FR')).flatMap(k => DATA.MAP[k].tc))];
+  $('ucTitle').textContent = `Use Case ที่ทำแล้ว ${ucs.length} จาก ${ucs.length} กรณี`;
+  $('ucTable').innerHTML = `<tr><th>รหัส</th><th>ชื่อกรณีการใช้งาน</th><th>ผู้กระทำหลัก</th><th>รองรับความต้องการ</th><th>ทดสอบด้วย</th><th>สถานะ</th></tr>` +
+    ucs.map(u => `<tr class="${on.has(u) ? 'on' : ''}"><td><span class="tag t-uc">${u}</span></td><td>${esc(DATA.UC[u].name)}</td><td>${esc(DATA.UC[u].actor)}</td>
+      <td>${reqsOf(u).map(k => `<button type="button" class="rq${k===sel?' hl':''}" data-k="${k}">${k}</button>`).join(' ')}</td>
+      <td>${tcsOf(u).map(t => `<span class="tag t-tc">${t}</span>`).join(' ')}</td>
+      <td><span class="result">พัฒนาแล้ว · ผ่าน</span></td></tr>`).join('');
+  $('ucTable').querySelectorAll('.rq').forEach(x => x.addEventListener('click', () => { choose(x.dataset.k); $('pick').scrollIntoView({behavior:'smooth', block:'start'}); }));
+}
+
+function drawFig(){
+  const ucs = new Set(DATA.MAP[sel].uc);
+  $('figTabs').innerHTML = FIGS.map(f => `<button type="button" data-f="${f.id}" aria-pressed="${f.id===fig}" class="${f.id!=='all' && f.ucs.some(u=>ucs.has(u)) ? 'has' : ''}">${f.label}</button>`).join('');
+  $('figTabs').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { fig = b.dataset.f; drawFig(); }));
+  const f = FIGS.find(x => x.id === fig);
+  $('diag').className = 'diag' + (f.tall ? ' tall' : '');
+  $('diag').innerHTML = `<img src="${f.src}" alt="${esc(f.cap)}" loading="lazy">`;
+  const hit = f.ucs.filter(u => ucs.has(u));
+  $('figCap').textContent = f.cap + (hit.length ? ` · ${sel} ใช้ ${hit.join(', ')} ในแผนภาพนี้` : '') + ' · แท็บที่มีขอบสีส้มคือแผนภาพที่มี Use Case ของความต้องการที่เลือก';
+}
+
+function choose(k){ sel = k; try { localStorage.setItem('rt-sel', k); } catch (e) {} picker(); chain(); ucTable(); stkTable(); drawFig(); }
+counts(); choose(sel);
+</script>

@@ -7,6 +7,6 @@ export default function RequireRole({ roles, children }) {
   const { user } = useSession();
   if (user === undefined) return <div className="center muted">กำลังตรวจสอบเซสชัน…</div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (!roles.includes(user.role)) return <Navigate to={HOME_BY_ROLE[user.role]} replace />;
+  if (!roles.includes(user.role)) return <Navigate to={HOME_BY_ROLE[user.role]} replace />;  // ◀ [D-1] เดโม: หน้าจอ: บทบาทไม่ตรง เด้งกลับหน้าของตัวเอง
   return children;
 }

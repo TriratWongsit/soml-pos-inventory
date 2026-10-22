@@ -37,10 +37,11 @@ async function login(page, role) {
  * ค้นหาสินค้าแล้วแตะเพิ่มลงตะกร้าหนึ่งรายการ คืนชื่อสินค้าที่เพิ่ม
  * รอคำตอบของการค้นหาก่อนแตะ เพราะหน้าจอหน่วง 200 มิลลิวินาทีก่อนถาม
  * แถวที่กดได้ต้องมีสามช่อง (ชื่อ ราคา คงเหลือ) — แถว "ไม่พบสินค้า" มีช่องเดียว
+ * รับ 304 ด้วย: Firefox ถามซ้ำแบบมีเงื่อนไขเมื่อค้นคำเดิม แล้วเซิร์ฟเวอร์ตอบว่าใช้ผลเดิมได้
  */
 async function addToCart(page, search) {
   await Promise.all([
-    page.waitForResponse((r) => r.url().includes(`/api/products?q=${encodeURIComponent(search)}`) && r.ok()),
+    page.waitForResponse((r) => r.url().includes(`/api/products?q=${encodeURIComponent(search)}`) && (r.ok() || r.status() === 304)),
     page.getByPlaceholder(/ค้นหา/).fill(search),
   ]);
   const row = page.locator('table.picker tbody tr:has(td:nth-child(3))').first();
@@ -62,6 +63,7 @@ async function sellOne(page, { search, qty = 1 }) {
   if (qty > 1) await page.locator('td.qty input').first().fill(String(qty));
   await page.getByRole('button', { name: 'แสดงรหัส QR เพื่อรับชำระ' }).click();
   await page.locator('.qrbox img').waitFor();          // รหัส QR ถูกสร้างแล้ว
+  await page.getByLabel(/ตรวจแอปธนาคารแล้ว/).check();   // K-3 ต้องยืนยันว่าเงินเข้าก่อน ปุ่มจึงกดได้
   await page.getByRole('button', { name: 'ยืนยันรับชำระเงิน' }).click();
   const banner = page.locator('.alert.ok');
   await banner.waitFor();

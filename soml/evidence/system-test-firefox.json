@@ -1,0 +1,575 @@
+{
+  "config": {
+    "argv": [
+      "/Users/triratwongsit/.local/node/bin/node",
+      "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/node_modules/.bin/playwright",
+      "test",
+      "-c",
+      "playwright.firefox.config.js",
+      "tests/system/acceptance.spec.js"
+    ],
+    "configFile": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/playwright.firefox.config.js",
+    "rootDir": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/tests/system",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/triratwongsit/project/.claude/worktrees/read-work-notes-f1c6a5/soml/tests/system",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/system-test-firefox.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "acceptance.spec.js",
+      "file": "acceptance.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "AC-01 และ AC-12 การเข้าสู่ระบบและการควบคุมสิทธิ์",
+          "file": "acceptance.spec.js",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-12 เข้าสู่ระบบสำเร็จแล้วไปหน้าแรกของบทบาทและเห็นเฉพาะเมนูของตน",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1617,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:13.096Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-42a740786f852b4019cc",
+              "file": "acceptance.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "AC-12 เข้าสู่ระบบไม่สำเร็จได้ข้อความเดียวกันทุกกรณี",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 923,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:16.141Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-0796dade5fca56849e6f",
+              "file": "acceptance.spec.js",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "AC-01 พนักงานขายเรียกเส้นทางของผู้จัดการถูกปฏิเสธที่ฝั่งเซิร์ฟเวอร์",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 630,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:17.070Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-128d8192a87a2e2beef8",
+              "file": "acceptance.spec.js",
+              "line": 36,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-03 AC-04 AC-05 การขายและการออกใบเสร็จ",
+          "file": "acceptance.spec.js",
+          "line": 61,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-03 ยอดรวมและรหัส QR ตรงกัน และได้คำสั่งซื้อที่มีเลขที่ไม่ซ้ำ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1276,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:17.704Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-ebefe45a6c31bb39bee9",
+              "file": "acceptance.spec.js",
+              "line": 62,
+              "column": 3
+            },
+            {
+              "title": "AC-04 ขายต่อเนื่องหลายรายการแล้วเลขที่ไม่ซ้ำกัน",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2515,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:18.984Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-fe514a608af1543a56c7",
+              "file": "acceptance.spec.js",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "AC-05 บริการพิมพ์ใช้ไม่ได้ การขายยังสำเร็จและมีคำเตือน",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1467,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:21.505Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-7de97ca0da68cf330260",
+              "file": "acceptance.spec.js",
+              "line": 91,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-06 คิวเรียลไทม์",
+          "file": "acceptance.spec.js",
+          "line": 106,
+          "column": 6,
+          "specs": [
+            {
+              "title": "คำสั่งซื้อใหม่ปรากฏบนหน้าจอคิวเองภายใน 3 วินาที โดยไม่กดรีเฟรช",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2343,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "AC-06 คำสั่งซื้อ ORD-20260929-0006 ปรากฏบนหน้าจอคิวใน 558 มิลลิวินาที (รวมเวลาสร้างคำสั่งซื้อ)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:22.977Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-910faafd454e4f3b8a73",
+              "file": "acceptance.spec.js",
+              "line": 107,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-07 และ AC-08 การจ่ายสินค้าและการตัดสต็อก",
+          "file": "acceptance.spec.js",
+          "line": 131,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-07 จ่ายสำเร็จหนึ่งครั้ง และจ่ายซ้ำใบเดิมไม่ได้",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2354,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:25.326Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-4fd4db584aa432613e84",
+              "file": "acceptance.spec.js",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "AC-08 สต็อกไม่พอ ระบบไม่ให้จ่ายและสถานะไม่เปลี่ยน",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2990,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:27.687Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-eb481441fd57bcf2c062",
+              "file": "acceptance.spec.js",
+              "line": 150,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "AC-02 AC-09 AC-10 AC-11 งานของผู้จัดการ",
+          "file": "acceptance.spec.js",
+          "line": 186,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-02 แก้จุดสั่งซื้อเพิ่มแล้วค่าตรงและมีบันทึกในประวัติ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1654,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:30.682Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-03f891f1549e967009bd",
+              "file": "acceptance.spec.js",
+              "line": 187,
+              "column": 3
+            },
+            {
+              "title": "AC-09 ตัวเลขบนแดชบอร์ดตรงกับผลรวมที่คำนวณจากฐานข้อมูล",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1186,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:32.342Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-e0b2ac9a03c866313d10",
+              "file": "acceptance.spec.js",
+              "line": 213,
+              "column": 3
+            },
+            {
+              "title": "AC-10 จ่ายสินค้าจนต่ำกว่าจุดสั่งซื้อเพิ่มแล้วมีการแจ้งเตือนเอง",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2634,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:33.539Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-8f661e90169186210020",
+              "file": "acceptance.spec.js",
+              "line": 223,
+              "column": 3
+            },
+            {
+              "title": "AC-11 ค้นประวัติตามช่วงเวลาและประเภทการกระทำได้ครบ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1026,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T16:47:36.179Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "25b1ef59a3a31104e3a0-f056a5b555ee18dc4820",
+              "file": "acceptance.spec.js",
+              "line": 259,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-29T16:47:12.859Z",
+    "duration": 24699.612,
+    "expected": 13,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

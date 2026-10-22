@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ประกอบระบบหลังบ้าน — ที่เดียวที่ประกาศเส้นทางและสิทธิ์        [ตารางที่ 3.18 · 3.14]
+// ประกอบระบบหลังบ้าน — ที่เดียวที่ประกาศเส้นทางและสิทธิ์        [ตารางที่ 3.25 · 3.14]
 //
 // กฎของไฟล์นี้
 //   1. ทุกเส้นทางประกาศที่นี่ โมดูลใน modules/ ไม่ประกาศเอง
@@ -22,6 +22,8 @@ const order = require('./modules/order');
 const dispatch = require('./modules/dispatch');
 const alert = require('./modules/alert');
 const dashboard = require('./modules/dashboard');
+const credit = require('./modules/credit');
+const report = require('./modules/report');
 
 function createApp() {
   const app = express();
@@ -40,7 +42,9 @@ function createApp() {
 
   // ---- พนักงานขาย และผู้จัดการ ----
   app.post('/api/orders/quote', verifyToken, requireRole('sales', 'manager'), order.quote);   // UC-03
-  app.post('/api/orders', verifyToken, requireRole('sales', 'manager'), order.create);        // UC-03, UC-04
+  app.post('/api/orders', verifyToken, requireRole('sales', 'manager'), order.create);        // UC-03, UC-04, UC-12 ขายเชื่อ
+  app.get('/api/customers', verifyToken, requireRole('sales', 'manager'), credit.listCustomers);   // UC-12
+  app.post('/api/customers', verifyToken, requireRole('sales', 'manager'), credit.createCustomer); // UC-12
 
   // ---- พนักงานคลังสินค้า และผู้จัดการ ----
   app.get('/api/queue', verifyToken, requireRole('warehouse', 'manager'), queue.list);                   // UC-05
@@ -57,6 +61,9 @@ function createApp() {
   app.get('/api/dashboard/exec', verifyToken, requireRole('manager'), dashboard.exec);                 // UC-09
   app.patch('/api/notifications/:id/read', verifyToken, requireRole('manager'), alert.markRead);       // UC-11 (ทำเครื่องหมาย)
   app.get('/api/audit-logs', verifyToken, requireRole('manager'), auditLog.list);                      // UC-10
+  app.get('/api/credit', verifyToken, requireRole('manager'), credit.listOpen);                        // UC-13 ลูกหนี้ขายเชื่อ
+  app.post('/api/orders/:id/payments', verifyToken, requireRole('manager'), credit.receivePayment);   // UC-13 รับชำระหนี้
+  app.get('/api/reports/daily', verifyToken, requireRole('manager'), report.daily);                   // UC-14 รายงานขายรายวัน
 
   // ---- เส้นทางที่ไม่รู้จัก ----
   app.use('/api', (req, res) => res.status(404).json({ error: 'ไม่พบเส้นทางที่ระบุ' }));
@@ -66,7 +73,8 @@ function createApp() {
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
     if (!err.status || err.status >= 500) console.error(err);
-    res.status(err.status || 500).json({ error: err.publicMessage || 'เกิดข้อผิดพลาดภายในระบบ' });
+    const known = err.status && err.status < 500;
+    res.status(err.status || 500).json({ error: err.publicMessage || 'เกิดข้อผิดพลาดภายในระบบ', ...(known && err.code ? { code: err.code } : {}) });
   });
 
   return app;

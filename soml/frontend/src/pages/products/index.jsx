@@ -1,10 +1,11 @@
-// จัดการข้อมูลสินค้า                          [ตารางที่ 3.15 หน้าจอ 7 · ตารางที่ 3.21 · UC-02]
+// จัดการข้อมูลสินค้า                          [ตารางที่ 3.18 หน้าจอ 7 · ตารางที่ 3.24 · UC-02]
 // งานเดียว: ตารางสินค้า · แก้ราคา/จุดสั่งซื้อเพิ่ม · ปรับสต็อกด้วยมือพร้อมเหตุผล
-// ช่อง "คงเหลือ" แก้ตรง ๆ ไม่ได้ — ต้องผ่าน "ปรับสต็อก" เพื่อให้มีประวัติเสมอ (3.7.2 ข้อ 2)
+// ช่อง "คงเหลือ" แก้ตรง ๆ ไม่ได้ — ต้องผ่าน "ปรับสต็อก" เพื่อให้มีประวัติเสมอ (3.4.1.3 ข้อ 2)
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../../components/Layout.jsx';
 import { baht, int } from '../../components/Money.jsx';
 import { api } from '../../services/api.js';
+import { subscribe } from '../../services/events.js';
 
 const EMPTY = { sku: '', name: '', category: '', unit: '', price: '', reorderPoint: 0 };
 
@@ -22,6 +23,8 @@ export default function Products() {
   const load = useCallback(() => api.get(`/products?q=${encodeURIComponent(q)}&category=${encodeURIComponent(category)}&all=1`)
     .then((r) => { setRows(r.products); setCategories(r.categories); }).catch((e) => setError(e.message)), [q, category]);
   useEffect(() => { const t = setTimeout(load, 200); return () => clearTimeout(t); }, [load]);
+  // ยอดคงเหลือเปลี่ยนเมื่อคลังจ่ายของหรือมีการปรับสต็อก → โหลดใหม่เอง ไม่ต้องรีเฟรช (K-1)
+  useEffect(() => subscribe((ev) => { if (ev === 'order.dispatched' || ev === 'product.stock' || ev === 'connected') load(); }), [load]);
 
   const flash = (m) => { setMsg(m); setError(null); setTimeout(() => setMsg(null), 3000); };
   const fail = (e) => { setError(e.message); setMsg(null); };

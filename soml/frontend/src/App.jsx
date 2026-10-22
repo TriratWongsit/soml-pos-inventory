@@ -1,4 +1,4 @@
-// เส้นทางของหน้าจอทั้ง 9 หน้า (ตารางที่ 3.15) — หนึ่งหน้า = หนึ่งโฟลเดอร์ใน pages/
+// เส้นทางของหน้าจอทั้ง 9 หน้า (ตารางที่ 3.18) — หนึ่งหน้า = หนึ่งโฟลเดอร์ใน pages/
 // บทบาทที่เข้าได้ของแต่ละหน้าประกาศที่นี่ที่เดียว คู่กับ app.js ของหลังบ้าน
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { SessionProvider, useSession, HOME_BY_ROLE } from './services/session.jsx';
@@ -12,6 +12,8 @@ import DashboardExec from './pages/dashboard-exec/index.jsx';
 import Products from './pages/products/index.jsx';
 import Notifications from './pages/notifications/index.jsx';
 import AuditLogs from './pages/audit-logs/index.jsx';
+import Credit from './pages/credit/index.jsx';
+import ReportDaily from './pages/report-daily/index.jsx';
 
 function Home() {
   const { user } = useSession();
@@ -36,6 +38,8 @@ export default function App() {
           <Route path="/products" element={guarded(['manager'], <Products />)} />
           <Route path="/notifications" element={guarded(['warehouse', 'manager'], <Notifications />)} />
           <Route path="/audit-logs" element={guarded(['manager'], <AuditLogs />)} />
+          <Route path="/credit" element={guarded(['manager'], <Credit />)} />
+          <Route path="/reports/daily" element={guarded(['manager'], <ReportDaily />)} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

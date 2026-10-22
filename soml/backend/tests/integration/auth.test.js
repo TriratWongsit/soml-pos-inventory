@@ -1,4 +1,4 @@
-// การเข้าสู่ระบบและควบคุมสิทธิ์ตามบทบาท        [ตารางที่ 3.13 โมดูล 1 · FR-01 · UC-01 · AC-01 · TC-01]
+// การเข้าสู่ระบบและควบคุมสิทธิ์ตามบทบาท        [ตารางที่ 3.16 โมดูล BE-01 · FR-01 · UC-01 · AC-01 · TC-01]
 const jwt = require('jsonwebtoken');
 const { app, request, pool, auth, PASSWORD } = require('./helpers');
 

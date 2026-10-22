@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ส่วนตรวจสิทธิ์คั่นหน้าเส้นทาง (Auth Middleware)         [ตารางที่ 3.14 แถว 1 · 2.1.7]
+// ส่วนตรวจสิทธิ์คั่นหน้าเส้นทาง (Auth Middleware)         [ตารางที่ 3.17 แถว 1 · 2.1.7]
 //
 // รับผิดชอบเรื่องเดียว: ตัดสินว่าคำขอนี้ "เป็นใคร" และ "มีสิทธิ์ไหม" ก่อนถึงโมดูลใด ๆ
 // ถูกใช้จาก app.js เท่านั้น — โมดูลใน modules/ ไม่ต้องตรวจสิทธิ์เองอีก
@@ -20,7 +20,7 @@ if (!JWT_SECRET || JWT_SECRET === 'change-me') {
  * สำเร็จ → req.user = { userId, username, role, fullName } แล้วไปต่อ
  * ล้มเหลว → 401 (ไม่รู้ว่าเป็นใคร)
  */
-function verifyToken(req, res, next) {
+function verifyToken(req, res, next) {  // ◀ [D-1] เดโม: ไม่มีโทเคนหรือโทเคนปลอม → 401
   const header = req.headers.authorization || '';
   const token = header.startsWith('Bearer ') ? header.slice(7) : null;
   if (!token) return res.status(401).json({ error: 'ต้องเข้าสู่ระบบก่อน' });
@@ -36,10 +36,10 @@ function verifyToken(req, res, next) {
 /**
  * จำกัดเส้นทางให้เฉพาะบทบาทที่ระบุ ใช้ต่อจาก verifyToken เสมอ
  *   requireRole('manager')            เฉพาะผู้จัดการ
- *   requireRole('warehouse','manager') พนักงานคลังหรือผู้จัดการ (ตาราง 3.18)
+ *   requireRole('warehouse','manager') พนักงานคลังหรือผู้จัดการ (ตาราง 3.25)
  * รู้ว่าเป็นใครแต่ไม่มีสิทธิ์ → 403 (ต่างจาก 401 ที่ไม่รู้ว่าเป็นใคร)
  */
-function requireRole(...roles) {
+function requireRole(...roles) {  // ◀ [D-1] เดโม: บทบาทไม่ตรง → 403
   return (req, res, next) => {
     if (!req.user) return res.status(401).json({ error: 'ต้องเข้าสู่ระบบก่อน' });
     if (!roles.includes(req.user.role)) {

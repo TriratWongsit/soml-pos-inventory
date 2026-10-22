@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ประกอบใบเสร็จเป็นชุดคำสั่ง ESC/POS                    [FR-03 · 3.5.2 · เครื่อง Epson TM-T82]
+// ประกอบใบเสร็จเป็นชุดคำสั่ง ESC/POS                    [FR-03 · 3.3.3 · เครื่อง Epson TM-T82]
 //
 // รับผิดชอบเรื่องเดียว: ใบเสร็จ (ข้อมูล) → สายไบต์ที่เครื่องพิมพ์ความร้อนเข้าใจ
 // เครื่องพิมพ์ไม่รู้จัก UTF-8 ต้องส่งอักษรไทยเป็น TIS-620 และสั่งเลือกตารางรหัสไทยก่อน
@@ -83,7 +83,9 @@ function twoColumns(left, right, width) {
 const money = (n) => Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /**
- * @param receipt { orderNo, paidAt, cashierName, items:[{name, qty, unit, unitPrice, lineTotal}], totalAmount }
+ * @param receipt { orderNo, paidAt, cashierName, items:[{name, qty, unit, unitPrice, lineTotal}], totalAmount,
+ *                   paymentMethod?: 'promptpay'|'credit'|'cash', customerName?, copyLabel?, cashReceived? }
+ *   ขายเชื่อ (K-6): หัวใบเป็น "ใบส่งของ/ขายเชื่อ" มีชื่อลูกค้า สถานะยังไม่ชำระ และช่องเซ็นชื่อผู้รับของ
  * @param opts    { width = 48, codepage = 21, shopName }
  */
 function buildReceipt(receipt, { width = 48, codepage = 21, shopName = 'ร้านอำพรคอนกรีต' } = {}) {
@@ -94,7 +96,9 @@ function buildReceipt(receipt, { width = 48, codepage = 21, shopName = 'ร้�
   parts.push(CMD.alignCenter, CMD.boldOn, CMD.doubleOn);
   line(shopName);
   parts.push(CMD.doubleOff, CMD.boldOff);
-  line('ใบเสร็จรับเงิน');
+  const credit = receipt.paymentMethod === 'credit';
+  line(credit ? 'ใบส่งของ / ขายเชื่อ' : 'ใบเสร็จรับเงิน');
+  if (receipt.copyLabel) line(`(${receipt.copyLabel})`);
   parts.push(CMD.alignLeft);
   rule();
 
@@ -102,6 +106,7 @@ function buildReceipt(receipt, { width = 48, codepage = 21, shopName = 'ร้�
   const paidAt = receipt.paidAt ? new Date(receipt.paidAt) : new Date();
   line(twoColumns('วันที่', paidAt.toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }), width));
   if (receipt.cashierName) line(twoColumns('พนักงานขาย', receipt.cashierName, width));
+  if (credit && receipt.customerName) line(twoColumns('ลูกค้า', receipt.customerName, width));
   rule();
 
   for (const it of receipt.items || []) {
@@ -115,9 +120,29 @@ function buildReceipt(receipt, { width = 48, codepage = 21, shopName = 'ร้�
   parts.push(CMD.boldOff);
   rule();
 
-  parts.push(CMD.alignCenter);
-  line('ชำระด้วยพร้อมเพย์');
-  line('กรุณารับสินค้าที่คลังสินค้า');
+  if (credit) {
+    parts.push(CMD.boldOn);
+    line(twoColumns('สถานะ', 'ขายเชื่อ ยังไม่ชำระ', width));
+    parts.push(CMD.boldOff);
+    line('');
+    line('ลงชื่อผู้ซื้อ/ผู้รับของ ................................');
+    line('วันที่ ........................');
+    line('');
+    parts.push(CMD.alignCenter);
+    line('กรุณารับสินค้าที่คลังสินค้า');
+  } else if (receipt.paymentMethod === 'cash') {
+    const got = Number(receipt.cashReceived ?? receipt.totalAmount);
+    line(twoColumns('รับเงินสด', `${money(got)} บาท`, width));
+    line(twoColumns('เงินทอน', `${money(got - receipt.totalAmount)} บาท`, width));
+    rule();
+    parts.push(CMD.alignCenter);
+    line('ชำระด้วยเงินสด');
+    line('กรุณารับสินค้าที่คลังสินค้า');
+  } else {
+    parts.push(CMD.alignCenter);
+    line('ชำระด้วยพร้อมเพย์');
+    line('กรุณารับสินค้าที่คลังสินค้า');
+  }
   line('ขอบคุณที่ใช้บริการ');
   parts.push(CMD.feed(3), CMD.cut);
   return Buffer.concat(parts);

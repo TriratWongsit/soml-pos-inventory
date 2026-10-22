@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ส่วนควบคุมคำสั่งซื้อ (Order Controller)   [ตารางที่ 3.13 โมดูล 3 · FR-03 · UC-03, UC-04 · รูปที่ 3.10]
+// ส่วนควบคุมคำสั่งซื้อ (Order Controller)   [ตารางที่ 3.16 โมดูล BE-03 · FR-03 · UC-03, UC-04 · รูปที่ 3.8]
 //
 // รับผิดชอบเรื่องเดียว: เปลี่ยน "ตะกร้าบนหน้าจอ" ให้เป็น "คำสั่งซื้อที่ชำระแล้ว" อย่างถูกต้องครั้งเดียว
 //   POST /api/orders/quote   คำนวณยอดจากราคาในฐาน + สร้าง QR — ไม่เขียนฐานข้อมูล
@@ -7,8 +7,8 @@
 //                            แล้วจึงพิมพ์ใบเสร็จและผลักเข้าคิว (นอกธุรกรรม)
 //   GET  /api/orders/:id     รายละเอียดหนึ่งใบ ให้หน้าจ่ายสินค้าใช้ (UC-07)
 //
-// ลำดับตามรูปที่ 3.10 ทุกขั้น — ลำดับนี้คือสาระสำคัญของโมดูล:
-//   ราคาอ่านจากฐานเสมอ ไม่รับจากหน้าจอ · คำสั่งซื้อถูกเขียนเมื่อชำระแล้วเท่านั้น (3.7.2 ข้อ 3)
+// ลำดับตามรูปที่ 3.8 ทุกขั้น — ลำดับนี้คือสาระสำคัญของโมดูล:
+//   ราคาอ่านจากฐานเสมอ ไม่รับจากหน้าจอ · คำสั่งซื้อถูกเขียนเมื่อชำระแล้วเท่านั้น (3.4.1.3 ข้อ 3)
 //   พิมพ์และผลักเข้าคิวเกิด "หลัง COMMIT" (2.1.2) · พิมพ์ล้มไม่ทำให้การขายล้ม (UC-03 ทางที่ล้มเหลว)
 // ---------------------------------------------------------------------
 const { pool, withTransaction } = require('../../config/db');
@@ -17,9 +17,10 @@ const { clientIp } = require('../../middleware/auth');
 const auditLog = require('../audit-log');
 const printClient = require('../print-client');
 const queue = require('../queue');
+const { shortName } = require('../../lib/names');
 
 const MAX_ORDER_NO_RETRIES = 12;
-// ถอยหลังแบบทวีคูณก่อนขอเลขใหม่ — การวัด TC-14 พบว่าเมื่อหลายเครื่องสร้างคำสั่งซื้อรัวต่อเนื่อง
+// ถอยหลังแบบทวีคูณก่อนขอเลขใหม่ — การวัด TC-13 พบว่าเมื่อหลายเครื่องสร้างคำสั่งซื้อรัวต่อเนื่อง
 // การถอยหลังแบบเพิ่มทีละน้อยทำให้ทุกเครื่องกลับมาชนกันซ้ำจนครบจำนวนครั้งที่ลองใหม่ได้
 const retryDelayMs = (attempt) => Math.min(400, 15 * 2 ** (attempt - 1)) + Math.random() * 30;
 
@@ -53,7 +54,7 @@ function parseItems(body) {
  * ตีราคาตะกร้าด้วยราคาปัจจุบันในฐานข้อมูล — หน้าจอส่งมาแค่ (รหัส, จำนวน)
  * คืน { error } หรือ { items: [{productId, sku, name, unit, qty, unitPrice, lineTotal}], totalAmount }
  */
-async function priceItems(conn, items) {
+async function priceItems(conn, items) {  // ◀ [D-2] เดโม: ราคาจากฐานข้อมูล ไม่เชื่อราคาจากหน้าจอ
   const [rows] = await conn.query(
     'SELECT product_id, sku, name, unit, price, is_active FROM products WHERE product_id IN (?)',
     [items.map((i) => i.productId)]
@@ -77,7 +78,7 @@ async function priceItems(conn, items) {
  * ล็อกเลขล่าสุดของวันด้วย FOR UPDATE ให้เครื่องที่มาพร้อมกันต้องรอคิว (2.1.3)
  * UNIQUE(order_no) ในฐานเป็นตาข่ายรองรับอีกชั้น ถ้าชนจริงผู้เรียกจะลองใหม่
  */
-async function nextOrderNo(conn) {
+async function nextOrderNo(conn) {  // ◀ [D-2] เดโม: ออกเลขที่ไม่ซ้ำ ล็อกด้วย FOR UPDATE
   const [[{ today }]] = await conn.query("SELECT DATE_FORMAT(NOW(), '%Y%m%d') AS today");
   const prefix = `ORD-${today}-`;
   const [[last]] = await conn.query(
@@ -89,7 +90,7 @@ async function nextOrderNo(conn) {
 }
 
 /** POST /api/orders/quote { items } — ไม่เขียนฐานข้อมูล */
-async function quote(req, res, next) {
+async function quote(req, res, next) {  // ◀ [D-2] เดโม: quote() คิดยอดและสร้างข้อความ QR
   try {
     const parsed = parseItems(req.body);
     if (parsed.error) return res.status(400).json({ error: parsed.error });
@@ -97,16 +98,41 @@ async function quote(req, res, next) {
     if (priced.error) return res.status(400).json({ error: priced.error });
     // ยังไม่ตั้งหมายเลขพร้อมเพย์ของร้าน = ระบบยังไม่พร้อมรับชำระ ไม่ใช่ความผิดของคำขอ (503)
     if (!process.env.PROMPTPAY_ID) return res.status(503).json({ error: 'ยังไม่ได้ตั้งหมายเลขพร้อมเพย์ของร้าน (PROMPTPAY_ID ใน .env)' });
+    // K-3 กัน QR ผิด: เลขพร้อมเพย์ต้องเป็นเบอร์ 10 หลักหรือเลขประจำตัว 13 หลักเท่านั้น ผิดรูปแบบไม่สร้าง QR
+    if (!validPromptpayId(process.env.PROMPTPAY_ID)) return res.status(503).json({ error: 'เลขพร้อมเพย์ของร้านใน .env ไม่ถูกต้อง ต้องเป็นเบอร์ 10 หลักหรือเลข 13 หลัก' });
     const qrPayload = buildPayload(process.env.PROMPTPAY_ID, priced.totalAmount);
-    return res.json({ items: priced.items, totalAmount: priced.totalAmount, qrPayload });
+    // แสดงปลายทางบนหน้า QR ให้พนักงานและลูกค้าเห็นก่อนสแกน (ปิดบางหลัก)
+    return res.json({ items: priced.items, totalAmount: priced.totalAmount, qrPayload, promptpayTo: maskPromptpay(process.env.PROMPTPAY_ID) });
   } catch (err) { return next(err); }
 }
 
-/** POST /api/orders { items } — เรียกเมื่อพนักงานยืนยันรับชำระแล้วเท่านั้น */
-async function create(req, res, next) {
+const digits = (s) => String(s || '').replace(/\D/g, '');
+function validPromptpayId(id) { const d = digits(id); return /^0\d{9}$/.test(d) || /^\d{13}$/.test(d); }
+function maskPromptpay(id) { const d = digits(id); return d.length === 10 ? `xxx-xxx-${d.slice(6)}` : `x-xxxx-xxxxx-${d.slice(10, 12)}-${d.slice(12)}`; }
+
+/**
+ * POST /api/orders { items, paymentMethod?, customerId?, quotedTotal? }
+ *   paymentMethod 'promptpay' (ค่าเริ่มต้น) เรียกเมื่อพนักงานยืนยันรับชำระแล้วเท่านั้น
+ *                 'credit'    ขายเชื่อ (บิลเซ็น) ต้องมี customerId เข้าคิวได้ทันที พิมพ์ใบเสร็จ 2 ใบ (K-6)
+ *   quotedTotal   ยอดที่ลูกค้าเห็นบนหน้า QR ถ้าไม่ตรงกับยอดที่คิดใหม่ ปฏิเสธ 409 กันเก็บเงินผิดยอด (K-3)
+ */
+async function create(req, res, next) {  // ◀ [D-2] เดโม: create() บันทึกคำสั่งซื้อใน transaction
   try {
     const parsed = parseItems(req.body);
     if (parsed.error) return res.status(400).json({ error: parsed.error });
+    const paymentMethod = req.body.paymentMethod || 'promptpay';
+    if (!['promptpay', 'credit', 'cash'].includes(paymentMethod)) return res.status(400).json({ error: 'วิธีชำระต้องเป็น promptpay, cash หรือ credit' });
+    const cashReceived = paymentMethod === 'cash' ? Math.round(Number(req.body.cashReceived) * 100) / 100 : null;
+    if (paymentMethod === 'cash' && !(cashReceived > 0)) return res.status(400).json({ error: 'จ่ายเงินสดต้องระบุจำนวนเงินที่รับมา' });
+    let customer = null;
+    if (paymentMethod === 'credit') {
+      const customerId = Number(req.body.customerId);
+      if (!Number.isInteger(customerId) || customerId <= 0) return res.status(400).json({ error: 'ขายเชื่อต้องเลือกลูกค้า' });
+      [[customer]] = await pool.query('SELECT customer_id, name, phone, is_active FROM customers WHERE customer_id = ?', [customerId]);
+      if (!customer) return res.status(400).json({ error: 'ไม่พบลูกค้า' });
+      if (!customer.is_active) return res.status(400).json({ error: `${customer.name} ถูกปิดการซื้อเชื่อแล้ว` });
+    }
+    const quoted = req.body.quotedTotal;
 
     let order;
     for (let attempt = 1; ; attempt++) {
@@ -114,14 +140,24 @@ async function create(req, res, next) {
         order = await withTransaction(async (conn) => {
           const priced = await priceItems(conn, parsed.items);
           if (priced.error) { const e = new Error(priced.error); e.status = 400; e.publicMessage = priced.error; throw e; }
+          if (quoted !== undefined && quoted !== null && Math.abs(Number(quoted) - priced.totalAmount) > 0.004) {
+            const e = new Error('TOTAL_CHANGED'); e.status = 409; e.code = 'TOTAL_CHANGED';
+            e.publicMessage = `ยอดเปลี่ยนจาก ${quoted} เป็น ${priced.totalAmount} บาท (ราคาสินค้าถูกแก้) กรุณาแสดง QR ใหม่ก่อนรับเงิน`;
+            throw e;
+          }
+          if (paymentMethod === 'cash' && cashReceived < priced.totalAmount) {
+            const e = new Error('CASH_SHORT'); e.status = 400; e.code = 'CASH_SHORT';
+            e.publicMessage = `รับเงินมา ${cashReceived} บาท ไม่พอกับยอด ${priced.totalAmount} บาท`;
+            throw e;
+          }
 
           const orderNo = await nextOrderNo(conn);
           const [r] = await conn.query(
-            "INSERT INTO orders (order_no, total_amount, status, created_by, paid_at) VALUES (?, ?, 'awaiting_dispatch', ?, NOW())",
-            [orderNo, priced.totalAmount, req.user.userId]
+            "INSERT INTO orders (order_no, total_amount, status, created_by, paid_at, payment_method, customer_id, cash_received) VALUES (?, ?, 'awaiting_dispatch', ?, NOW(), ?, ?, ?)",
+            [orderNo, priced.totalAmount, req.user.userId, paymentMethod, customer ? customer.customer_id : null, cashReceived]
           );
           const orderId = r.insertId;
-          // 3.7.2 ข้อ 1: คัดลอกราคา ณ เวลาขายลง order_items
+          // 3.4.1.3 ข้อ 1: คัดลอกราคา ณ เวลาขายลง order_items
           await conn.query(
             'INSERT INTO order_items (order_id, product_id, qty, unit_price) VALUES ?',
             [priced.items.map((i) => [orderId, i.productId, i.qty, i.unitPrice])]
@@ -138,17 +174,23 @@ async function create(req, res, next) {
     }
 
     // ---- หลัง COMMIT เท่านั้น ----
-    const print = await printClient.printReceipt({
+    const print = await printClient.printReceipt({  // ◀ [D-2] เดโม: สั่งพิมพ์หลัง commit พิมพ์ล่มการขายยังสำเร็จ
       orderNo: order.orderNo,
       paidAt: new Date().toISOString(),
-      cashierName: req.user.fullName,
+      cashierName: shortName(req.user.fullName),  // K-2 ชื่อย่อ ไม่พิมพ์ชื่อเต็มของพนักงาน
+      paymentMethod,
+      customerName: customer ? customer.name : undefined,
+      cashReceived: cashReceived ?? undefined,
+      copies: paymentMethod === 'credit' ? 2 : 1,      // ขายเชื่อ: ลูกค้า 1 ใบ ร้านเก็บ 1 ใบ (มีช่องเซ็นชื่อ)
       items: order.items.map((i) => ({ name: i.name, qty: i.qty, unit: i.unit, unitPrice: i.unitPrice, lineTotal: i.lineTotal })),
       totalAmount: order.totalAmount,
     });
-    queue.broadcast('order.created', { orderId: order.orderId, orderNo: order.orderNo, totalAmount: order.totalAmount, itemCount: order.items.length });
+    queue.broadcast('order.created', { orderId: order.orderId, orderNo: order.orderNo, totalAmount: order.totalAmount, itemCount: order.items.length, paymentMethod });  // ◀ [D-2] เดโม: ผลักคำสั่งซื้อไปจอคลัง
 
     return res.status(201).json({
-      order: { orderId: order.orderId, orderNo: order.orderNo, totalAmount: order.totalAmount, status: 'awaiting_dispatch', items: order.items },
+      order: { orderId: order.orderId, orderNo: order.orderNo, totalAmount: order.totalAmount, status: 'awaiting_dispatch', items: order.items,
+               paymentMethod, customer: customer ? { customerId: customer.customer_id, name: customer.name } : null,
+               cashReceived, change: cashReceived !== null ? Math.round((cashReceived - order.totalAmount) * 100) / 100 : null },
       print, // แยกจากผลการบันทึก — หน้าจอเตือนได้โดยคำสั่งซื้อยังสมบูรณ์
     });
   } catch (err) { return next(err); }
@@ -160,8 +202,10 @@ async function getById(req, res, next) {
     const orderId = Number(req.params.id);
     const [[order]] = await pool.query(
       `SELECT o.order_id, o.order_no, o.total_amount, o.status, o.paid_at, o.dispatched_at,
+              o.payment_method, o.settled_at, c.name AS customer_name,
               u.full_name AS created_by_name
-         FROM orders o JOIN users u ON u.user_id = o.created_by WHERE o.order_id = ?`,
+         FROM orders o JOIN users u ON u.user_id = o.created_by
+         LEFT JOIN customers c ON c.customer_id = o.customer_id WHERE o.order_id = ?`,
       [orderId]
     );
     if (!order) return res.status(404).json({ error: 'ไม่พบคำสั่งซื้อ' });
@@ -175,4 +219,4 @@ async function getById(req, res, next) {
   } catch (err) { return next(err); }
 }
 
-module.exports = { quote, create, getById, parseItems, nextOrderNo };
+module.exports = { quote, create, getById, parseItems, nextOrderNo, validPromptpayId, maskPromptpay };

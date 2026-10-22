@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// จำนวนการแจ้งเตือนที่ยังไม่อ่าน สำหรับตัวเลขบนเมนู                  [UC-11 · 3.9.2]
+// จำนวนการแจ้งเตือนที่ยังไม่อ่าน สำหรับตัวเลขบนเมนู                  [UC-11 · 3.4.3.3]
 //
 // ใช้เส้นทางเดิม GET /api/notifications?unread=1 ไม่มีเส้นทางใหม่
 // นับใหม่เมื่อหลังบ้านผลัก notification.created และเมื่อหน้าการแจ้งเตือนกด "อ่านแล้ว"
@@ -21,7 +21,7 @@ export function useUnreadCount(enabled) {
   useEffect(() => {
     if (!enabled) return undefined;
     load();
-    const stop = subscribe((event) => { if (event === 'notification.created') load(); });
+    const stop = subscribe((event) => { if (event === 'connected' || event === 'notification.created') load(); });
     window.addEventListener(CHANGED, load);
     return () => { stop(); window.removeEventListener(CHANGED, load); };
   }, [enabled, load]);

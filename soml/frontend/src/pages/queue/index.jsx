@@ -1,9 +1,9 @@
-// หน้าคิวรอจ่ายสินค้า                       [ตารางที่ 3.15 หน้าจอ 3 · ตารางที่ 3.21 · UC-05, UC-06 · NFR-02, NFR-03]
+// หน้าคิวรอจ่ายสินค้า                       [ตารางที่ 3.18 หน้าจอ 3 · ตารางที่ 3.24 · UC-05, UC-06 · NFR-02, NFR-03]
 //
 // งานเดียว: เห็นว่ามีอะไรรอจ่าย เรียงตามเวลาชำระ พร้อมเวลารอ แล้วแตะเพื่อไปจัดของ
 // โหลดครั้งแรกด้วยคำขอ จากนั้นรอเหตุการณ์ผลักจากหลังบ้าน (order.created/status/dispatched)
 // เมื่อได้เหตุการณ์ → ดึงคิวใหม่ ไม่ต้องกดรีเฟรช (AC-06 ภายใน 3 วินาที)
-// ใช้บนมือถือในโกดัง: การ์ดใหญ่ แตะได้ทั้งใบ (3.9.3)
+// ใช้บนมือถือในโกดัง: การ์ดใหญ่ แตะได้ทั้งใบ (3.4.3.4)
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout.jsx';
@@ -11,6 +11,7 @@ import { baht, int } from '../../components/Money.jsx';
 import { api } from '../../services/api.js';
 import { subscribe } from '../../services/events.js';
 import { useSession } from '../../services/session.jsx';
+import PayBadge from '../../components/PayBadge.jsx';
 
 const STATUS_LABEL = { awaiting_dispatch: 'รอจ่ายสินค้า', picking: 'กำลังจัดของ' };
 const minutes = (s) => Math.floor(s / 60);
@@ -28,14 +29,14 @@ export default function Queue() {
 
   useEffect(() => {
     load();
-    const stop = subscribe((event) => { setLive(true); if (event.startsWith('order.')) load(); });
+    const stop = subscribe((event) => { setLive(true); if (event === 'connected' || event.startsWith('order.')) load(); });  // ◀ [D-3] เดโม: ได้เหตุการณ์ → load() เอง ไม่ต้องรีเฟรช
     const t = setInterval(() => setNow(Date.now()), 30_000);
     return () => { stop(); clearInterval(t); };
   }, [load]);
 
   const startPicking = async (o, e) => {
     e.stopPropagation();
-    try { await api.patch(`/orders/${o.order_id}/status`, { status: 'picking' }); } catch (err) { setError(err.message); }
+    try { await api.patch(`/orders/${o.order_id}/status`, { status: 'picking' }); } catch (err) { setError(err.message); }  // ◀ [D-4] เดโม: กดเริ่มจัด
   };
   const undoPicking = async (o, e) => {
     e.stopPropagation();
@@ -65,6 +66,7 @@ export default function Queue() {
               <div className="qhead">
                 <b className="qno">{o.order_no}</b>
                 <span className={`badge ${o.status}`}>{STATUS_LABEL[o.status]}</span>
+                <PayBadge order={o} />
                 <span className={`wait ${late ? 'crit' : ''}`}>รอ {waited} นาที</span>
               </div>
               <div className="qitems">

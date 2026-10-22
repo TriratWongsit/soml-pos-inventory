@@ -1,4 +1,4 @@
-// ส่วนจัดการคิวงาน                     [ตารางที่ 3.13 โมดูล 4 · FR-04 · UC-05, UC-06 · AC-06 · ตาราง 3.20]
+// ส่วนจัดการคิวงาน                     [ตารางที่ 3.16 โมดูล BE-04 · FR-04 · UC-05, UC-06 · AC-06 · ตาราง 3.23]
 const http = require('http');
 const WebSocket = require('ws');
 const { app, request, pool, allTokens, auth } = require('./helpers');
@@ -46,7 +46,7 @@ describe('GET /api/queue', () => {
   });
 });
 
-describe('PATCH /api/orders/:id/status — ตาราง 3.20', () => {
+describe('PATCH /api/orders/:id/status — ตาราง 3.23', () => {
   let id;
   beforeEach(async () => { id = await insertOrder(`S-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`); });
   const patch = (token, status) => auth(token)(request(app).patch(`/api/orders/${id}/status`).send({ status }));
@@ -91,7 +91,7 @@ describe('PATCH /api/orders/:id/status — ตาราง 3.20', () => {
   });
 });
 
-describe('ช่องทางค้าง — broadcast ถึงหน้าจอที่เปิดอยู่ [AC-06 · 3.5.2]', () => {
+describe('ช่องทางค้าง — broadcast ถึงหน้าจอที่เปิดอยู่ [AC-06 · 3.3.3]', () => {
   let server, port;
   beforeAll((done) => {
     server = http.createServer(app);

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// ส่วนควบคุมการเข้าสู่ระบบ (Auth Controller)      [ตารางที่ 3.13 โมดูล 1 · FR-01 · UC-01]
+// ส่วนควบคุมการเข้าสู่ระบบ (Auth Controller)      [ตารางที่ 3.16 โมดูล BE-01 · FR-01 · UC-01]
 //
 // รับผิดชอบเรื่องเดียว: พิสูจน์ว่าผู้ใช้เป็นใคร แล้วออกโทเคนให้ถือไปใช้กับเส้นทางอื่น
 //   POST /api/auth/login   ตรวจชื่อผู้ใช้/รหัสผ่าน → ออกโทเคน → บันทึก LOGIN
@@ -25,7 +25,7 @@ function publicUser(row) {
 }
 
 /** POST /api/auth/login  { username, password } */
-async function login(req, res, next) {
+async function login(req, res, next) {  // ◀ [D-1] เดโม: login() ตรวจรหัสผ่านด้วย bcrypt
   try {
     const username = String(req.body?.username || '').trim();
     const password = String(req.body?.password || '');
@@ -40,7 +40,7 @@ async function login(req, res, next) {
     if (!row || !matched || !row.is_active) return res.status(401).json({ error: LOGIN_FAILED });
 
     const user = publicUser(row);
-    const token = jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });  // ◀ [D-1] เดโม: ออกโทเคน JWT อายุ 8 ชั่วโมง
     await auditLog.record(pool, { userId: user.userId, action: 'LOGIN', ip: clientIp(req) });
     return res.json({ token, user });
   } catch (err) {

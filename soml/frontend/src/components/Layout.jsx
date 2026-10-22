@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------
-// กรอบหน้าจอร่วม — เมนูด้านข้าง ชื่อผู้ใช้ หัวหน้าจอ และปุ่มสลับโหมด   [3.9.1 · 3.9.2 · ตารางที่ 3.15]
+// กรอบหน้าจอร่วม — เมนูด้านข้าง ชื่อผู้ใช้ หัวหน้าจอ และปุ่มสลับโหมด   [3.4.3.1 · 3.4.3.3 · ตารางที่ 3.18]
 //
 // ผู้ใช้เห็นเฉพาะเมนูของงานตน (เมนูหายไม่ใช่การป้องกัน — หลังบ้านตรวจสิทธิ์อีกชั้นเสมอ AC-01)
 // เมนูการแจ้งเตือนมีตัวเลขจำนวนที่ยังไม่อ่าน (UC-11) · จอแคบกว่า 900px เมนูย้ายขึ้นด้านบน (NFR-03)
@@ -10,14 +10,16 @@ import { useUnreadCount } from '../services/unread.js';
 import Icon from './Icon.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
 
-// ตารางที่ 3.15 หน้าจอของระบบและบทบาทที่เข้าถึงได้
-const MENU = [
+// ตารางที่ 3.18 หน้าจอของระบบและบทบาทที่เข้าถึงได้
+const MENU = [  // ◀ [D-1] เดโม: เมนูของแต่ละบทบาท
   { to: '/pos', label: 'ขายหน้าร้าน', icon: 'pos', roles: ['sales', 'manager'] },
   { to: '/queue', label: 'คิวรอจ่ายสินค้า', icon: 'queue', roles: ['warehouse', 'manager'] },
   { to: '/dashboard', label: 'แดชบอร์ด', icon: 'dash', roles: ['warehouse', 'manager'] },
   { to: '/executive', label: 'ระดับบริหาร', icon: 'exec', roles: ['manager'] },
   { to: '/products', label: 'สินค้า', icon: 'box', roles: ['manager'] },
   { to: '/notifications', label: 'แจ้งเตือน', icon: 'bell', roles: ['warehouse', 'manager'] },
+  { to: '/credit', label: 'ลูกหนี้ขายเชื่อ', icon: 'credit', roles: ['manager'] },
+  { to: '/reports/daily', label: 'รายงานรายวัน', icon: 'report', roles: ['manager'] },
   { to: '/audit-logs', label: 'ประวัติ', icon: 'log', roles: ['manager'] },
 ];
 
@@ -33,8 +35,8 @@ export default function Layout({ title, actions, children }) {
     <div className="app">
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-mark">SO</span>
-          <span className="brand-text"><b>SOML</b><small>ร้านอำพรคอนกรีต</small></span>
+          <span className="brand-mark">อพ</span>
+          <span className="brand-text"><b>อำพร OMS</b><small>ร้านอำพรคอนกรีต</small></span>
         </div>
         <nav>
           {menu.map((m) => (

@@ -1,0 +1,484 @@
+<title>อำพร OMS Component Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#F2F1EE; --surface:#FFFFFF; --ink:#1E2430; --muted:#646B78; --line:#D9D6CF; --edge:#CFCBC2;
+  --brand:#D9962B; --brand-soft:#FBEFD9;
+  --blue:#2F6FB3; --blue-soft:#E3EDF8; --green:#2E8A5E; --green-soft:#DFF1E8; --plum:#7A4DA8; --plum-soft:#EEE6F7;
+  --slate:#4A5568; --slate-soft:#ECEEF1;
+  --sans:'IBM Plex Sans Thai','Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45; --edge:#3A404C;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340;
+  --slate:#B4BCC8; --slate-soft:#262B34;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#15181E; --surface:#1D2129; --ink:#E7E9EE; --muted:#A1A8B5; --line:#343A45; --edge:#3A404C;
+  --brand:#E9B04F; --brand-soft:#3A2E17;
+  --blue:#7DB0E8; --blue-soft:#1C2C40; --green:#6CCB9C; --green-soft:#15332A; --plum:#BE9BE6; --plum-soft:#2E2340;
+  --slate:#B4BCC8; --slate-soft:#262B34;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;align-items:center;gap:12px}
+.mark{width:44px;height:44px;border-radius:12px;background:var(--brand);color:#231A08;display:grid;place-items:center;font-weight:700;font-size:17px;flex:none}
+h1{margin:0;font-size:24px;line-height:1.2;text-wrap:balance}
+.sub{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.hint{margin:0;color:var(--muted);font-size:13.5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.scroller{overflow-x:auto;padding:14px 14px 18px}
+.map{position:relative;min-width:1180px;display:grid;grid-template-columns:1.25fr 1fr 1.35fr 1.1fr .95fr;column-gap:56px}
+.map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.lane{display:flex;flex-direction:column;gap:7px;position:relative;z-index:1}
+.lane h2{margin:0 0 4px;font-size:12.5px;letter-spacing:.05em;font-weight:600;color:var(--muted);text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+.lane h2 small{font-size:11.5px;letter-spacing:0;text-transform:none;font-weight:400}
+.gap{height:10px}
+.n{font:inherit;text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:6px 10px;display:flex;flex-direction:column;gap:0;transition:opacity .15s,border-color .15s,background .15s}
+.n:hover{border-color:var(--ink)}
+.n:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.n b{font-size:13.5px;font-weight:600;line-height:1.3}
+.n span{font-size:11.5px;color:var(--muted);line-height:1.3}
+.n.mono b{font-family:var(--mono);font-size:12px;font-weight:500}
+.n[data-k="uc"]{border-left:5px solid var(--brand)}
+.n[data-k="fe"]{border-left:5px solid var(--blue)}
+.n[data-k="api"]{border-left:5px solid var(--slate)}
+.n[data-k="be"]{border-left:5px solid var(--green)}
+.n[data-k="db"]{border-left:5px solid var(--plum)}
+.n.ext{border-style:dashed}
+.map.focus .n{opacity:.28}
+.map.focus .n.on{opacity:1}
+.n.on[data-k="uc"]{background:var(--brand-soft);border-color:var(--brand)}
+.n.on[data-k="fe"]{background:var(--blue-soft);border-color:var(--blue)}
+.n.on[data-k="api"]{background:var(--slate-soft);border-color:var(--slate)}
+.n.on[data-k="be"]{background:var(--green-soft);border-color:var(--green)}
+.n.on[data-k="db"]{background:var(--plum-soft);border-color:var(--plum)}
+.n.picked{box-shadow:0 0 0 3px var(--brand)}
+path.e{fill:none;stroke:var(--edge);stroke-width:1.2;opacity:.55}
+path.e.on{stroke:var(--brand);stroke-width:2.4;opacity:1}
+.map.focus path.e:not(.on){opacity:.12}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);padding:0 14px 12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.detail{padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px}
+.detail h3{margin:0;font-size:20px;line-height:1.3;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--slate-soft);color:var(--ink)}
+.chip.uc{background:var(--brand-soft)}
+.chip.clk{cursor:pointer;border:0;font:inherit;font-size:12px}
+.chip.clk:hover{outline:1.5px solid var(--brand)}
+ol.steps{margin:14px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px;max-width:62ch}
+ol.steps li::marker{color:var(--brand);font-weight:700}
+ol.steps small{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:1px}
+.plain{margin:10px 0 0;font-size:16px;max-width:60ch}
+.how{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px}
+.how div{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--muted)}
+.how b{color:var(--ink);font-size:14px}
+@media (max-width:760px){.how{grid-template-columns:1fr 1fr}}
+.chain{display:flex;flex-direction:column;gap:10px}
+.chain div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:start}
+.chain dt{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.03em;padding-top:2px}
+.chain dd{margin:0;display:flex;flex-direction:column;gap:2px}
+.chain code{font-family:var(--mono);font-size:12.5px;overflow-wrap:anywhere}
+.chain .fn{font-size:12px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin:14px 0 0}
+
+.tests{margin-top:16px;border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.tests h4{margin:0;font-size:12.5px;letter-spacing:.05em;color:var(--muted);font-weight:600}
+.tc{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start}
+.tc .tid{font-family:var(--mono);font-size:12.5px;background:var(--slate-soft);border-radius:6px;padding:2px 7px}
+.tc b{display:block;font-weight:500;font-size:14px;line-height:1.4}
+.tc div span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+.tc .pass{font-size:12px;font-weight:700;color:var(--green);background:var(--green-soft);border-radius:999px;padding:2px 10px}
+body.slide .tests{margin-top:22px;padding-top:16px;gap:12px}
+body.slide .tests h4{font-size:15px}
+body.slide .tc b{font-size:18px}
+body.slide .tc div span{font-size:16px}
+body.slide .tc .tid{font-size:15px}
+body.slide .tc .pass{font-size:15px}
+/* slide mode: one use case per 1920x1080 image, only its own components */
+body.slide{width:1920px;height:1080px;overflow:hidden;padding-inline:56px;padding-block:44px}
+body.slide .wrap{max-width:none;height:100%;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto 1fr;gap:20px 28px}
+body.slide header{grid-column:1/-1}
+body.slide .hint,body.slide .how,body.slide .legend,body.slide .chain,body.slide .detail .meta .chip:not(.uc){display:none}
+body.slide h1{font-size:40px}
+body.slide .sub{font-size:19px}
+body.slide .mark{width:60px;height:60px;font-size:20px;border-radius:14px}
+body.slide .panel{align-self:start}
+body.slide .scroller{overflow:visible;padding:26px 22px 30px}
+body.slide .map{min-width:0;column-gap:38px;grid-template-columns:172px 140px 252px 182px 192px}
+body.slide .lane{gap:18px}
+body.slide .lane h2{font-size:15px}
+body.slide .lane h2 small{font-size:13px}
+body.slide .gap{display:none}
+body.slide .n:not(.on){display:none}
+body.slide .n{padding:13px 16px}
+body.slide .n b{font-size:20px}
+body.slide .n.mono b{font-size:15.5px}
+body.slide .n span{font-size:15px}
+body.slide path.e:not(.on){display:none}
+body.slide path.e.on{stroke-width:3}
+body.slide .n.picked{box-shadow:none}
+body.slide .detail{display:block;padding:26px 28px}
+body.slide .detail h3{display:none}
+body.slide .plain{font-size:24px;margin-top:14px;font-weight:600}
+body.slide ol.steps{gap:18px;margin-top:24px;font-size:21px}
+body.slide ol.steps small{font-size:15px}
+body.slide .note{font-size:15px}
+@media (max-width:760px){.detail{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.n{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="mark">OMS</div>
+    <div>
+      <h1>Use Case → Component Map</h1>
+      <p class="sub">อำพร OMS · Detailed Design · แต่ละ Use Case ผ่านหน้าจอไหน เรียก API อะไร เข้าโมดูล Backend ไหน และแตะตารางไหน</p>
+    </div>
+  </header>
+  <p class="hint">กด Use Case ทางซ้ายเพื่อดูเส้นทางทั้งหมดของมัน หรือกดกล่องอื่นเพื่อดูว่ามี Use Case ไหนใช้บ้าง ข้อมูลไล่จากโค้ดจริง: <code>frontend/src/pages/</code> · <code>backend/app.js</code> · <code>backend/modules/</code></p>
+
+  <section class="panel how" aria-label="วิธีอ่าน">
+    <div><b>Use Case</b>งานที่ผู้ใช้อยากทำ เช่น ขายของ จ่ายของ</div>
+    <div><b>Frontend</b>หน้าจอที่พนักงานเห็นและกด</div>
+    <div><b>API</b>ช่องทางที่หน้าจอใช้ส่งคำขอไปหลังบ้าน</div>
+    <div><b>Backend</b>ส่วนที่คิด ตรวจกฎ และตัดสินใจ</div>
+    <div><b>ข้อมูล / อุปกรณ์</b>ที่เก็บข้อมูล และเครื่องพิมพ์ใบเสร็จ</div>
+  </section>
+
+  <section class="panel">
+    <div class="scroller">
+      <div class="map" id="map">
+        <svg id="wires" aria-hidden="true"></svg>
+        <div class="lane" id="lane-uc"><h2>Use Case<small>11 ตัว · บทที่ 3</small></h2></div>
+        <div class="lane" id="lane-fe"><h2>Frontend<small>React · pages/</small></h2></div>
+        <div class="lane" id="lane-api"><h2>API<small>Express · ผ่าน Auth Middleware (ยกเว้น login)</small></h2></div>
+        <div class="lane" id="lane-be"><h2>Backend<small>Node.js · modules/</small></h2></div>
+        <div class="lane" id="lane-db"><h2>ข้อมูล / อุปกรณ์<small>MySQL · Print Service</small></h2></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--brand)"></i>Use Case</span>
+      <span><i style="background:var(--blue)"></i>หน้าจอ Frontend</span>
+      <span><i style="background:var(--slate)"></i>เส้นทาง API</span>
+      <span><i style="background:var(--green)"></i>โมดูล Backend (เส้นโค้งด้านขวา = โมดูลเรียกกันเอง)</span>
+      <span><i style="background:var(--plum)"></i>ตาราง / อุปกรณ์ภายนอก (ขอบประ)</span>
+    </div>
+  </section>
+
+  <section class="panel detail" id="detail" aria-live="polite"></section>
+</div>
+
+<script>
+const NODES = {
+  uc: [
+    ['UC-01','เข้าสู่ระบบและควบคุมสิทธิ์','ทุกบทบาท'],
+    ['UC-02','จัดการสินค้าและจุดสั่งซื้อเพิ่ม','ผู้จัดการ'],
+    ['UC-03','สร้างคำสั่งซื้อและออกใบเสร็จ','พนักงานขาย'],
+    ['UC-04','สร้างเลขที่คำสั่งซื้อไม่ซ้ำ','ระบบอัตโนมัติ'],
+    ['UC-05','ดูคิวรอจ่ายแบบเรียลไทม์','พนักงานคลังสินค้า'],
+    ['UC-06','ปรับสถานะการจัดของ','พนักงานคลังสินค้า'],
+    ['UC-07','ยืนยันจ่ายสินค้าและตัดสต็อก','พนักงานคลังสินค้า'],
+    ['UC-08','แดชบอร์ดปฏิบัติการ','ผู้จัดการ · คลังสินค้า'],
+    ['UC-09','แดชบอร์ดระดับบริหาร','ผู้จัดการ'],
+    ['UC-10','ค้นหาประวัติการทำรายการ','ผู้จัดการ'],
+    ['UC-11','การแจ้งเตือนในแอป','ผู้จัดการ · คลัง · ระบบ'],
+  ],
+  fe: [
+    ['login','login','หน้าจอ 1'],
+    ['products','products','หน้าจอ 7'],
+    ['pos','pos','หน้าจอ 2'],
+    ['queue','queue','หน้าจอ 3'],
+    ['dispatch','dispatch','หน้าจอ 4'],
+    ['dops','dashboard-ops','หน้าจอ 5'],
+    ['dexec','dashboard-exec','หน้าจอ 6'],
+    ['audit','audit-logs','หน้าจอ 9'],
+    ['notif','notifications','หน้าจอ 8'],
+  ],
+  api: [
+    ['login','POST /api/auth/login','auth.login'],
+    ['me','GET /api/auth/me','auth.me'],
+    ['products','GET POST PUT PATCH /api/products','product.*'],
+    ['quote','POST /api/orders/quote','order.quote'],
+    ['orders','POST /api/orders','order.create'],
+    ['queue','GET /api/queue','queue.list'],
+    ['live','WS /ws · SSE /api/events','queue.attach · queue.events'],
+    ['status','PATCH /api/orders/:id/status','queue.updateStatus'],
+    ['oget','GET /api/orders/:id','order.getById'],
+    ['dispatch','POST /api/orders/:id/dispatch','dispatch.confirm'],
+    ['dops','GET /api/dashboard/ops','dashboard.ops'],
+    ['dexec','GET /api/dashboard/exec','dashboard.exec'],
+    ['audit','GET /api/audit-logs','auditLog.list'],
+    ['notif','GET /api/notifications · PATCH …/:id/read','alert.list · alert.markRead'],
+  ],
+  be: [
+    ['auth','Auth','modules/auth'],
+    ['product','Product','modules/product'],
+    ['order','Order','modules/order'],
+    ['promptpay','PromptPay QR','lib/promptpay'],
+    ['print','Print Client','modules/print-client'],
+    ['queue','Queue Manager','modules/queue'],
+    ['dispatch','Dispatch','modules/dispatch'],
+    ['stock','Stock Deduction','modules/stock-deduction'],
+    ['alert','Alert Engine','modules/alert'],
+    ['dash','Dashboard Aggregator','modules/dashboard'],
+    ['audit','Audit Log','modules/audit-log'],
+  ],
+  db: [
+    ['users','users','ตาราง'],
+    ['products','products','ตาราง'],
+    ['stock_movements','stock_movements','ตาราง'],
+    ['orders','orders','ตาราง'],
+    ['order_items','order_items','ตาราง'],
+    ['notifications','notifications','ตาราง'],
+    ['audit_logs','audit_logs','ตาราง'],
+    ['printsvc','Print Service','เครื่องร้าน → เครื่องพิมพ์ใบเสร็จ'],
+  ],
+};
+// gaps: put a small space before these ids so related groups read together
+const GAP_BEFORE = {be:['queue','alert'], db:['orders','notifications','printsvc']};
+
+// edges per use case: "lane:id>lane:id"
+const UC = {
+ 'UC-01': {fr:'FR-01', e:['uc:UC-01>fe:login','fe:login>api:login','fe:login>api:me','api:login>be:auth','api:me>be:auth','be:auth>db:users','be:auth>be:audit','be:audit>db:audit_logs'],
+   plain:'ด่านแรกของทุกคน ระบบต้องรู้ก่อนว่าเป็นใครและทำอะไรได้บ้าง',
+   steps:[['พนักงานพิมพ์ชื่อผู้ใช้กับรหัสผ่านที่หน้าเข้าสู่ระบบ','หน้าจอ login'],
+     ['ระบบเอารหัสไปเทียบกับที่เก็บไว้ ถ้าถูกก็ให้ "บัตรผ่าน" ที่บอกว่าคนนี้เป็นพนักงานขาย คลัง หรือผู้จัดการ','POST /api/auth/login → Auth ตรวจ bcrypt กับตาราง users แล้วออก JWT'],
+     ['ระบบจดไว้ว่าใครเข้าระบบตอนไหน','บันทึก LOGIN ลง audit_logs'],
+     ['หลังจากนั้นทุกครั้งที่กดอะไร ระบบจะดูบัตรผ่านก่อน ไม่มีบัตรก็ไม่ให้เข้า มีบัตรแต่ไม่ใช่หน้าที่ตัวเองก็ไม่ให้ทำ','Auth Middleware: ไม่มีโทเคน 401 · ไม่มีสิทธิ์ 403']],
+   files:'ตัวตรวจสิทธิ์อยู่ที่เดียวคือ backend/middleware/auth.js (ภาคผนวก ข.1)'},
+ 'UC-02': {fr:'FR-02', e:['uc:UC-02>fe:products','fe:products>api:products','api:products>be:product','be:product>db:products','be:product>db:stock_movements','be:product>be:alert','be:alert>db:notifications','be:product>be:audit','be:audit>db:audit_logs'],
+   plain:'ผู้จัดการดูแลรายการสินค้า ราคา และตั้งจุดที่ต้องสั่งของเพิ่ม',
+   steps:[['ผู้จัดการเพิ่มสินค้า แก้ราคา หรือปรับยอดคงเหลือที่หน้าสินค้า','หน้าจอ products'],
+     ['ระบบเช็กก่อนว่าเป็นผู้จัดการจริง คนอื่นดูได้อย่างเดียว แก้ไม่ได้','requireRole(\'manager\') → Product'],
+     ['ถ้าปรับยอด ระบบจดว่าเปลี่ยนไปเท่าไร เหลือเท่าไร ใครเป็นคนทำ','stock_movements + audit_logs ในธุรกรรมเดียว'],
+     ['ถ้ายอดต่ำกว่าจุดสั่งซื้อเพิ่ม ระบบเด้งแจ้งเตือนให้เอง','Alert Engine ตรวจหลัง commit (BR-05)']]},
+ 'UC-03': {fr:'FR-03', e:['uc:UC-03>fe:pos','fe:pos>api:quote','fe:pos>api:orders','api:quote>be:order','api:orders>be:order','be:order>be:promptpay','be:order>db:orders','be:order>db:order_items','be:order>db:products','be:order>be:print','be:print>db:printsvc','be:order>be:queue','be:order>be:audit','be:audit>db:audit_logs'],
+   plain:'หน้าร้านขายของ ลูกค้าสแกนจ่าย ได้ใบเสร็จ แล้วใบสั่งวิ่งไปหลังร้านเอง',
+   steps:[['พนักงานขายเลือกสินค้าลงตะกร้าที่หน้าขาย','หน้าจอ pos'],
+     ['ระบบคิดเงินจากราคาในระบบเอง ไม่เชื่อราคาที่หน้าจอส่งมา แล้วทำ QR พร้อมเพย์ให้ลูกค้าสแกน','POST /api/orders/quote → Order.priceItems + PromptPay QR'],
+     ['ลูกค้าจ่ายแล้ว พนักงานกดยืนยัน ระบบบันทึกใบสั่งกับรายการสินค้าพร้อมกันทีเดียว','POST /api/orders → orders + order_items + audit_logs'],
+     ['ระบบสั่งพิมพ์ใบเสร็จ และส่งใบสั่งไปโผล่ที่หน้าคิวของคลังทันที','Print Client → Print Service · Queue broadcast order.created (BR-01 ใบเสร็จกับคิวเกิดจากการกดครั้งเดียวกัน)']]},
+ 'UC-04': {fr:'FR-03', e:['uc:UC-04>fe:pos','fe:pos>api:orders','api:orders>be:order','be:order>db:orders'],
+   plain:'ทุกใบสั่งต้องได้เลขไม่ซ้ำกัน ต่อให้ขายพร้อมกันหลายเครื่อง',
+   steps:[['ไม่มีหน้าจอของตัวเอง ระบบทำให้ตอนกดยืนยันรับเงินใน UC-03','อยู่ใน POST /api/orders'],
+     ['ระบบดูเลขล่าสุดของวันนี้ แล้ว "จอง" ไว้ ถ้าอีกเครื่องกดพร้อมกัน เครื่องนั้นต้องรอคิว','SELECT … FOR UPDATE (ล็อกเชิงลบ)'],
+     ['ได้เลขแบบ ORD-วันที่-ลำดับ และฐานข้อมูลห้ามเลขซ้ำอีกชั้นหนึ่ง','nextOrderNo · order_no UNIQUE']],
+   files:'backend/modules/order/index.js บรรทัด 80–89 (ภาคผนวก ข.2)'},
+ 'UC-05': {fr:'FR-04', e:['uc:UC-05>fe:queue','fe:queue>api:queue','fe:queue>api:live','api:queue>be:queue','api:live>be:queue','be:queue>db:orders','be:queue>db:order_items','be:queue>db:products'],
+   plain:'คลังเห็นใบสั่งใหม่ทันทีที่หน้าร้านขายเสร็จ ไม่ต้องเดินมาถาม',
+   steps:[['เปิดหน้าคิว ระบบดึงใบสั่งที่รอจ่ายทั้งหมดมาแสดง','หน้าจอ queue · GET /api/queue'],
+     ['หน้าคิวต่อสายค้างไว้กับระบบตลอด','WebSocket /ws (สำรองเป็น SSE /api/events)'],
+     ['พอหน้าร้านขายเสร็จ ใบสั่งใหม่เด้งขึ้นมาเองโดยไม่ต้องกดรีเฟรช','Queue Manager broadcast (NFR-02)']]},
+ 'UC-06': {fr:'FR-04', e:['uc:UC-06>fe:queue','fe:queue>api:status','api:status>be:queue','be:queue>db:orders','be:queue>be:audit','be:audit>db:audit_logs'],
+   plain:'คลังบอกให้รู้ว่าใบไหนกำลังจัดอยู่ จะได้ไม่จัดซ้ำกัน',
+   steps:[['พนักงานคลังกด "เริ่มจัด" ที่ใบสั่งในหน้าคิว','หน้าจอ queue · PATCH /api/orders/:id/status'],
+     ['ระบบยอมให้เปลี่ยนสถานะตามลำดับเท่านั้น ข้ามขั้นไม่ได้','Queue Manager · TRANSITIONS'],
+     ['จดว่าใครเปลี่ยน แล้วทุกจอเห็นสถานะใหม่พร้อมกัน','orders + audit_logs · broadcast order.status']]},
+ 'UC-07': {fr:'FR-05 · FR-06', e:['uc:UC-07>fe:dispatch','fe:dispatch>api:oget','fe:dispatch>api:dispatch','api:oget>be:order','api:dispatch>be:dispatch','be:dispatch>be:stock','be:stock>db:orders','be:stock>db:order_items','be:stock>db:products','be:stock>db:stock_movements','be:stock>be:audit','be:audit>db:audit_logs','be:dispatch>be:queue','be:dispatch>be:alert','be:alert>db:notifications'],
+   plain:'หัวใจของระบบ ของออกจากร้านเมื่อไร สต็อกลดตามนั้นทันที และไม่มีทางจ่ายซ้ำหรือติดลบ',
+   steps:[['พนักงานคลังเปิดใบสั่ง ดูว่าต้องจ่ายอะไรบ้าง','หน้าจอ dispatch · GET /api/orders/:id'],
+     ['กดยืนยันจ่าย ระบบเริ่มทำงานแบบ "ทำครบทุกขั้นหรือไม่ทำเลย"','POST /api/orders/:id/dispatch → Dispatch · withTransaction'],
+     ['เช็กว่าใบนี้ยังไม่มีใครจ่ายไปก่อน ถ้ามีคนจ่ายแล้วก็ปฏิเสธ','UPDATE orders แบบมีเงื่อนไข (ล็อกเชิงบวก)'],
+     ['หักสต็อกทีละรายการ ถ้ารายการไหนของไม่พอ ยกเลิกทั้งใบ ไม่มีหักไปครึ่งเดียว','UPDATE products … AND stock_qty >= ? · ROLLBACK'],
+     ['จดความเคลื่อนไหวสต็อกกับประวัติ เสร็จแล้วบอกทุกจอ และเช็กว่าสินค้าไหนใกล้หมด','stock_movements + audit_logs · broadcast · Alert Engine']],
+   files:'รูปที่ 3.11 Sequence Diagram และภาคผนวก ข.3'},
+ 'UC-08': {fr:'FR-07', e:['uc:UC-08>fe:dops','fe:dops>api:dops','fe:dops>api:live','api:dops>be:dash','be:dash>db:orders','be:dash>db:order_items','be:dash>db:products'],
+   plain:'ภาพรวมของวันนี้ ขายไปเท่าไร คิวค้างกี่ใบ อะไรใกล้หมด',
+   steps:[['เปิดหน้าแดชบอร์ดปฏิบัติการ','หน้าจอ dashboard-ops · GET /api/dashboard/ops'],
+     ['ระบบรวมตัวเลขจากใบสั่งและสินค้าให้ ไม่ต้องนั่งนับเอง','Dashboard Aggregator อ่าน orders, order_items, products'],
+     ['มีการขายหรือจ่ายของใหม่ ตัวเลขบนจอก็อัปเดตตาม','ฟังเหตุการณ์จาก /ws']]},
+ 'UC-09': {fr:'FR-07', e:['uc:UC-09>fe:dexec','fe:dexec>api:dexec','api:dexec>be:dash','be:dash>db:orders','be:dash>db:order_items','be:dash>db:products'],
+   plain:'ตัวเลขสำหรับเจ้าของและผู้จัดการ ดูแนวโน้มยอดขายย้อนหลัง',
+   steps:[['ผู้จัดการเปิดหน้าแดชบอร์ดบริหาร คนอื่นเปิดไม่ได้','หน้าจอ dashboard-exec · GET /api/dashboard/exec'],
+     ['ระบบสรุปยอดขายตามช่วงเวลา และบอกว่าสินค้าไหนขายดี','Dashboard Aggregator']]},
+ 'UC-10': {fr:'FR-09', e:['uc:UC-10>fe:audit','fe:audit>api:audit','api:audit>be:audit','be:audit>db:audit_logs','be:audit>db:users'],
+   plain:'ย้อนดูได้ว่าใครทำอะไร เมื่อไร เวลามีปัญหาจะได้ตามถูก',
+   steps:[['ผู้จัดการค้นหาตามชื่อพนักงาน ประเภทการกระทำ หรือช่วงวัน','หน้าจอ audit-logs · GET /api/audit-logs'],
+     ['ระบบดึงประวัติมาแสดงพร้อมชื่อคนทำ','Audit Log อ่าน audit_logs ต่อกับ users'],
+     ['ประวัติพวกนี้มาจากทุกส่วนของระบบ ทุกครั้งที่มีการขาย จ่ายของ หรือแก้สินค้า จะถูกจดไว้ในจังหวะเดียวกัน','ทุกโมดูลเรียก auditLog.record ในธุรกรรมของตัวเอง']]},
+ 'UC-11': {fr:'FR-08', e:['uc:UC-11>fe:notif','fe:notif>api:notif','fe:notif>api:live','api:notif>be:alert','be:alert>db:notifications','be:alert>db:products','be:alert>be:queue','be:alert>be:audit','be:audit>db:audit_logs'],
+   plain:'ระบบเตือนเองเมื่อของใกล้หมด ไม่ต้องรอให้คนมาเห็น',
+   steps:[['หลังจ่ายของหรือปรับยอด ระบบเช็กว่ามีสินค้าไหนต่ำกว่าจุดสั่งซื้อเพิ่มไหม','Alert Engine ถูกเรียกจาก Dispatch และ Product'],
+     ['ถ้ามี ระบบสร้างแจ้งเตือนแล้วส่งไปที่จอทันที','notifications · broadcast notification.created'],
+     ['ผู้จัดการเปิดดูที่หน้าแจ้งเตือน อ่านแล้วกดรับทราบ','หน้าจอ notifications · PATCH /api/notifications/:id/read']]},
+};
+
+// test cases per use case: [id, what we tested, what happened] from chapter 3 table TC and chapter 4 results
+const TC = {
+ 'UC-01': [['TC-01','เรียกหน้าของผู้จัดการแบบไม่มีบัตรผ่าน บัตรปลอม และบัตรของบทบาทอื่น','ถูกปฏิเสธครบทุกกรณี (401 และ 403)']],
+ 'UC-02': [['TC-02','ผู้จัดการแก้จุดสั่งซื้อเพิ่มของสินค้า','ค่าที่บันทึกตรงกับที่กรอกทุกครั้ง และมีประวัติว่าใครแก้ เมื่อไร']],
+ 'UC-03': [['TC-03','เทียบยอดรวมกับการคิดด้วยมือ และดูยอดที่คู่กับ QR','ยอดตรงทุกครั้ง QR ระบุยอดเท่ากับตะกร้า'],
+           ['TC-12','พิมพ์ใบเสร็จภาษาไทยกับเครื่องพิมพ์จริงที่ต่อ USB แล้วจับเวลา','ภาษาไทยถูกต้อง ใช้ประมาณ 2.3 วินาที (เกณฑ์ 5 วินาที)']],
+ 'UC-04': [['TC-04','สร้างใบสั่งต่อกัน 100 ใบ และพร้อมกัน 20 ใบจากสองบัญชี','เลขไม่ซ้ำเลยทั้ง 120 ใบ']],
+ 'UC-05': [['TC-05','จับเวลาตั้งแต่ขายเสร็จจนใบสั่งขึ้นจอคิว วัด 20 รอบ','ช้าสุด 80 มิลลิวินาที ช่องทางสำรอง 43 มิลลิวินาที (เกณฑ์ 3 วินาที)']],
+ 'UC-06': [['TC-05','ทดสอบร่วมกับ UC-05 ตาม FR-04 (ตารางสืบย้อนบทที่ 4) ยังไม่มีกรณีทดสอบแยกของตัวเอง','ผ่านตาม TC-05']],
+ 'UC-07': [['TC-06','กดยืนยันจ่ายใบเดียวกันพร้อมกันสองคำขอ และตัดสต็อกพร้อมกัน 10 ธุรกรรม','สำเร็จแค่คำขอเดียว สต็อกถูกหักครั้งเดียว'],
+           ['TC-07','ยืนยันจ่ายใบที่จำนวนเกินของที่มี','ยกเลิกทั้งใบ ยอดที่หักไปแล้วกลับค่าเดิม สถานะไม่เปลี่ยน']],
+ 'UC-08': [['TC-08','เทียบตัวเลขบนแดชบอร์ดกับผลรวมที่คำนวณจากฐานข้อมูลตรง ๆ','ตรงกันทุกตัวชี้วัด']],
+ 'UC-09': [['TC-08','ใช้ TC-08 ร่วมกับ UC-08 ตาม FR-07 (เทียบตัวเลขแดชบอร์ดกับฐานข้อมูล)','ตรงกันทุกตัวชี้วัด']],
+ 'UC-10': [['TC-11','ค้นประวัติโดยกรองตามช่วงวันและประเภทการกระทำ','ตรงเงื่อนไขทุกแถว และมีผู้ทำ เวลา ข้อมูล และ IP ครบ']],
+ 'UC-11': [['TC-09','จ่ายของจนยอดต่ำกว่าจุดสั่งซื้อเพิ่ม','แจ้งเตือนขึ้นเอง และไม่แจ้งซ้ำขณะที่ยังไม่อ่าน'],
+           ['TC-10','ปล่อยใบสั่งค้างในคิวเกินเวลาที่ตั้งไว้','แจ้งเตือนคิวค้าง บอกเลขใบและเวลาที่รอ']],
+};
+
+const FILE = {
+  fe: id => `frontend/src/pages/${NODES.fe.find(n=>n[0]===id)[1]}/index.jsx`,
+  be: id => ({promptpay:'backend/lib/promptpay'})[id] || `backend/${NODES.be.find(n=>n[0]===id)[2]}/index.js`,
+};
+const DESC = {
+  'fe:login':'หน้าแรกที่ทุกคนต้องผ่าน กรอกชื่อผู้ใช้กับรหัสผ่าน',
+  'fe:products':'หน้าจัดการสินค้าของผู้จัดการ เพิ่ม แก้ราคา ปรับยอด',
+  'fe:pos':'หน้าขายของที่เคาน์เตอร์ เลือกสินค้า แสดง QR รับเงิน',
+  'fe:queue':'หน้าคิวของคลัง เห็นใบสั่งที่รอจ่ายแบบสด ๆ',
+  'fe:dispatch':'หน้ายืนยันจ่ายของ กดแล้วสต็อกลดทันที',
+  'fe:dops':'แดชบอร์ดประจำวัน ยอดขาย คิวค้าง ของใกล้หมด',
+  'fe:dexec':'แดชบอร์ดสำหรับผู้บริหาร ดูยอดขายย้อนหลัง',
+  'fe:audit':'หน้าค้นประวัติว่าใครทำอะไรเมื่อไร',
+  'fe:notif':'หน้ารวมแจ้งเตือน เช่น ของใกล้หมด',
+  'be:auth':'ตรวจรหัสผ่านและออกบัตรผ่าน (โทเคน) ที่บอกบทบาท',
+  'be:product':'ดูแลข้อมูลสินค้า ราคา ยอดคงเหลือ',
+  'be:order':'สร้างใบสั่ง คิดเงิน ออกเลขที่ไม่ซ้ำ',
+  'be:promptpay':'ไลบรารีภายนอกที่สร้าง QR พร้อมเพย์ตามยอดเงิน',
+  'be:print':'ส่งงานพิมพ์ใบเสร็จไปที่เครื่องของร้าน',
+  'be:queue':'ถือสายค้างกับทุกหน้าจอ มีอะไรเปลี่ยนก็กระจายบอกทุกจอ',
+  'be:dispatch':'รับคำสั่งยืนยันจ่าย เปิดงานแบบทำครบหรือไม่ทำเลย',
+  'be:stock':'หักสต็อกจริง กันจ่ายซ้ำ กันติดลบ',
+  'be:alert':'เช็กของใกล้หมดแล้วสร้างแจ้งเตือน',
+  'be:dash':'รวมตัวเลขสำหรับแดชบอร์ด',
+  'be:audit':'จดประวัติทุกการกระทำ และให้ค้นย้อนหลังได้',
+  'db:users':'ผู้ใช้ รหัสผ่านที่เข้ารหัสแล้ว และบทบาท',
+  'db:products':'สินค้า ราคา ยอดคงเหลือ จุดสั่งซื้อเพิ่ม',
+  'db:stock_movements':'ทุกครั้งที่สต็อกขยับ เปลี่ยนเท่าไร เหลือเท่าไร',
+  'db:orders':'หัวใบสั่ง เลขที่ ยอดเงิน สถานะ',
+  'db:order_items':'รายการสินค้าในแต่ละใบสั่ง',
+  'db:notifications':'แจ้งเตือนที่ระบบสร้าง',
+  'db:audit_logs':'ประวัติว่าใครทำอะไรเมื่อไร',
+  'db:printsvc':'โปรแกรมเล็กบนเครื่องร้านที่คุยกับเครื่องพิมพ์ใบเสร็จ',
+};
+const LABEL = {}; // "lane:id" -> [title, sub]
+const map = document.getElementById('map'), svg = document.getElementById('wires');
+
+for (const lane of Object.keys(NODES)) {
+  const box = document.getElementById('lane-' + lane);
+  for (const [id, t, s] of NODES[lane]) {
+    if ((GAP_BEFORE[lane] || []).includes(id)) { const g = document.createElement('div'); g.className = 'gap'; box.appendChild(g); }
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'n' + (lane === 'api' ? ' mono' : '') + (id === 'printsvc' || id === 'promptpay' ? ' ext' : '');
+    b.dataset.k = lane; b.dataset.id = lane + ':' + id; b.id = 'n-' + lane + '-' + id;
+    b.innerHTML = lane === 'uc' ? `<b>${id} ${t}</b><span>${s}</span>` : `<b>${t}</b><span>${s}</span>`;
+    LABEL[lane + ':' + id] = lane === 'uc' ? [id + ' ' + t, s] : [t, s];
+    b.addEventListener('click', () => pick(b.dataset.id));
+    box.appendChild(b);
+  }
+}
+
+// unique edges with the use cases that use each
+const EDGES = new Map();
+for (const [uc, d] of Object.entries(UC)) for (const e of d.e) {
+  if (!EDGES.has(e)) EDGES.set(e, new Set());
+  EDGES.get(e).add(uc);
+}
+
+function el(id) { const [l, i] = id.split(':'); return document.getElementById('n-' + l + '-' + i); }
+function draw() {
+  const r0 = map.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${r0.width} ${r0.height}`);
+  svg.innerHTML = '';
+  for (const [e] of EDGES) {
+    const [a, b] = e.split('>');
+    const ra = el(a).getBoundingClientRect(), rb = el(b).getBoundingClientRect();
+    const y1 = ra.top + ra.height / 2 - r0.top, y2 = rb.top + rb.height / 2 - r0.top;
+    let d;
+    if (a.split(':')[0] === b.split(':')[0]) { // same lane: arc out on the right
+      const x = ra.right - r0.left, bulge = 26 + Math.min(40, Math.abs(y2 - y1) / 6);
+      d = `M${x} ${y1} C${x + bulge} ${y1}, ${x + bulge} ${y2}, ${x} ${y2}`;
+    } else {
+      const x1 = ra.right - r0.left, x2 = rb.left - r0.left, m = (x2 - x1) / 2;
+      d = `M${x1} ${y1} C${x1 + m} ${y1}, ${x2 - m} ${y2}, ${x2} ${y2}`;
+    }
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', d); p.setAttribute('class', 'e'); p.dataset.e = e;
+    svg.appendChild(p);
+  }
+  apply();
+}
+
+let current = 'uc:UC-07';
+function pick(id) { current = id; apply(); render(); }
+function ucsFor(id) {
+  if (id.startsWith('uc:')) return [id.slice(3)];
+  return Object.keys(UC).filter(u => UC[u].e.some(e => e.split('>').includes(id)));
+}
+function apply() {
+  const ucs = ucsFor(current);
+  const on = new Set(), onE = new Set();
+  for (const u of ucs) for (const e of UC[u].e) { onE.add(e); e.split('>').forEach(x => on.add(x)); }
+  map.classList.add('focus');
+  map.querySelectorAll('.n').forEach(n => { n.classList.toggle('on', on.has(n.dataset.id)); n.classList.toggle('picked', n.dataset.id === current); });
+  svg.querySelectorAll('path.e').forEach(p => p.classList.toggle('on', onE.has(p.dataset.e)));
+}
+
+function list(lane, ids) {
+  return ids.map(id => {
+    const [t, s] = LABEL[lane + ':' + id];
+    const f = FILE[lane] ? `<code>${FILE[lane](id)}</code>` : lane === 'api' ? `<code>${t}</code> <span class="fn">→ ${s}</span>` : `<code>${t}</code>`;
+    return lane === 'api' ? `<span>${f}</span>` : `<span>${f}${lane === 'db' && id === 'printsvc' ? ' <span class="hint">(print-service/)</span>' : ''}</span>`;
+  }).join('');
+}
+function render() {
+  const box = document.getElementById('detail');
+  if (current.startsWith('uc:')) {
+    const u = current.slice(3), d = UC[u], row = NODES.uc.find(n => n[0] === u);
+    const ids = {fe:[], api:[], be:[], db:[]};
+    for (const e of d.e) for (const x of e.split('>')) { const [l, i] = x.split(':'); if (ids[l] && !ids[l].includes(i)) ids[l].push(i); }
+    const order = l => NODES[l].map(n => n[0]).filter(i => ids[l].includes(i));
+    box.innerHTML = `<div>
+        <h3>${u} ${row[1]}</h3>
+        <div class="meta"><span class="chip uc">ผู้ใช้: ${row[2]}</span><span class="chip">${d.fr}</span></div>
+        <p class="plain">${d.plain}</p>
+        <ol class="steps">${d.steps.map(([p, t]) => `<li>${p}<small>${t}</small></li>`).join('')}</ol>
+        ${d.files ? `<p class="note">ดูเพิ่ม: ${d.files}</p>` : ''}
+        <div class="tests"><h4>ทดสอบแล้ว</h4>${TC[u].map(([id, w, r]) => `<div class="tc"><span class="tid">${id}</span><div><b>${w}</b><span>ผล: ${r}</span></div><span class="pass">ผ่าน</span></div>`).join('')}</div>
+      </div>
+      <dl class="chain">
+        <div><dt>FRONTEND</dt><dd>${list('fe', order('fe'))}</dd></div>
+        <div><dt>API</dt><dd>${list('api', order('api'))}</dd></div>
+        <div><dt>BACKEND</dt><dd>${list('be', order('be'))}</dd></div>
+        <div><dt>ข้อมูล</dt><dd>${list('db', order('db'))}</dd></div>
+      </dl>`;
+  } else {
+    const [t, s] = LABEL[current], lane = current.split(':')[0], id = current.split(':')[1];
+    const ucs = ucsFor(current);
+    const path = FILE[lane] ? FILE[lane](id) : lane === 'db' ? (id === 'printsvc' ? 'print-service/' : 'db/schema · ตาราง ' + t) : 'backend/app.js';
+    box.innerHTML = `<div>
+        <h3>${t}</h3>
+        <p class="plain">${DESC[current] || s}</p>
+        <p class="note"><code>${path}</code></p>
+      </div>
+      <div><dl class="chain"><div><dt>ใช้ใน ${ucs.length} UC</dt><dd><div class="meta" style="margin:0">${ucs.map(u => `<button type="button" class="chip uc clk" data-u="${u}">${u} ${NODES.uc.find(n=>n[0]===u)[1]}</button>`).join('')}</div></dd></div></dl></div>`;
+    box.querySelectorAll('[data-u]').forEach(b => b.addEventListener('click', () => pick('uc:' + b.dataset.u)));
+  }
+}
+
+const SLIDE = /^#slide-(UC-\d\d)$/.exec(location.hash);
+if (SLIDE) {
+  document.body.classList.add('slide');
+  current = 'uc:' + SLIDE[1];
+  const r = NODES.uc.find(n => n[0] === SLIDE[1]);
+  document.querySelector('h1').textContent = SLIDE[1] + ' ' + r[1];
+  document.querySelector('.sub').textContent = 'Use Case → หน้าจอ → API → โมดูล Backend → ตาราง · ไล่จากโค้ดจริง';
+}
+render();
+draw();
+window.addEventListener('resize', draw);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+new ResizeObserver(draw).observe(map);
+</script>
